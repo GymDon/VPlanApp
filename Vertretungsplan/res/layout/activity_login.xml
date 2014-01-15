@@ -1,0 +1,65 @@
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LoginActivity" >
+
+    <TextView
+        android:id="@+id/welcome_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/login_activity_margin_top"
+        android:text="@string/welcome_message"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/username_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/login_activity_margin_top"
+        android:layout_below="@id/welcome_TextView"
+        android:textSize="@dimen/login_activity_font_size"
+        android:text="@string/username_message" />
+    
+    <EditText
+        android:id="@+id/username_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username_TextView"
+        android:layout_marginTop="20dp"
+        android:inputType="text" >
+		<requestFocus />
+	</EditText>
+	
+    <TextView
+        android:id="@+id/password_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/login_activity_margin_top"
+        android:layout_below="@id/username_EditText"
+        android:textSize="@dimen/login_activity_font_size"
+        android:text="@string/password_message" />
+
+    <EditText
+        android:id="@+id/password_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password_TextView"
+        android:layout_marginTop="@dimen/login_activity_margin_top"
+        android:inputType="textPassword" />
+    
+    <Button
+        android:id="@+id/login_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:layout_below="@id/password_EditText"
+		android:layout_marginTop="@dimen/login_activity_margin_top"
+        android:text="@string/login"
+        android:onClick="login_Button_onClick" />
+
+</RelativeLayout>

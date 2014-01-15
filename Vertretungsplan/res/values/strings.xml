@@ -2,7 +2,10 @@
 <resources>
 
     <string name="app_name">Vertretungsplan</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="welcome_message">Herzlich Willkommen bei der Vertretungsplan-App</string>
+    <string name="username_message">Bitte Benutzername eingeben:</string>
+    <string name="password_message">Bitte Passwort eingeben:</string>
+    <string name="login">Login</string>
 
 </resources>
