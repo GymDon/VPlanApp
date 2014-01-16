@@ -82,24 +82,6 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	/**
-	 * 
-	 * switch (item.getItemId()) {
-        case R.id.action_search:
-            openSearch();
-            return true;
-        case R.id.action_compose:
-            composeMessage();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-    }
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
