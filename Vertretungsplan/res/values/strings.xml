@@ -7,5 +7,7 @@
     <string name="username_message">Bitte Benutzername eingeben:</string>
     <string name="password_message">Bitte Passwort eingeben:</string>
     <string name="login">Login</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
 
 </resources>
