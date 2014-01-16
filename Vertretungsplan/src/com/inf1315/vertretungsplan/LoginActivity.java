@@ -2,6 +2,7 @@ package com.inf1315.vertretungsplan;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,9 @@ public class LoginActivity extends Activity {
 		//Only for Debug
 		String toastString = "Username : "+username+" Password : "+ password;
 		Toast.makeText(this, toastString, Toast.LENGTH_LONG).show();
+		
+		Intent intent = new Intent(this,PlanActivity.class);
+		startActivity(intent);
 	}
 
 }
