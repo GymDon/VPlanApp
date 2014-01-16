@@ -3,6 +3,8 @@ package com.inf1315.vertretungsplan;
 
 import java.util.List;
 
+import com.inf1315.vertretungsplan.api.ReplacementObject;
+
 import android.content.*;
 import android.graphics.Color;
 import android.view.*;
