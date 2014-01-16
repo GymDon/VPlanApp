@@ -2,6 +2,7 @@ package com.inf1315.vertretungsplan;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +11,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class PlanActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -62,26 +65,41 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.plan_activity_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
 			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.action_show_ticker:
+			showTicker();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	/**
+	 * 
+	 * switch (item.getItemId()) {
+        case R.id.action_search:
+            openSearch();
+            return true;
+        case R.id.action_compose:
+            composeMessage();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -96,6 +114,12 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	@Override
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 	
+	public void showTicker() {
+
+		Toast toast = Toast.makeText(getApplicationContext(), "Heute leider keine Ticker vorhanden, weil Implementierung fehlt!", Toast.LENGTH_LONG);
+		toast.show();
+		
+	}
 	
 	public class PlanPagerAdapter extends FragmentPagerAdapter {
 
