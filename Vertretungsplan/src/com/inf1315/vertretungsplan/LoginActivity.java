@@ -20,8 +20,8 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		//Initalisiere Variablen
-		username_EditText = (EditText) findViewById(R.id.username_EditText);
-		password_EditText = (EditText) findViewById(R.id.password_EditText);
+		usernameEditText = (EditText) findViewById(R.id.username_EditText);
+		passwordEditText = (EditText) findViewById(R.id.password_EditText);
 	}
 
 	@Override
