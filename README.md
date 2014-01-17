@@ -1,4 +1,5 @@
+
 VPlanApp
 ========
 
-Android app for accessing the replacement plan of our school
+Android app for accessing the replacement plan of our school.
