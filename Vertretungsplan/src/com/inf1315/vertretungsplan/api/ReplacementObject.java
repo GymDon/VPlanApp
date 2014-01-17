@@ -1,4 +1,4 @@
-package com.inf1315.vertretungsplan;
+package com.inf1315.vertretungsplan.api;
 
 
 import org.json.JSONException;
