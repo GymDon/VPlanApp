@@ -60,6 +60,6 @@
 		android:layout_below="@id/password_EditText"
 		android:layout_marginTop="@dimen/login_activity_margin_top"
         android:text="@string/login"
-        android:onClick="login_Button_onClick" />
+        android:onClick="loginButtonOnClick" />
 
 </RelativeLayout>

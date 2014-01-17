@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
-	private EditText username_EditText;
-	private EditText password_EditText;
+	private EditText usernameEditText;
+	private EditText passwordEditText;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +31,10 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 	
-	public void login_Button_onClick (View v) {
+	public void loginButtonOnClick (View v) {
 		// TODO Login ausführen
-		String username = username_EditText.getText().toString();
-		String password = password_EditText.getText().toString();
+		String username = usernameEditText.getText().toString();
+		String password = passwordEditText.getText().toString();
 				
 		//Only for Debug
 		String toastString = "Username : "+username+" Password : "+ password;
