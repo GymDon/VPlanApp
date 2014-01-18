@@ -6,12 +6,17 @@ import java.util.*;
 
 import org.json.*;
 
+import android.util.Log;
+
 public class API
 {
     /**
      * The standard url: {@value #STANDARD_URL}
      */
     public static final String STANDARD_URL = "http://skirising.no-ip.org/VPlanApp/api/";
+    
+    public static API STANDARD_API;
+    public static API LOCAL_DEBUG_API;
     
     private URL url;
     
@@ -82,16 +87,29 @@ public class API
      */
     public ApiResponse request(ApiAction action, Map<String, String> params)
     {
+	ApiResponse r;
+	JSONObject obj = null;
 	try
 	{
-	    JSONObject obj = getJSONfromURL(url, "GET", params);
+	    params.put("a", action.toString().toLowerCase());
+	    obj = getJSONfromURL(url, "GET", params);
 	    if(!actionToClassMap.containsKey(action))
 		throw new RuntimeException("invalid action \"" + action + "\"");
-	    return new ApiResponse(obj, actionToClassMap.get(action));
+	    r = new ApiResponse(obj, actionToClassMap.get(action), actionIsArrayMap.get(action));
 	} catch (Exception e)
 	{
-	    return new ApiResponse(e);
+	    e.printStackTrace();
+	    Log.i("API Params", params.toString());
+	    if(obj != null)
+		try
+		{
+		    Log.i("API Response", obj.toString(4));
+		} catch (JSONException e1)
+		{
+		}
+	    r = new ApiResponse(e);
 	}
+	return r;
     }
     
     /**
@@ -103,12 +121,23 @@ public class API
      */
     public static JSONObject getJSONfromURL(URL url, String requestMethod, Map<String,String> params) throws IOException, JSONException
     {
+	requestMethod = requestMethod.toUpperCase();
+	StringBuilder get = new StringBuilder();
+	if(params != null)
+	{
+	    for (String key : params.keySet())
+		get.append(get.length() == 0 ? "" : "&").
+		append(URLEncoder.encode(key, "UTF-8")).
+		append('=').
+		append(URLEncoder.encode(params.get(key), "UTF-8"));
+	}
+	if(requestMethod.equals("GET"))
+	    url = new URL(url.toExternalForm() + "?" + get);
 	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	conn.setRequestMethod(requestMethod);
-	if (params != null)
-	    for (String key : params.keySet())
-		conn.addRequestProperty(key, params.get(key));
 	conn.connect();
+	if(requestMethod.equals("POST"))
+	    conn.getOutputStream().write(get.toString().getBytes());
 	BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	StringBuilder sb = new StringBuilder();
 	String line;
@@ -120,10 +149,26 @@ public class API
     }
     
     private static Map<ApiAction, Class<? extends ApiResult>> actionToClassMap;
+    private static Map<ApiAction, Boolean> actionIsArrayMap;
     
     static
     {
+	try
+	{
+	    STANDARD_API = new API();
+	    LOCAL_DEBUG_API = new API("http://192.168.0.36/VPlanApp/api.php");
+	} catch (MalformedURLException e){}
+	
 	actionToClassMap = new HashMap<ApiAction, Class<? extends ApiResult>>();
+	actionIsArrayMap = new HashMap<ApiAction, Boolean>();
+	
 	actionToClassMap.put(ApiAction.USER, UserInfo.class);
+	actionIsArrayMap.put(ApiAction.USER, false);
+	
+	actionToClassMap.put(ApiAction.PLAN, PlanObject.class);
+	actionIsArrayMap.put(ApiAction.PLAN, false);
+	
+	actionToClassMap.put(ApiAction.TICKER, TickerObject.class);
+	actionIsArrayMap.put(ApiAction.TICKER, true);
     }
 }

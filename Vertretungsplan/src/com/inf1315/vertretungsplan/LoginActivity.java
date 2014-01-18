@@ -2,7 +2,10 @@ package com.inf1315.vertretungsplan;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +15,7 @@ public class LoginActivity extends Activity {
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
+	public static Dialog loadingDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +36,15 @@ public class LoginActivity extends Activity {
 	}
 	
 	public void loginButtonOnClick (View v) {
-		// TODO Login ausführen
+		//TODO: Login ausf��hren
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
-				
-		//Only for Debug
-		String toastString = "Username : "+username+" Password : "+ password;
-		Toast.makeText(this, toastString, Toast.LENGTH_LONG).show();
+
+		loadingDialog = ProgressDialog.show(this, "", "Loading", true);
+		loadingDialog.show();
 		
+		//TODO: Remove debug
+		Log.d("Login", "Username : "+username+" Password : "+ password);
 		Intent intent = new Intent(this,PlanActivity.class);
 		startActivity(intent);
 	}

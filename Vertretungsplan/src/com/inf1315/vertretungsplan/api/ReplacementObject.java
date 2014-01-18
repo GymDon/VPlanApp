@@ -3,8 +3,6 @@ package com.inf1315.vertretungsplan.api;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.text.Html;
-
 public class ReplacementObject extends ApiResult implements Comparable<ReplacementObject> {
 	
 	public final int id;
@@ -29,12 +27,8 @@ public class ReplacementObject extends ApiResult implements Comparable<Replaceme
 		replacement = strip(json.getString("replacement"));
 		room = strip(json.getString("room"));
 		comment = strip(json.getString("comment"));
-		isToday = json.getBoolean("isToday");
+		isToday = json.getBoolean("is_today");
 		addition = json.getInt("addition") != 0;
-	}
-
-	private static String strip(String in) {
-		return Html.fromHtml(in).toString().replace('\u00A0', ' ').trim();
 	}
 
 	@Override
