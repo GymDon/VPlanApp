@@ -61,6 +61,8 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 			if (oo.isToday) plan.todayOthers.add(oo);
 			else plan.tomorrowOthers.add(oo);
 		}
+		
+		plan.finishedLoading();
 	}
 
 }

@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -19,8 +17,6 @@ public class LoginActivity extends Activity {
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
-
-	static Dialog loadingDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +84,6 @@ public class LoginActivity extends Activity {
 		}
 
 		else {
-		loadingDialog = ProgressDialog.show(this, "", "Loading", true);
-		loadingDialog.show();
 		
 		//TODO: Remove debug
 		Log.d("Login", "Username : "+username+" Password : "+ password);

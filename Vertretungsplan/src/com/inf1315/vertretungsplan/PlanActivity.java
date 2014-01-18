@@ -7,12 +7,13 @@ import com.inf1315.vertretungsplan.api.*;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ import android.widget.Toast;
 public class PlanActivity extends FragmentActivity implements ActionBar.TabListener
 {
 	
-	
+	private Dialog loadingDialog;
 	SharedPreferences sharedPref;
 	Boolean tickerToast;
     PlanPagerAdapter planPagerAdapter;
@@ -79,6 +80,9 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 					.setText(planPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		loadingDialog = ProgressDialog.show(this, "", "Loading", true);
+		loadingDialog.show();
+		
 		loadData();
 	}
 
@@ -101,10 +105,9 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     void finishedLoading()
-
     {
-    LoginActivity.loadingDialog.hide();
-    showTicker();
+    	loadingDialog.hide();
+    	showTicker();
     }
     
     public void getPreferences() {
