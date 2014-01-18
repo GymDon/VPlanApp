@@ -9,13 +9,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
-	public static Dialog loadingDialog;
+	static Dialog loadingDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
