@@ -26,13 +26,15 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 {
 	
 	private Dialog loadingDialog;
+	List<ReplacementObject> todayReplacementsList = new ArrayList<ReplacementObject>();
+	List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
 	SharedPreferences sharedPref;
 	Boolean tickerToast;
     PlanPagerAdapter planPagerAdapter;
     ViewPager viewPager;
     List<TickerObject> tickers = new ArrayList<TickerObject>();
-    List<ReplacementObject> todayReplacements = new ArrayList<ReplacementObject>();
-    List<ReplacementObject> tomorrowReplacements = new ArrayList<ReplacementObject>();
+    VertretungsplanAdapter todayReplacements;
+    VertretungsplanAdapter tomorrowReplacements;
     List<PageObject> pages = new ArrayList<PageObject>();
     List<OtherObject> todayOthers = new ArrayList<OtherObject>();
     List<OtherObject> tomorrowOthers = new ArrayList<OtherObject>();
@@ -80,6 +82,10 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 					.setText(planPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		todayReplacements = new VertretungsplanAdapter(this, 0, todayReplacementsList);
+		tomorrowReplacements = new VertretungsplanAdapter(this, 0, tomorrowReplacementsList);
+		
 		loadingDialog = ProgressDialog.show(this, "", "Loading", true);
 		loadingDialog.show();
 		

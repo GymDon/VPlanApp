@@ -1,7 +1,7 @@
 package com.inf1315.vertretungsplan;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -46,17 +46,21 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		
 		plan.tickers = Arrays.asList(result.ticker);
 		
-		plan.todayReplacements = new ArrayList<ReplacementObject>();
-		plan.tomorrowReplacements = new ArrayList<ReplacementObject>();
+		plan.todayReplacements.clear();
+		plan.tomorrowReplacements.clear();
 		for (ReplacementObject ro : result.replacements) {
-			if (ro.isToday) plan.todayReplacements.add(ro);
-			else plan.tomorrowReplacements.add(ro);
+			if (ro.isToday) plan.todayReplacementsList.add(ro);
+			else plan.tomorrowReplacementsList.add(ro);
 		}
+		Collections.sort(plan.todayReplacementsList);
+		Collections.sort(plan.tomorrowReplacementsList);
+		plan.todayReplacements.notifyDataSetChanged();
+		plan.tomorrowReplacements.notifyDataSetChanged();
 		
 		plan.pages = Arrays.asList(result.pages);
 		
-		plan.todayOthers = new ArrayList<OtherObject>();
-		plan.tomorrowOthers = new ArrayList<OtherObject>();
+		plan.todayOthers.clear();
+		plan.tomorrowOthers.clear();
 		for (OtherObject oo : result.others) {
 			if (oo.isToday) plan.todayOthers.add(oo);
 			else plan.tomorrowOthers.add(oo);
