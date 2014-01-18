@@ -7,8 +7,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-
-import android.support.v4.app.NavUtils;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
