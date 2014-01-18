@@ -1,14 +1,18 @@
 package com.inf1315.vertretungsplan;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+
+import android.support.v4.app.NavUtils;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -16,18 +20,22 @@ public class LoginActivity extends Activity {
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
+
 	static Dialog loadingDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_login);
-		
-		//Initalize variables
+
+		// Initalize variables
 		usernameEditText = (EditText) findViewById(R.id.username_EditText);
 		passwordEditText = (EditText) findViewById(R.id.password_EditText);
 		
+
+		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+
 		String username = getSharedPreferences("data", MODE_PRIVATE).getString("username", "");
 		usernameEditText.setText(username);
 		
@@ -41,6 +49,7 @@ public class LoginActivity extends Activity {
 		if (error.equals("ServerRequestFailed")) adb.setMessage(R.string.server_request_failed);
 		
 		adb.show();
+
 	}
 
 	@Override
@@ -50,8 +59,23 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 	
-	public void loginButtonOnClick (View v) {
-		//TODO: Do login
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent startSettings = new Intent(this, SettingsActivity.class);
+			startActivity(startSettings);
+			return true;
+		case R.id.action_info:
+		    Intent startInfo = new Intent(this, InfoActivity.class);
+		    startActivity(startInfo);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void loginButtonOnClick(View v) {
+		// TODO: Do login
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
 

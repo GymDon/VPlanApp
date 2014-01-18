@@ -19,14 +19,14 @@ public class ReplacementObject extends ApiResult implements Comparable<Replaceme
 
 	public ReplacementObject(JSONObject json) throws JSONException {
 		id = json.getInt("id");
-		gradePre = strip(json.getString("grade_pre"));
-		grade = strip(json.getString("grade"));
-		gradeLast = strip(json.getString("grade_last"));
+		gradePre = json.getString("grade_pre");
+		grade = json.getString("grade");
+		gradeLast = json.getString("grade_last");
 		lesson = json.getInt("lesson");
-		teacher = strip(json.getString("teacher"));
-		replacement = strip(json.getString("replacement"));
-		room = strip(json.getString("room"));
-		comment = strip(json.getString("comment"));
+		teacher = json.getString("teacher");
+		replacement = (json.getString("replacement"));
+		room = json.getString("room");
+		comment = json.getString("comment");
 		isToday = json.getBoolean("is_today");
 		addition = json.getBoolean("addition");
 	}
