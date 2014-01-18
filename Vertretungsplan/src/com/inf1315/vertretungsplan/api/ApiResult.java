@@ -14,9 +14,4 @@ public abstract class ApiResult
     {
 	throw new UnsupportedOperationException("Constructor not defined");
     }
-
-    protected static String strip(String in)
-    {
-	return Html.fromHtml(in).toString().replace('\u00A0', ' ').trim();
-    }
 }

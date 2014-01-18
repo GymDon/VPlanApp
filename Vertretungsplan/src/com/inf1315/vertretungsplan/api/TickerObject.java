@@ -14,7 +14,7 @@ public class TickerObject extends ApiResult implements Comparable<TickerObject> 
 	public TickerObject(JSONObject obj) throws JSONException {
 		id = obj.getInt("id");
 		automatic = obj.getBoolean("automatic");
-		value = strip(obj.getString("value"));
+		value = obj.getString("value");
 		fromTimestamp = obj.getLong("from_stamp");
 		toTimestamp = obj.getLong("to_stamp");
 		order = obj.getInt("order");
