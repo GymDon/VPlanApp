@@ -5,7 +5,10 @@ import java.util.List;
 import com.inf1315.vertretungsplan.api.*;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
@@ -96,8 +99,18 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	switch (item.getItemId())
 	{
 	    case android.R.id.home:
-		NavUtils.navigateUpFromSameTask(this);
-		return true;
+	    	AlertDialog.Builder adb = new AlertDialog.Builder(getApplicationContext());
+	    	adb.setTitle(R.string.logout);
+	    	adb.setMessage(R.string.really_logout);
+	    	adb.setNegativeButton(android.R.string.no, null);
+	    	adb.setPositiveButton(android.R.string.yes, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					NavUtils.navigateUpFromSameTask(PlanActivity.this);	
+				}
+			});
+	    	adb.show();
+	    	return true;
 	    case R.id.action_show_ticker:
 		showTicker();
 		return true;

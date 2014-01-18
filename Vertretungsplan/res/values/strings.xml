@@ -13,6 +13,8 @@
     <string name="no_ticker">Keine Ticker vorhanden</string>
     <string name="ticker_loading_error">Ticker konnten nicht geladen werden</string>
     <string name="error">Fehler</string>
-    <string name="server_request_failed">Die Daten konnten nicht vom Server geladen werden. Aktivieren sie gegebenenfalls ihre Internetverbindung oder wenden sie sich an die Herausgeber dieser App.</string>
-
+    <string name="server_request_failed">Die Daten konnten nicht vom Server geladen werden. Aktivieren Sie gegebenenfalls ihre Internetverbindung oder wenden Sie sich an die Herausgeber dieser App.</string>
+	<string name="really_logout">Wollen Sie sich wirklich abmelden ?</string>
+	<string name="logout">Logout</string>
+	
 </resources>
