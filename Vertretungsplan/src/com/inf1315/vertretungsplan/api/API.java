@@ -166,9 +166,12 @@ public class API
 	actionIsArrayMap.put(ApiAction.USER, false);
 	
 	actionToClassMap.put(ApiAction.PLAN, PlanObject.class);
-	actionIsArrayMap.put(ApiAction.PLAN, false);
+	actionIsArrayMap.put(ApiAction.PLAN, true);
 	
 	actionToClassMap.put(ApiAction.TICKER, TickerObject.class);
 	actionIsArrayMap.put(ApiAction.TICKER, true);
+	
+	actionToClassMap.put(ApiAction.ALL, AllObject.class);
+	actionIsArrayMap.put(ApiAction.ALL, false);
     }
 }
