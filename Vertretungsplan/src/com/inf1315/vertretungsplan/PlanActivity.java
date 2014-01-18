@@ -1,29 +1,29 @@
 package com.inf1315.vertretungsplan;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import com.inf1315.vertretungsplan.api.*;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
 public class PlanActivity extends FragmentActivity implements ActionBar.TabListener
 {
-
+	
     PlanPagerAdapter planPagerAdapter;
     ViewPager viewPager;
-    int ticker = 0;
-    List<TickerObject> tickers = new ArrayList<TickerObject>();
+    List<TickerObject> tickers;
+    List<ReplacementObject> todayReplacements;
+    List<ReplacementObject> tomorrowReplacements;
+    List<PageObject> pages;
+    //TODO change type of lists to OtherObject
+    List<Object> todayOthers;
+    List<Object> tomorrowOthers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,55 +71,11 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 
     private void loadData()
     {
-	final List<AsyncTask<?, ?, ?>> tasks = new ArrayList<AsyncTask<?, ?, ?>>();
-	try
-	{
-	    AsyncTask<Object, Object, TickerObject[]> tickersTask = new AsyncTask<Object, Object, TickerObject[]>()
-	    {
-
-		@Override
-		protected TickerObject[] doInBackground(Object... params)
-		{
-		    try
-		    {
-			ApiResponse resp = API.STANDARD_API.request(ApiAction.TICKER);
-			if(!resp.getSuccess())
-			{
-			    Log.w("Ticker Loader", "Ticker request unsuccesfull");
-			    ticker = -1;
-			    return new TickerObject[0];
-			}
-			ApiResultArray result = (ApiResultArray)resp.getResult();
-			return (TickerObject[])result.getArray(new TickerObject[0]);
-		    } catch (Exception e)
-		    {
-			e.printStackTrace();
-			return new TickerObject[0];
-		    }
-		}
-
-		@Override
-		protected void onPostExecute(TickerObject[] result)
-		{
-		    tasks.remove(this);
-		    if (tasks.isEmpty())
-			finishedLoading();
-		}
-	    };
-	    TickerObject[] toa = tickersTask.execute().get();
-	    for(TickerObject to : toa)
-		tickers.add(to);
-	    Collections.sort(tickers);
-	} catch (InterruptedException e)
-	{
-	    e.printStackTrace();
-	} catch (ExecutionException e)
-	{
-	    e.printStackTrace();
-	}
+    	String username = getSharedPreferences("data", MODE_PRIVATE).getString("username", "");
+    	new AllAsyncTask(this, username).execute();
     }
     
-    private void finishedLoading()
+    void finishedLoading()
     {
 	LoginActivity.loadingDialog.hide();
 	showTicker();
@@ -176,10 +132,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	    }
 	} else
 	{
-	    Toast toast = Toast.makeText(getApplicationContext(),
-		ticker < 0 ? R.string.ticker_loading_error : R.string.no_ticker,
-		ticker < 0 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
-	    toast.show();
+	    Toast.makeText(getApplicationContext(), R.string.no_ticker, Toast.LENGTH_SHORT).show();
 	}
 
     }

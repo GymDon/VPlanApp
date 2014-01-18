@@ -1,22 +1,22 @@
 package com.inf1315.vertretungsplan.api;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AllObject extends ApiResult {
 
-	public final JSONArray ticker;
-	public final JSONArray replacements;
-	public final JSONArray pages;
-	public final JSONArray others;
-	public final JSONObject user;
+	public final TickerObject[] ticker;
+	public final ReplacementObject[] replacements;
+	public final PageObject[] pages;
+	//TODO Add class OtherObject
+	public final Object[] others;
+	public final UserInfo user;
 
 	public AllObject(JSONObject json) throws JSONException {
-		ticker = json.getJSONArray("ticker");
-		replacements = json.getJSONArray("replacements");
-		pages = json.getJSONArray("pages");
-		others = json.getJSONArray("others");
-		user = json.getJSONObject("user");
+		ticker = (TickerObject[]) (new ApiResultArray(json.getJSONArray("ticker"), TickerObject.class)).getArray();
+		replacements = (ReplacementObject[]) (new ApiResultArray(json.getJSONArray("replacements"), ReplacementObject.class)).getArray();
+		pages = (PageObject[]) (new ApiResultArray(json.getJSONArray("pages"), PageObject.class)).getArray();
+		others = null;
+		user = new UserInfo(json.getJSONObject("user"));
 	}
 }
