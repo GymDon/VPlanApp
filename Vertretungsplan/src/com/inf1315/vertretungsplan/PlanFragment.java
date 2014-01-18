@@ -10,7 +10,7 @@ public class PlanFragment extends Fragment {
 
 	public static final String ARG_TODAY = "ARG_TODAY";
 
-	// true, wenn Fragment f��r heute
+	// true, if today's fragment
 	private boolean argToday = true;
 
 	public PlanFragment() {}

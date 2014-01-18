@@ -23,7 +23,7 @@ public class LoginActivity extends Activity {
 		
 		setContentView(R.layout.activity_login);
 		
-		//Initalisiere Variablen
+		//Initalize variables
 		usernameEditText = (EditText) findViewById(R.id.username_EditText);
 		passwordEditText = (EditText) findViewById(R.id.password_EditText);
 	}
@@ -36,7 +36,7 @@ public class LoginActivity extends Activity {
 	}
 	
 	public void loginButtonOnClick (View v) {
-		//TODO: Login ausf��hren
+		//TODO: Do login
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
 
