@@ -128,7 +128,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	switch (item.getItemId())
 	{
 	    case android.R.id.home:
-	    	AlertDialog.Builder adb = new AlertDialog.Builder(getApplicationContext());
+	    	/**AlertDialog.Builder adb = new AlertDialog.Builder(getApplicationContext());
 	    	adb.setTitle(R.string.logout);
 	    	adb.setMessage(R.string.really_logout);
 	    	adb.setNegativeButton(android.R.string.no, null);
@@ -138,7 +138,9 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 					NavUtils.navigateUpFromSameTask(PlanActivity.this);	
 				}
 			});
-	    	adb.show();
+	    	adb.show(); */
+	   //TODO: Falsche Implementierung, UP Button funktioniert sonst gar nicht!
+	    	NavUtils.navigateUpFromSameTask(this);	
 	    	return true;
 	    case R.id.action_show_ticker:
 		showTicker();

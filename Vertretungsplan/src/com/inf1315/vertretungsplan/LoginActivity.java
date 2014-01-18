@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
@@ -76,7 +77,16 @@ public class LoginActivity extends Activity {
 		// TODO: Do login
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
+		
+		
+		//TODO: Implement better way of this
+		if(username.equals("")) {
+			Toast toast = Toast.makeText(getApplicationContext(),
+					"Bitte Benutzername eingeben!", Toast.LENGTH_SHORT);
+			toast.show();
+		}
 
+		else {
 		loadingDialog = ProgressDialog.show(this, "", "Loading", true);
 		loadingDialog.show();
 		
@@ -89,7 +99,7 @@ public class LoginActivity extends Activity {
 		spe.apply();
 		
 		Intent intent = new Intent(this,PlanActivity.class);
-		startActivity(intent);
+		startActivity(intent); }
 	}
 
 }
