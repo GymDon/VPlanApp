@@ -16,7 +16,7 @@ public class PageObject extends ApiResult implements Comparable<PageObject> {
 	public PageObject(JSONObject obj) throws JSONException {
 		id = obj.getInt("id");
 		order = obj.getInt("order");
-		title = strip(obj.getString("title"));
+		title = obj.getString("title");
 		content = obj.getString("content");
 		fromTimestamp = obj.getLong("fromTimestap");
 		toTimestamp = obj.getLong("toTimestamp");
