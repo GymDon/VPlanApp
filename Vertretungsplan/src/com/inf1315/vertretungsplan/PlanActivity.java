@@ -8,18 +8,18 @@ import com.inf1315.vertretungsplan.api.*;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.widget.Toast;
-
-
-
-	
 
 public class PlanActivity extends FragmentActivity implements ActionBar.TabListener
 {
@@ -82,22 +82,29 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		loadData();
 	}
 
-	
-
-		
-	
-
     private void loadData()
     {
+    	if (! isNetworkAvailable()) {
+    		Intent intent = new Intent(this, LoginActivity.class);
+    		intent.putExtra("error", "NoInternetConnection");
+    		startActivity(intent);
+    		return;
+    	}
     	String username = getSharedPreferences("data", MODE_PRIVATE).getString("username", "");
     	new AllAsyncTask(this, username).execute();
+    }
+    
+    private boolean isNetworkAvailable() {
+        ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = conMan.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     
     void finishedLoading()
 
     {
-	LoginActivity.loadingDialog.hide();
-	showTicker();
+    LoginActivity.loadingDialog.hide();
+    showTicker();
     }
     
     public void getPreferences() {
@@ -250,6 +257,5 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	    return null;
 	}
     }
-
 
 }

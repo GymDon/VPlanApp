@@ -41,11 +41,12 @@ public class LoginActivity extends Activity {
 		String error = getIntent().getStringExtra("error");
 		if (error == null) return;
 		
-		AlertDialog.Builder adb = new AlertDialog.Builder(getApplicationContext());
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setTitle(R.string.error);
 		adb.setPositiveButton(android.R.string.ok, null);
 		
 		if (error.equals("ServerRequestFailed")) adb.setMessage(R.string.server_request_failed);
+		if (error.equals("NoInternetConnection")) adb.setMessage(R.string.no_internet_connection);
 		
 		adb.show();
 
