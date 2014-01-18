@@ -12,5 +12,13 @@
     <string name="show_ticker">Ticker anzeigen</string>
     <string name="no_ticker">Keine Ticker vorhanden</string>
     <string name="ticker_loading_error">Ticker konnten nicht geladen werden</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="action_info">Info</string>
+    <string name="title_activity_info">Informationen</string>
+    <string name="pref_toast">Ticker als Toast anzeigen</string>
+    <string name="pref_toast_summary">Haken setzen, um den Ticker als Toast anzeigen zu lassen</string>
+    <string name="ticker">Ticker</string>
+    <string name="ticker_dialog_title">Ticker</string>
+    <string name="ok">OK</string>
 
 </resources>
