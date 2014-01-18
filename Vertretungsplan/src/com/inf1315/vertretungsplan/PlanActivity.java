@@ -29,13 +29,12 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	Boolean tickerToast;
     PlanPagerAdapter planPagerAdapter;
     ViewPager viewPager;
-    List<ReplacementObject> todayReplacements;
-    List<ReplacementObject> tomorrowReplacements;
-    List<PageObject> pages;
-    List<OtherObject> todayOthers;
-    List<OtherObject> tomorrowOthers;
-	int ticker = 0;
-	List<TickerObject> tickers = new ArrayList<TickerObject>();
+    List<TickerObject> tickers = new ArrayList<TickerObject>();
+    List<ReplacementObject> todayReplacements = new ArrayList<ReplacementObject>();
+    List<ReplacementObject> tomorrowReplacements = new ArrayList<ReplacementObject>();
+    List<PageObject> pages = new ArrayList<PageObject>();
+    List<OtherObject> todayOthers = new ArrayList<OtherObject>();
+    List<OtherObject> tomorrowOthers = new ArrayList<OtherObject>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
