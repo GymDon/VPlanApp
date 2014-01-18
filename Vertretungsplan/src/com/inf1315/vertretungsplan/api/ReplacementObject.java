@@ -28,7 +28,7 @@ public class ReplacementObject extends ApiResult implements Comparable<Replaceme
 		room = strip(json.getString("room"));
 		comment = strip(json.getString("comment"));
 		isToday = json.getBoolean("is_today");
-		addition = json.getInt("addition") != 0;
+		addition = json.getBoolean("addition");
 	}
 
 	@Override

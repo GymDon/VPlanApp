@@ -12,10 +12,10 @@ public class AllObject extends ApiResult {
 	public final UserInfo user;
 
 	public AllObject(JSONObject json) throws JSONException {
-		ticker = (TickerObject[]) (new ApiResultArray(json.getJSONArray("ticker"), TickerObject.class)).getArray();
-		replacements = (ReplacementObject[]) (new ApiResultArray(json.getJSONArray("replacements"), ReplacementObject.class)).getArray();
-		pages = (PageObject[]) (new ApiResultArray(json.getJSONArray("pages"), PageObject.class)).getArray();
-		others = (OtherObject[]) (new ApiResultArray(json.getJSONArray("others"), OtherObject.class)).getArray();
+		ticker = (TickerObject[]) (new ApiResultArray(json.getJSONArray("ticker"), TickerObject.class)).getArray(new TickerObject[0]);
+		replacements = (ReplacementObject[]) (new ApiResultArray(json.getJSONArray("replacements"), ReplacementObject.class)).getArray(new ReplacementObject[0]);
+		pages = (PageObject[]) (new ApiResultArray(json.getJSONArray("pages"), PageObject.class)).getArray(new PageObject[0]);
+		others = (OtherObject[]) (new ApiResultArray(json.getJSONArray("others"), OtherObject.class)).getArray(new OtherObject[0]);
 		user = new UserInfo(json.getJSONObject("user"));
 	}
 }

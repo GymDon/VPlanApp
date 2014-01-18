@@ -15,13 +15,13 @@ public class PageObject extends ApiResult implements Comparable<PageObject> {
 
 	public PageObject(JSONObject obj) throws JSONException {
 		id = obj.getInt("id");
-		order = obj.getInt("order");
+		order = obj.getInt("order_num");
 		title = strip(obj.getString("title"));
 		content = obj.getString("content");
-		fromTimestamp = obj.getLong("fromTimestap");
-		toTimestamp = obj.getLong("toTimestamp");
-		pupils = obj.getInt("pupils") != 0;
-		teachers = obj.getInt("teachers") != 0;
+		fromTimestamp = obj.getLong("timestamp_from");
+		toTimestamp = obj.getLong("timestamp_end");
+		pupils = obj.getBoolean("pupils");
+		teachers = obj.getBoolean("teachers");
 	}
 	
 	@Override
