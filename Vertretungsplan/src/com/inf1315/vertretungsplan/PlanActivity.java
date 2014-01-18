@@ -176,11 +176,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 					toast.show();
 				}
 			} else {
-				Toast toast = Toast.makeText(getApplicationContext(),
-						ticker < 0 ? R.string.ticker_loading_error
-								: R.string.no_ticker,
-						ticker < 0 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
-				toast.show();
+				Toast.makeText(getApplicationContext(),R.string.no_ticker, Toast.LENGTH_SHORT).show();
 			}
 		}
 
