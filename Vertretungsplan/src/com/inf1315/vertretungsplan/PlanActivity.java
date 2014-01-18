@@ -76,7 +76,12 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	{
 	    AsyncTask<Object, Object, TickerObject[]> tickersTask = new AsyncTask<Object, Object, TickerObject[]>()
 	    {
-
+		@Override
+		protected void onPreExecute()
+		{
+		    tasks.add(this);
+		}
+		
 		@Override
 		protected TickerObject[] doInBackground(Object... params)
 		{
