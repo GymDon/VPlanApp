@@ -69,7 +69,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	loadData();
     }
 
-    public void loadData()
+    private void loadData()
     {
 	final List<AsyncTask<?, ?, ?>> tasks = new ArrayList<AsyncTask<?, ?, ?>>();
 	try
@@ -103,7 +103,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		{
 		    tasks.remove(this);
 		    if (tasks.isEmpty())
-			LoginActivity.loadingDialog.hide();
+			finishedLoading();
 		}
 	    };
 	    TickerObject[] toa = tickersTask.execute().get();
@@ -117,6 +117,12 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	{
 	    e.printStackTrace();
 	}
+    }
+    
+    private void finishedLoading()
+    {
+	LoginActivity.loadingDialog.hide();
+	showTicker();
     }
 
     @Override
@@ -163,10 +169,11 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
     {
 	if (!tickers.isEmpty())
 	{
-	    TickerObject to = tickers.get(ticker);
-	    ticker = (ticker + 1) % tickers.size();
-	    Toast toast = Toast.makeText(getApplicationContext(), to.toString(), Toast.LENGTH_LONG);
-	    toast.show();
+	    for(TickerObject to : tickers)
+	    {
+		Toast toast = Toast.makeText(getApplicationContext(), to.toString(), Toast.LENGTH_LONG);
+		toast.show();
+	    }
 	} else
 	{
 	    Toast toast = Toast.makeText(getApplicationContext(),
