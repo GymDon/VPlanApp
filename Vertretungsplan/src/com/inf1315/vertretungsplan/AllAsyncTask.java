@@ -54,6 +54,13 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		}
 		
 		plan.pages = Arrays.asList(result.pages);
+		
+		plan.todayOthers = new ArrayList<OtherObject>();
+		plan.tomorrowOthers = new ArrayList<OtherObject>();
+		for (OtherObject oo : result.others) {
+			if (oo.isToday) plan.todayOthers.add(oo);
+			else plan.tomorrowOthers.add(oo);
+		}
 	}
 
 }

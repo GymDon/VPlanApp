@@ -24,9 +24,8 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
     List<ReplacementObject> todayReplacements;
     List<ReplacementObject> tomorrowReplacements;
     List<PageObject> pages;
-    //TODO change type of lists to OtherObject
-    List<Object> todayOthers;
-    List<Object> tomorrowOthers;
+    List<OtherObject> todayOthers;
+    List<OtherObject> tomorrowOthers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
