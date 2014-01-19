@@ -21,9 +21,11 @@
     <string name="ticker_dialog_title">Ticker</string>
     <string name="ok">OK</string>
     <string name="error">Fehler</string>
-    <string name="server_request_failed">Die Daten konnten nicht vom Server geladen werden. Versuchen sie es erneut oder wenden Sie sich an die Herausgeber dieser App.</string>
+    <string name="server_request_failed">Die Daten konnten nicht vom Server geladen werden. Versuchen sie es erneut, geben sie einen gültigen Benutzernamen an oder wenden Sie sich an die Herausgeber dieser App.</string>
 	<string name="really_logout">Wollen Sie sich wirklich abmelden ?</string>
 	<string name="logout">Logout</string>
 	<string name="no_internet_connection">Keine Internetverbindung vorhanden. Bitte aktivieren Sie WLAN oder mobile Daten.</string>
+	<string name="info_message1">Bei Problemen mit dieser App wenden sie sich bitte an die Herausgeber.</string>
+	<string name="info_message2">Erstellt von: Alexander Krabler, Simon Klimaschka, Simon Wanner</string>
 
 </resources>
