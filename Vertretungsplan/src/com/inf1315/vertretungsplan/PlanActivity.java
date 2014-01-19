@@ -12,6 +12,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -112,7 +113,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
     
     void finishedLoading()
     {
-    	loadingDialog.hide();
+    	loadingDialog.dismiss();
     	showTicker();
     }
     
@@ -128,6 +129,20 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 
 		}
 	}
+    
+    private void logoutFromPlan () {
+    	AlertDialog.Builder adb = new AlertDialog.Builder(this);
+    	adb.setTitle(R.string.logout);
+    	adb.setMessage(R.string.really_logout);
+    	adb.setNegativeButton(android.R.string.no, null);
+    	adb.setPositiveButton(android.R.string.yes, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				NavUtils.navigateUpFromSameTask(PlanActivity.this);	
+			}
+		});
+    	adb.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -144,19 +159,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	switch (item.getItemId())
 	{
 	    case android.R.id.home:
-	    	/**AlertDialog.Builder adb = new AlertDialog.Builder(getApplicationContext());
-	    	adb.setTitle(R.string.logout);
-	    	adb.setMessage(R.string.really_logout);
-	    	adb.setNegativeButton(android.R.string.no, null);
-	    	adb.setPositiveButton(android.R.string.yes, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					NavUtils.navigateUpFromSameTask(PlanActivity.this);	
-				}
-			});
-	    	adb.show(); */
-	   //TODO: Falsche Implementierung, UP Button funktioniert sonst gar nicht!
-	    	NavUtils.navigateUpFromSameTask(this);	
+	    	logoutFromPlan();
 	    	return true;
 	    case R.id.action_show_ticker:
 		showTicker();
@@ -166,6 +169,12 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
     @Override
+	public void onBackPressed() {
+		logoutFromPlan();
+	}
+    
+
+	@Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
     {
 	// When the given tab is selected, switch to the corresponding page in
