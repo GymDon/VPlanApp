@@ -11,5 +11,16 @@
         android:defaultValue="true" />
     
     </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/logout">
+        
+        <CheckBoxPreference
+            android:key="pref_logout"
+            android:title="@string/pref_logout"
+            android:summary="@string/pref_logout_summary"
+            android:defaultValue="true"  />
+        
+    </PreferenceCategory>
 
 </PreferenceScreen>
