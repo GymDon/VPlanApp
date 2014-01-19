@@ -44,6 +44,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		
 		}
 		
+		else {
 		plan.tickers = Arrays.asList(result.ticker);
 		
 		plan.todayReplacements.clear();
@@ -67,6 +68,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		}
 		
 		plan.finishedLoading();
+		}
 	}
 
 }

@@ -9,8 +9,18 @@
     tools:context=".InfoActivity" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GO FUCK YOURSELF!!1!11!!EINSELF1!" />
+        android:text="@string/info_message1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="21dp"
+        android:text="@string/info_message2"
+        android:textSize="20sp" />
 
 </RelativeLayout>

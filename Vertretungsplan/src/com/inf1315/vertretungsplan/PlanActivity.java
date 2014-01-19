@@ -87,7 +87,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		todayReplacements = new VertretungsplanAdapter(this, 0, todayReplacementsList);
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0, tomorrowReplacementsList);
 		
-		loadingDialog = ProgressDialog.show(this, "", "Loading", true);
+		loadingDialog = ProgressDialog.show(this, "", "Lädt Vertretungsplan...", true);
 		loadingDialog.show();
 		
 		loadData();
