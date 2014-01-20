@@ -87,9 +87,6 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		todayReplacements = new VertretungsplanAdapter(this, 0, todayReplacementsList);
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0, tomorrowReplacementsList);
 		
-		loadingDialog = ProgressDialog.show(this, "", getText(R.string.loading_plan), true);
-		loadingDialog.show();
-		
 		loadData();
 	}
 
@@ -101,6 +98,9 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
     		startActivity(intent);
     		return;
     	}
+    	loadingDialog = ProgressDialog.show(this, "", getText(R.string.loading_plan), true);
+		loadingDialog.show();
+		
     	String username = getSharedPreferences("data", MODE_PRIVATE).getString("username", "");
     	new AllAsyncTask(this, username).execute();
     }
@@ -162,8 +162,19 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	    	logoutFromPlan();
 	    	return true;
 	    case R.id.action_show_ticker:
-		showTicker();
-		return true;
+	    	showTicker();
+	    	return true;
+	    case R.id.action_reload_plan:
+	    	loadData();
+	    	return true;
+	    case R.id.action_settings:
+			Intent startSettings = new Intent(this, SettingsActivity.class);
+			startActivity(startSettings);
+			return true;
+		case R.id.action_info:
+		    Intent startInfo = new Intent(this, InfoActivity.class);
+		    startActivity(startInfo);
+			return true;
 	}
 	return super.onOptionsItemSelected(item);
     }
@@ -173,7 +184,6 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		logoutFromPlan();
 	}
     
-
 	@Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
     {
@@ -195,11 +205,12 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		if (tickerToast) {
 
 			if (!tickers.isEmpty()) {
+				String ticker="";
 				for (TickerObject to : tickers) {
-					Toast toast = Toast.makeText(getApplicationContext(),
-							to.toString(), Toast.LENGTH_LONG);
-					toast.show();
+					ticker += to.toString()+"\n\n";
 				}
+				ticker = ticker.substring(0, ticker.length()-2);
+				Toast.makeText(this, ticker, Toast.LENGTH_LONG).show();
 			} else {
 				Toast.makeText(getApplicationContext(),R.string.no_ticker, Toast.LENGTH_SHORT).show();
 			}
