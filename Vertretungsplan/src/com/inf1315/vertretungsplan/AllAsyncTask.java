@@ -40,6 +40,8 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		if (result==null) {
 			Intent intent = new Intent(plan, LoginActivity.class);
 			intent.putExtra("error", "ServerRequestFailed");
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			plan.loadingDialog.dismiss();
 			plan.startActivity(intent);
 		
 		}

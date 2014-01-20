@@ -26,7 +26,7 @@ import android.widget.Toast;
 public class PlanActivity extends FragmentActivity implements ActionBar.TabListener
 {
 	
-	private Dialog loadingDialog;
+	Dialog loadingDialog;
 	List<ReplacementObject> todayReplacementsList = new ArrayList<ReplacementObject>();
 	List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
 	SharedPreferences sharedPref;
@@ -96,6 +96,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
     	if (! isNetworkAvailable()) {
     		Intent intent = new Intent(this, LoginActivity.class);
     		intent.putExtra("error", "NoInternetConnection");
+    		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     		startActivity(intent);
     		return;
     	}
