@@ -31,6 +31,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
 	SharedPreferences sharedPref;
 	Boolean tickerToast;
+	Boolean logoutConf;
     PlanPagerAdapter planPagerAdapter;
     ViewPager viewPager;
     List<TickerObject> tickers = new ArrayList<TickerObject>();
@@ -123,6 +124,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 			sharedPref = getSharedPreferences(
 					"com.inf1315.vertretungsplan_preferences", MODE_PRIVATE);
 			tickerToast = sharedPref.getBoolean("pref_toast", true);
+			logoutConf = sharedPref.getBoolean("pref_logout", true);
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -159,7 +161,8 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	switch (item.getItemId())
 	{
 	    case android.R.id.home:
-	    	logoutFromPlan();
+	    	if(logoutConf) {logoutFromPlan();}
+	    	else {NavUtils.navigateUpFromSameTask(PlanActivity.this);}
 	    	return true;
 	    case R.id.action_show_ticker:
 	    	showTicker();
@@ -181,7 +184,8 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
 	public void onBackPressed() {
-		logoutFromPlan();
+		if(logoutConf) logoutFromPlan();
+		else {NavUtils.navigateUpFromSameTask(PlanActivity.this);}
 	}
     
 	@Override

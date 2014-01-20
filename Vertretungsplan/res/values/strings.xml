@@ -29,5 +29,7 @@
 	<string name="info_message2">Erstellt von: Alexander Krabler, Simon Klimaschka, Simon Wanner</string>
 	<string name="loading_plan">Lädt Vertretungsplan…</string>
 	<string name="reload_plan">Vertretungsplan aktualisieren</string>
+	<string name="pref_logout">Bestätigung beim Logout</string>
+	<string name="pref_logout_summary">Haken setzen um beim Ausloggen bestätigen zu müssen</string>
 
 </resources>
