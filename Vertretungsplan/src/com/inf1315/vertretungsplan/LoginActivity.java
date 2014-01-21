@@ -36,6 +36,7 @@ public class LoginActivity extends Activity {
 		
 		try
 		{
+			API.CONTEXT = getApplicationContext();
 			API.APP_VERSION = getPackageName() + " " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e)
 		{
