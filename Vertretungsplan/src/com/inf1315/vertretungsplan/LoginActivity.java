@@ -1,11 +1,14 @@
 package com.inf1315.vertretungsplan;
 
+import com.inf1315.vertretungsplan.api.API;
+
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +33,15 @@ public class LoginActivity extends Activity {
 		
 
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+		
+		try
+		{
+			API.APP_VERSION = getPackageName() + " " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e)
+		{
+			Log.w("Startup", "Couldn't determine app version");
+			e.printStackTrace();
+		}
 
 		String username = getSharedPreferences("data", MODE_PRIVATE).getString("username", "");
 		usernameEditText.setText(username);

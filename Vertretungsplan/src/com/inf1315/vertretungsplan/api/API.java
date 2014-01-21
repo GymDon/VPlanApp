@@ -6,6 +6,7 @@ import java.util.*;
 
 import org.json.*;
 
+import android.os.Build;
 import android.util.Log;
 
 public class API
@@ -17,6 +18,7 @@ public class API
     
     public static API STANDARD_API;
     public static API LOCAL_DEBUG_API;
+    public static String APP_VERSION;
     
     private URL url;
     
@@ -92,7 +94,9 @@ public class API
 	try
 	{
 	    params.put("a", action.toString().toLowerCase());
-	    obj = getJSONfromURL(url, "GET", params);
+	    params.put("os", "Android " + Build.VERSION.RELEASE);
+	    params.put("app", APP_VERSION);
+	    obj = getJSONfromURL(url, "POST", params);
 	    if(!actionToClassMap.containsKey(action))
 		throw new RuntimeException("invalid action \"" + action + "\"");
 	    r = new ApiResponse(obj, actionToClassMap.get(action), actionIsArrayMap.get(action));
