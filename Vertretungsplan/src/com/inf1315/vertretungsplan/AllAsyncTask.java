@@ -13,16 +13,18 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 
 	private PlanActivity plan;
 	private String username;
+	private String password;
 	
-	AllAsyncTask (PlanActivity plan, String username) {
+	AllAsyncTask (PlanActivity plan, String username, String password) {
 		this.plan = plan;
 		this.username = username;
+		this.password = password;
 	}
 	
 	@Override
 	protected AllObject doInBackground(Object... args) {
 		try {
-			ApiResponse resp = API.STANDARD_API.request(ApiAction.ALL,"u="+username);
+			ApiResponse resp = API.STANDARD_API.request(ApiAction.ALL,"u="+username, "pass="+password);
 			if (!resp.getSuccess()) {
 				Log.w("All Loader", "Loading unsuccesfull");
 				return null;

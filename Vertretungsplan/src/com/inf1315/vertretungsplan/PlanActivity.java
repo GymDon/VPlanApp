@@ -25,24 +25,27 @@ import android.widget.Toast;
 
 public class PlanActivity extends FragmentActivity implements ActionBar.TabListener
 {
-	
+
 	Dialog loadingDialog;
 	List<ReplacementObject> todayReplacementsList = new ArrayList<ReplacementObject>();
 	List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
 	SharedPreferences sharedPref;
 	Boolean tickerToast;
 	Boolean logoutConf;
-    PlanPagerAdapter planPagerAdapter;
-    ViewPager viewPager;
-    List<TickerObject> tickers = new ArrayList<TickerObject>();
-    VertretungsplanAdapter todayReplacements;
-    VertretungsplanAdapter tomorrowReplacements;
-    List<PageObject> pages = new ArrayList<PageObject>();
-    List<OtherObject> todayOthers = new ArrayList<OtherObject>();
-    List<OtherObject> tomorrowOthers = new ArrayList<OtherObject>();
+	PlanPagerAdapter planPagerAdapter;
+	ViewPager viewPager;
+	List<TickerObject> tickers = new ArrayList<TickerObject>();
+	VertretungsplanAdapter todayReplacements;
+	VertretungsplanAdapter tomorrowReplacements;
+	List<PageObject> pages = new ArrayList<PageObject>();
+	List<OtherObject> todayOthers = new ArrayList<OtherObject>();
+	List<OtherObject> tomorrowOthers = new ArrayList<OtherObject>();
+	private String username;
+	private String password;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plan);
 
@@ -54,7 +57,8 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		// Show the Up button in the action bar.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		// Create the adapter that will return a fragment for each of the three
+		// Create the adapter that will return a fragment for each of
+		// the three
 		// primary sections of the app.
 		planPagerAdapter = new PlanPagerAdapter(getSupportFragmentManager());
 
@@ -62,171 +66,203 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		viewPager = (ViewPager) findViewById(R.id.plan_pager);
 		viewPager.setAdapter(planPagerAdapter);
 
-
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
+		// When swiping between different sections, select the
+		// corresponding
+		// tab. We can also use ActionBar.Tab#select() to do this if we
+		// have
 		// a reference to the Tab.
-		viewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
+		{
+			@Override
+			public void onPageSelected(int position)
+			{
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
 
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < planPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
+		// For each of the sections in the app, add a tab to the action
+		// bar.
+		for (int i = 0; i < planPagerAdapter.getCount(); i++)
+		{
+			// Create a tab with text corresponding to the page
+			// title defined by
+			// the adapter. Also specify this Activity object, which
+			// implements
+			// the TabListener interface, as the callback (listener)
+			// for when
 			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(planPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
+			actionBar.addTab(actionBar.newTab().setText(planPagerAdapter.getPageTitle(i)).setTabListener(this));
 		}
-		
+
 		todayReplacements = new VertretungsplanAdapter(this, 0, todayReplacementsList);
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0, tomorrowReplacementsList);
-		
-		loadData();
+
+		username = getIntent().getStringExtra("username");
+		password = getIntent().getStringExtra("password");
+		loadData(username, password);
 	}
 
-    private void loadData()
-    {
-    	if (! isNetworkAvailable()) {
-    		Intent intent = new Intent(this, LoginActivity.class);
-    		intent.putExtra("error", "NoInternetConnection");
-    		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    		startActivity(intent);
-    		return;
-    	}
-    	loadingDialog = ProgressDialog.show(this, "", getText(R.string.loading_plan), true);
+	private void loadData(String username, String password)
+	{
+		if (!isNetworkAvailable())
+		{
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.putExtra("error", "NoInternetConnection");
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return;
+		}
+		loadingDialog = ProgressDialog.show(this, "", getText(R.string.loading_plan), true);
 		loadingDialog.show();
-		
-    	String username = getSharedPreferences("data", MODE_PRIVATE).getString("username", "");
-    	new AllAsyncTask(this, username).execute();
-    }
-    
-    private boolean isNetworkAvailable() {
-        ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = conMan.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-    
-    void finishedLoading()
-    {
-    	loadingDialog.dismiss();
-    	showTicker();
-    }
-    
-    public void getPreferences() {
 
-		try {
-			sharedPref = getSharedPreferences(
-					"com.inf1315.vertretungsplan_preferences", MODE_PRIVATE);
+		new AllAsyncTask(this, username, password).execute();
+	}
+
+	private boolean isNetworkAvailable()
+	{
+		ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = conMan.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
+	void finishedLoading()
+	{
+		loadingDialog.dismiss();
+		showTicker();
+	}
+
+	public void getPreferences()
+	{
+
+		try
+		{
+			sharedPref = getSharedPreferences("com.inf1315.vertretungsplan_preferences", MODE_PRIVATE);
 			tickerToast = sharedPref.getBoolean("pref_toast", true);
 			logoutConf = sharedPref.getBoolean("pref_logout", true);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 
 			e.printStackTrace();
 
 		}
 	}
-    
-    private void logoutFromPlan () {
-    	AlertDialog.Builder adb = new AlertDialog.Builder(this);
-    	adb.setTitle(R.string.logout);
-    	adb.setMessage(R.string.really_logout);
-    	adb.setNegativeButton(android.R.string.no, null);
-    	adb.setPositiveButton(android.R.string.yes, new OnClickListener() {
+
+	private void logoutFromPlan()
+	{
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle(R.string.logout);
+		adb.setMessage(R.string.really_logout);
+		adb.setNegativeButton(android.R.string.no, null);
+		adb.setPositiveButton(android.R.string.yes, new OnClickListener()
+		{
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				NavUtils.navigateUpFromSameTask(PlanActivity.this);	
+			public void onClick(DialogInterface dialog, int which)
+			{
+				NavUtils.navigateUpFromSameTask(PlanActivity.this);
 			}
 		});
-    	adb.show();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-	// Inflate the menu; this adds items to the action bar if it is present.
-	MenuInflater inflater = getMenuInflater();
-	inflater.inflate(R.menu.plan_activity_actions, menu);
-	return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-	switch (item.getItemId())
-	{
-	    case android.R.id.home:
-	    	if(logoutConf) {logoutFromPlan();}
-	    	else {NavUtils.navigateUpFromSameTask(PlanActivity.this);}
-	    	return true;
-	    case R.id.action_show_ticker:
-	    	showTicker();
-	    	return true;
-	    case R.id.action_reload_plan:
-	    	loadData();
-	    	return true;
-	    case R.id.action_settings:
-			Intent startSettings = new Intent(this, SettingsActivity.class);
-			startActivity(startSettings);
-			return true;
-		case R.id.action_info:
-		    Intent startInfo = new Intent(this, InfoActivity.class);
-		    startActivity(startInfo);
-			return true;
+		adb.show();
 	}
-	return super.onOptionsItemSelected(item);
-    }
 
-    @Override
-	public void onBackPressed() {
-		if(logoutConf) logoutFromPlan();
-		else {NavUtils.navigateUpFromSameTask(PlanActivity.this);}
-	}
-    
 	@Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
-    {
-	// When the given tab is selected, switch to the corresponding page in
-	// the ViewPager.
-	viewPager.setCurrentItem(tab.getPosition());
-    }
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// Inflate the menu; this adds items to the action bar if it is
+		// present.
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.plan_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
-    {}
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
-    {}
-
-    public void showTicker() {
-
-		if (tickerToast) {
-
-			if (!tickers.isEmpty()) {
-				String ticker="";
-				for (TickerObject to : tickers) {
-					ticker += to.toString()+"\n\n";
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				if (logoutConf)
+				{
+					logoutFromPlan();
+				} else
+				{
+					NavUtils.navigateUpFromSameTask(PlanActivity.this);
 				}
-				ticker = ticker.substring(0, ticker.length()-2);
+				return true;
+			case R.id.action_show_ticker:
+				showTicker();
+				return true;
+			case R.id.action_reload_plan:
+				loadData(username, password);
+				return true;
+			case R.id.action_settings:
+				Intent startSettings = new Intent(this, SettingsActivity.class);
+				startActivity(startSettings);
+				return true;
+			case R.id.action_info:
+				Intent startInfo = new Intent(this, InfoActivity.class);
+				startActivity(startInfo);
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		if (logoutConf)
+			logoutFromPlan();
+		else
+		{
+			NavUtils.navigateUpFromSameTask(PlanActivity.this);
+		}
+	}
+
+	@Override
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
+	{
+		// When the given tab is selected, switch to the corresponding
+		// page in
+		// the ViewPager.
+		viewPager.setCurrentItem(tab.getPosition());
+	}
+
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
+	{}
+
+	@Override
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
+	{}
+
+	public void showTicker()
+	{
+
+		if (tickerToast)
+		{
+
+			if (!tickers.isEmpty())
+			{
+				String ticker = "";
+				for (TickerObject to : tickers)
+				{
+					ticker += to.toString() + "\n\n";
+				}
+				ticker = ticker.substring(0, ticker.length() - 2);
 				Toast.makeText(this, ticker, Toast.LENGTH_LONG).show();
-			} else {
-				Toast.makeText(getApplicationContext(),R.string.no_ticker, Toast.LENGTH_SHORT).show();
+			} else
+			{
+				Toast.makeText(getApplicationContext(), R.string.no_ticker, Toast.LENGTH_SHORT).show();
 			}
 		}
 
-		else {
+		else
+		{
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 			String message = "";
-			for (int i = 0; i < tickers.size(); i++) {
+			for (int i = 0; i < tickers.size(); i++)
+			{
 
 				if (i == tickers.size() - 1)
 					message = message + tickers.get(i).toString();
@@ -236,14 +272,15 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 
 			builder.setMessage(message).setTitle(R.string.ticker_dialog_title);
 
-			builder.setPositiveButton(R.string.ok,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface arg0, int arg1)
+				{
 
-						}
+				}
 
-					});
+			});
 
 			AlertDialog dialog = builder.create();
 			dialog.show();
@@ -252,44 +289,44 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 
 	}
 
-    public class PlanPagerAdapter extends FragmentPagerAdapter
-    {
-
-	public PlanPagerAdapter(FragmentManager fm)
+	public class PlanPagerAdapter extends FragmentPagerAdapter
 	{
-	    super(fm);
-	}
 
-	@Override
-	public Fragment getItem(int position)
-	{
-	    Fragment fragment = new PlanFragment();
-	    Bundle args = new Bundle();
-	    boolean isTabToday = (position == 0) ? true : false;
-	    args.putBoolean(PlanFragment.ARG_TODAY, isTabToday);
-	    fragment.setArguments(args);
-	    return fragment;
-	}
+		public PlanPagerAdapter(FragmentManager fm)
+		{
+			super(fm);
+		}
 
-	@Override
-	public int getCount()
-	{
-	    // There are 2 Tabs
-	    return 2;
-	}
+		@Override
+		public Fragment getItem(int position)
+		{
+			Fragment fragment = new PlanFragment();
+			Bundle args = new Bundle();
+			boolean isTabToday = (position == 0) ? true : false;
+			args.putBoolean(PlanFragment.ARG_TODAY, isTabToday);
+			fragment.setArguments(args);
+			return fragment;
+		}
 
-	@Override
-	public CharSequence getPageTitle(int position)
-	{
-	    switch (position)
-	    {
-		case 0:
-		    return getResources().getString(R.string.today);
-		case 1:
-		    return getResources().getString(R.string.tomorrow);
-	    }
-	    return null;
+		@Override
+		public int getCount()
+		{
+			// There are 2 Tabs
+			return 2;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position)
+		{
+			switch (position)
+			{
+				case 0:
+					return getResources().getString(R.string.today);
+				case 1:
+					return getResources().getString(R.string.tomorrow);
+			}
+			return null;
+		}
 	}
-    }
 
 }
