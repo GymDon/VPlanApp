@@ -93,11 +93,11 @@ public class LoginActivity extends Activity
 
 	public void loginButtonOnClick(View v)
 	{
-		// TODO: Do login
+		
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
 
-		// TODO: Implement better way of this
+		
 		if (username.equals(""))
 		{
 			Toast toast = Toast.makeText(getApplicationContext(), "Bitte Benutzername eingeben!", Toast.LENGTH_SHORT);

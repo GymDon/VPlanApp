@@ -7,7 +7,6 @@
     <CheckBoxPreference
         android:key="pref_toast"
         android:title="@string/pref_toast"
-        android:summary="@string/pref_toast_summary"
         android:defaultValue="true" />
     
     </PreferenceCategory>
@@ -18,7 +17,6 @@
         <CheckBoxPreference
             android:key="pref_logout"
             android:title="@string/pref_logout"
-            android:summary="@string/pref_logout_summary"
             android:defaultValue="true"  />
         
     </PreferenceCategory>

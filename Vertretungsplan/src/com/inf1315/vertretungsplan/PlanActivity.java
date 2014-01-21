@@ -49,8 +49,6 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plan);
 
-		getPreferences();
-
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -100,6 +98,14 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		username = getIntent().getStringExtra("username");
 		password = getIntent().getStringExtra("password");
 		loadData(username, password);
+	}
+	
+	@Override
+	public void onResume() {
+		
+		super.onResume();
+		getPreferences();
+		
 	}
 
 	private void loadData(String username, String password)

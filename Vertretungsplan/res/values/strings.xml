@@ -15,13 +15,14 @@
     <string name="title_activity_settings">Einstellungen</string>
     <string name="action_info">Info</string>
     <string name="title_activity_info">Informationen</string>
-    <string name="pref_toast">Ticker als Toast anzeigen</string>
-    <string name="pref_toast_summary">Haken setzen, um den Ticker als Toast anzeigen zu lassen</string>
+    <string name="pref_toast">Ticker</string>
+    <string name="pref_toast_summary">Als Toast anzeigen</string>
+    <string name="pref_toast_summary_false">Als Dialog anzeigen</string>
     <string name="ticker">Ticker</string>
     <string name="ticker_dialog_title">Ticker</string>
     <string name="ok">OK</string>
     <string name="error">Fehler</string>
-    <string name="server_request_failed">Die Daten konnten nicht vom Server geladen werden. Versuchen sie es erneut, geben sie einen gültigen Benutzernamen und ein gültiges Passwort an oder wenden Sie sich an die Herausgeber dieser App.</string>
+    <string name="server_request_failed">Die Daten konnten nicht vom Server geladen werden. Versuchen sie es erneut, geben sie einen gültigen Benutzernamen an oder wenden Sie sich an die Herausgeber dieser App.</string>
 	<string name="really_logout">Wollen Sie sich wirklich abmelden ?</string>
 	<string name="logout">Logout</string>
 	<string name="no_internet_connection">Keine Internetverbindung vorhanden. Bitte aktivieren Sie WLAN oder mobile Daten.</string>
@@ -29,7 +30,8 @@
 	<string name="info_message2">Erstellt von: Alexander Krabler, Simon Klimaschka, Simon Wanner</string>
 	<string name="loading_plan">Lädt Vertretungsplan…</string>
 	<string name="reload_plan">Vertretungsplan aktualisieren</string>
-	<string name="pref_logout">Bestätigung beim Logout</string>
-	<string name="pref_logout_summary">Haken setzen um beim Ausloggen bestätigen zu müssen</string>
+	<string name="pref_logout">Beim Verlassen des Plans</string>
+	<string name="pref_logout_summary">Logout bestätigen</string>
+	<string name="pref_logout_summary_false">Logout nicht bestätigen</string>
 
 </resources>
