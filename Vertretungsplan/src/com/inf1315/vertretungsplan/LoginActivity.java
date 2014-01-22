@@ -58,8 +58,12 @@ public class LoginActivity extends Activity
 
 		if (error.equals("ServerRequestFailed"))
 			adb.setMessage(R.string.server_request_failed);
-		if (error.equals("NoInternetConnection"))
+		if (error.equals("NoInternetConnection")) {
 			adb.setMessage(R.string.no_internet_connection);
+			String password = getIntent().getStringExtra("password");
+			if (password != null) passwordEditText.setText(password);
+		}
+		
 
 		adb.show();
 

@@ -114,6 +114,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		{
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("error", "NoInternetConnection");
+			intent.putExtra("password", password);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return;
