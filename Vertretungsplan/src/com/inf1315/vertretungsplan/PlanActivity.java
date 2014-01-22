@@ -78,20 +78,6 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 			}
 		});
 
-		// For each of the sections in the app, add a tab to the action
-		// bar.
-		for (int i = 0; i < planPagerAdapter.getCount(); i++)
-		{
-			// Create a tab with text corresponding to the page
-			// title defined by
-			// the adapter. Also specify this Activity object, which
-			// implements
-			// the TabListener interface, as the callback (listener)
-			// for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab().setText(planPagerAdapter.getPageTitle(i)).setTabListener(this));
-		}
-
 		todayReplacements = new VertretungsplanAdapter(this, 0, todayReplacementsList);
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0, tomorrowReplacementsList);
 
@@ -135,6 +121,16 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	void finishedLoading()
 	{
 		loadingDialog.dismiss();
+		planPagerAdapter.notifyDataSetChanged();
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.removeAllTabs();
+		for (int i = 0; i < planPagerAdapter.getCount(); i++)
+		{
+
+			actionBar.addTab(actionBar.newTab().setText(planPagerAdapter.getPageTitle(i)).setTabListener(this));
+		}
+
 		showTicker();
 	}
 
@@ -307,19 +303,30 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public Fragment getItem(int position)
 		{
-			Fragment fragment = new PlanFragment();
-			Bundle args = new Bundle();
-			boolean isTabToday = (position == 0) ? true : false;
-			args.putBoolean(PlanFragment.ARG_TODAY, isTabToday);
-			fragment.setArguments(args);
-			return fragment;
+			if (position <= 1)
+			{
+				Fragment fragment = new PlanFragment();
+				Bundle args = new Bundle();
+				boolean isTabToday = (position == 0) ? true : false;
+				args.putBoolean(PlanFragment.ARG_TODAY, isTabToday);
+				fragment.setArguments(args);
+				return fragment;
+			} else
+			{
+				Fragment fragment = new PageFragment();
+				Bundle args = new Bundle();
+				args.putInt(PageFragment.SITE_NUMBER, position-2);
+				fragment.setArguments(args);
+				return fragment;
+			}
 		}
 
 		@Override
 		public int getCount()
 		{
-			// There are 2 Tabs
-			return 2;
+			int count = 2;
+			if (! pages.isEmpty()) count += pages.size();
+			return count;
 		}
 
 		@Override
@@ -331,6 +338,9 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 					return getResources().getString(R.string.today);
 				case 1:
 					return getResources().getString(R.string.tomorrow);
+				default:
+					if (pages.size() < (position-1)) break;
+					return pages.get(position-2).title;
 			}
 			return null;
 		}
