@@ -20,6 +20,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	VertretungsplanAdapter todayReplacements;
 	VertretungsplanAdapter tomorrowReplacements;
 	List<PageObject> pages = new ArrayList<PageObject>();
+	List<PageObject> currentPages = new ArrayList<PageObject>();
 	List<OtherObject> todayOthers = new ArrayList<OtherObject>();
 	List<OtherObject> tomorrowOthers = new ArrayList<OtherObject>();
 	private String username;
@@ -54,6 +56,9 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Show the Up button in the action bar.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+
+		todayReplacements = new VertretungsplanAdapter(this, 0, todayReplacementsList);
+		tomorrowReplacements = new VertretungsplanAdapter(this, 0, tomorrowReplacementsList);
 
 		// Create the adapter that will return a fragment for each of
 		// the three
@@ -77,9 +82,6 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 				actionBar.setSelectedNavigationItem(position);
 			}
 		});
-
-		todayReplacements = new VertretungsplanAdapter(this, 0, todayReplacementsList);
-		tomorrowReplacements = new VertretungsplanAdapter(this, 0, tomorrowReplacementsList);
 
 		username = getIntent().getStringExtra("username");
 		password = getIntent().getStringExtra("password");
@@ -121,13 +123,14 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 	void finishedLoading()
 	{
 		loadingDialog.dismiss();
+		
+		currentPages = getCurrentPages();
 		planPagerAdapter.notifyDataSetChanged();
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.removeAllTabs();
 		for (int i = 0; i < planPagerAdapter.getCount(); i++)
 		{
-
 			actionBar.addTab(actionBar.newTab().setText(planPagerAdapter.getPageTitle(i)).setTabListener(this));
 		}
 
@@ -291,6 +294,19 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 
 	}
+	
+	public List<PageObject> getCurrentPages()
+	{
+		long time = System.currentTimeMillis()/1000;
+		List<PageObject> newList = new ArrayList<PageObject>();
+		for(PageObject o : pages)
+			if(o.fromTimestamp <= time && o.toTimestamp >= time)
+			{
+				newList.add(o);
+				Toast.makeText(this, o.title, Toast.LENGTH_SHORT).show();
+			}
+		return newList;
+	}
 
 	public class PlanPagerAdapter extends FragmentPagerAdapter
 	{
@@ -303,45 +319,62 @@ public class PlanActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public Fragment getItem(int position)
 		{
-			if (position <= 1)
+			int reps = 0;
+			if(todayReplacements.hasReplacements())
+				reps++;
+			if(tomorrowReplacements.hasReplacements())
+				reps++;
+			if(position < reps)
 			{
+				boolean isTabToday = position == 0 && todayReplacements.hasReplacements();
 				Fragment fragment = new PlanFragment();
 				Bundle args = new Bundle();
-				boolean isTabToday = (position == 0) ? true : false;
 				args.putBoolean(PlanFragment.ARG_TODAY, isTabToday);
 				fragment.setArguments(args);
 				return fragment;
-			} else
+			}
+			position -= reps;
+			if(currentPages.size() > position)
 			{
 				Fragment fragment = new PageFragment();
 				Bundle args = new Bundle();
-				args.putInt(PageFragment.SITE_NUMBER, position-2);
+				args.putInt(PageFragment.SITE_NUMBER, position);
 				fragment.setArguments(args);
 				return fragment;
 			}
+			return null;
 		}
 
 		@Override
 		public int getCount()
 		{
-			int count = 2;
-			if (! pages.isEmpty()) count += pages.size();
+			int count = 0;
+			if(todayReplacements.hasReplacements())
+				count++;
+			if(tomorrowReplacements.hasReplacements())
+				count++;
+			if (!currentPages.isEmpty()) count += currentPages.size();
 			return count;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position)
 		{
-			switch (position)
+			int reps = 0;
+			if(todayReplacements.hasReplacements())
+				reps++;
+			if(tomorrowReplacements.hasReplacements())
+				reps++;
+			if(position < reps)
 			{
-				case 0:
-					return getResources().getString(R.string.today);
-				case 1:
+				if(position == 0)
+					return getResources().getString(todayReplacements.hasReplacements() ? R.string.today : R.string.tomorrow);
+				else
 					return getResources().getString(R.string.tomorrow);
-				default:
-					if (pages.size() < (position-1)) break;
-					return pages.get(position-2).title;
 			}
+			position -= reps;
+			if(currentPages.size() > position)
+				return currentPages.get(position).title;
 			return null;
 		}
 	}
