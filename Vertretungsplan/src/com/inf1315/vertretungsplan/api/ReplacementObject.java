@@ -3,8 +3,9 @@ package com.inf1315.vertretungsplan.api;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ReplacementObject extends ApiResult implements Comparable<ReplacementObject> {
-	
+public class ReplacementObject extends ApiResult implements
+		Comparable<ReplacementObject> {
+
 	public final int id;
 	public final String gradePre;
 	public final String grade;
@@ -33,7 +34,8 @@ public class ReplacementObject extends ApiResult implements Comparable<Replaceme
 
 	@Override
 	public int compareTo(ReplacementObject other) {
-		if (isToday != other.isToday) return isToday ? -1 : 1;
+		if (isToday != other.isToday)
+			return isToday ? -1 : 1;
 		return lesson - other.lesson;
 	}
 }

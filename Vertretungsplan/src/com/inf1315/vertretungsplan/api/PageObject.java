@@ -23,15 +23,15 @@ public class PageObject extends ApiResult implements Comparable<PageObject> {
 		pupils = obj.getBoolean("pupils");
 		teachers = obj.getBoolean("teachers");
 	}
-	
+
 	@Override
 	public int compareTo(PageObject other) {
 		return fromTimestamp > other.fromTimestamp ? 1
-			: fromTimestamp < other.fromTimestamp ? -1
-			: toTimestamp > other.toTimestamp ? 1
-			: toTimestamp < other.toTimestamp ? -1
-			: order > other.order ? 1
-			: order < other.order ? -1
-			: id - other.id;
+				: fromTimestamp < other.fromTimestamp ? -1
+						: toTimestamp > other.toTimestamp ? 1
+								: toTimestamp < other.toTimestamp ? -1
+										: order > other.order ? 1
+												: order < other.order ? -1 : id
+														- other.id;
 	}
 }

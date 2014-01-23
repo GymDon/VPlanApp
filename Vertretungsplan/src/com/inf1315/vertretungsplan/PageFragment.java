@@ -18,20 +18,23 @@ public class PageFragment extends Fragment {
 	// true, if today's fragment
 	private int siteNumber = 0;
 
-	public PageFragment() {}
+	public PageFragment() {
+	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		this.siteNumber = getArguments().getInt(SITE_NUMBER);
-		View rootView = inflater.inflate(R.layout.fragment_page, container, false);
-		
+		View rootView = inflater.inflate(R.layout.fragment_page, container,
+				false);
+
 		TextView tv = (TextView) rootView.findViewById(R.id.page_TextView);
 		PlanActivity pa = (PlanActivity) getActivity();
 		PageObject po = pa.currentPages.get(siteNumber);
 		Spanned sp = Html.fromHtml(po.content);
-		
+
 		tv.setText(sp);
-		
+
 		return rootView;
 	}
 }

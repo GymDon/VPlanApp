@@ -15,11 +15,10 @@ public class VertretungsplanAdapter extends ArrayAdapter<ReplacementObject> {
 		super(context, resource, objects);
 	}
 
-	public boolean hasReplacements()
-	{
+	public boolean hasReplacements() {
 		return !isEmpty();
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TextView tv = new TextView(getContext());

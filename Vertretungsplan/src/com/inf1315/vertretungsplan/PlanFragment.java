@@ -14,18 +14,22 @@ public class PlanFragment extends Fragment {
 	// true, if today's fragment
 	private boolean argToday = true;
 
-	public PlanFragment() {}
+	public PlanFragment() {
+	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		this.argToday = getArguments().getBoolean(ARG_TODAY);
-		View rootView = inflater.inflate(R.layout.fragment_plan, container, false);
-		
+		View rootView = inflater.inflate(R.layout.fragment_plan, container,
+				false);
+
 		ListView lv = (ListView) rootView.findViewById(R.id.plan_ListView);
 		PlanActivity pa = (PlanActivity) getActivity();
-		VertretungsplanAdapter va = argToday ? pa.todayReplacements : pa.tomorrowReplacements;
+		VertretungsplanAdapter va = argToday ? pa.todayReplacements
+				: pa.tomorrowReplacements;
 		lv.setAdapter(va);
-		
+
 		return rootView;
 	}
 }

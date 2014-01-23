@@ -16,15 +16,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity
-{
+public class LoginActivity extends Activity {
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
@@ -35,17 +33,18 @@ public class LoginActivity extends Activity
 
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 
-		try
-		{
+		try {
 			API.CONTEXT = getApplicationContext();
-			API.APP_VERSION = getPackageName() + " " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-		} catch (NameNotFoundException e)
-		{
+			API.APP_VERSION = getPackageName()
+					+ " "
+					+ getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
 			Log.w("Startup", "Couldn't determine app version");
 			e.printStackTrace();
 		}
 
-		String username = getSharedPreferences("data", MODE_PRIVATE).getString("username", "");
+		String username = getSharedPreferences("data", MODE_PRIVATE).getString(
+				"username", "");
 		usernameEditText.setText(username);
 
 		String error = getIntent().getStringExtra("error");
@@ -61,17 +60,16 @@ public class LoginActivity extends Activity
 		if (error.equals("NoInternetConnection")) {
 			adb.setMessage(R.string.no_internet_connection);
 			String password = getIntent().getStringExtra("password");
-			if (password != null) passwordEditText.setText(password);
+			if (password != null)
+				passwordEditText.setText(password);
 		}
-		
 
 		adb.show();
 
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is
 		// present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -79,39 +77,34 @@ public class LoginActivity extends Activity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-			case R.id.action_settings:
-				Intent startSettings = new Intent(this, SettingsActivity.class);
-				startActivity(startSettings);
-				return true;
-			case R.id.action_info:
-				Intent startInfo = new Intent(this, InfoActivity.class);
-				startActivity(startInfo);
-				return true;
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent startSettings = new Intent(this, SettingsActivity.class);
+			startActivity(startSettings);
+			return true;
+		case R.id.action_info:
+			Intent startInfo = new Intent(this, InfoActivity.class);
+			startActivity(startInfo);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void loginButtonOnClick(View v)
-	{
-		
+	public void loginButtonOnClick(View v) {
+
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
 
-		
-		if (username.equals(""))
-		{
-			Toast toast = Toast.makeText(getApplicationContext(), "Bitte Benutzername eingeben!", Toast.LENGTH_SHORT);
+		if (username.equals("")) {
+			Toast toast = Toast.makeText(getApplicationContext(),
+					"Bitte Benutzername eingeben!", Toast.LENGTH_SHORT);
 			toast.show();
-		} else if (password.equals(""))
-		{
-			Toast toast = Toast.makeText(getApplicationContext(), "Bitte Passwort eingeben!", Toast.LENGTH_SHORT);
+		} else if (password.equals("")) {
+			Toast toast = Toast.makeText(getApplicationContext(),
+					"Bitte Passwort eingeben!", Toast.LENGTH_SHORT);
 			toast.show();
-		} else
-		{
+		} else {
 
 			SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
 			SharedPreferences.Editor spe = sp.edit();

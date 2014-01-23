@@ -22,18 +22,17 @@ public class TickerObject extends ApiResult implements Comparable<TickerObject> 
 
 	@Override
 	public int compareTo(TickerObject other) {
-		return    fromTimestamp > other.fromTimestamp ? 1
-			: fromTimestamp < other.fromTimestamp ? -1
-			: toTimestamp > other.toTimestamp ? 1
-			: toTimestamp < other.toTimestamp ? -1
-			: order > other.order ? 1
-			: order < other.order ? -1
-			: id - other.id;
+		return fromTimestamp > other.fromTimestamp ? 1
+				: fromTimestamp < other.fromTimestamp ? -1
+						: toTimestamp > other.toTimestamp ? 1
+								: toTimestamp < other.toTimestamp ? -1
+										: order > other.order ? 1
+												: order < other.order ? -1 : id
+														- other.id;
 	}
-	
+
 	@Override
-	public String toString()
-	{
-	    return value;
+	public String toString() {
+		return value;
 	}
 }

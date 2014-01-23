@@ -13,10 +13,9 @@ public class SettingsActivity extends Activity {
 		setContentView(R.layout.activity_settings);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
+
 		getFragmentManager().beginTransaction()
-        .replace(android.R.id.content, new SettingsFragment())
-        .commit();
+				.replace(android.R.id.content, new SettingsFragment()).commit();
 	}
 
 	/**
