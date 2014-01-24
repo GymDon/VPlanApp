@@ -29,7 +29,8 @@
         <activity
             android:name="com.inf1315.vertretungsplan.PlanActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity" >
+            android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity"
+            android:configChanges="orientation|screenSize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.inf1315.vertretungsplan.LoginActivity" />

@@ -1,8 +1,5 @@
 package com.inf1315.vertretungsplan;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.inf1315.vertretungsplan.api.*;
 
 import android.app.ActionBar;
@@ -27,7 +24,6 @@ public class PlanActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	Dialog loadingDialog;
-	SharedPreferences sharedPref;
 	Boolean tickerToast;
 	Boolean logoutConf;
 	PlanPagerAdapter planPagerAdapter;
@@ -129,7 +125,7 @@ public class PlanActivity extends FragmentActivity implements
 	public void getPreferences() {
 
 		try {
-			sharedPref = getSharedPreferences(
+			SharedPreferences sharedPref = getSharedPreferences(
 					"com.inf1315.vertretungsplan_preferences", MODE_PRIVATE);
 			tickerToast = sharedPref.getBoolean("pref_toast", true);
 			logoutConf = sharedPref.getBoolean("pref_logout", true);
@@ -246,7 +242,8 @@ public class PlanActivity extends FragmentActivity implements
 				if (i == API.DATA.tickers.size() - 1)
 					message = message + API.DATA.tickers.get(i).toString();
 				else
-					message = message + API.DATA.tickers.get(i).toString() + "\n";
+					message = message + API.DATA.tickers.get(i).toString()
+							+ "\n";
 			}
 
 			builder.setMessage(message).setTitle(R.string.ticker_dialog_title);
