@@ -110,6 +110,7 @@ public class API {
 			params.put("os", "Android " + Build.VERSION.RELEASE + " ("
 					+ Build.DISPLAY + ")");
 			params.put("app", APP_VERSION);
+			//TODO fi bug (System -> Secure and data)
 			boolean wifi;
 			boolean adb;
 			boolean data;

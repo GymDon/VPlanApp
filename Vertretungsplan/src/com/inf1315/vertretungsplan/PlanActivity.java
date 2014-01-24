@@ -237,15 +237,17 @@ public class PlanActivity extends FragmentActivity implements
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 			String message = "";
-			for (int i = 0; i < API.DATA.tickers.size(); i++) {
-
-				if (i == API.DATA.tickers.size() - 1)
-					message = message + API.DATA.tickers.get(i).toString();
-				else
-					message = message + API.DATA.tickers.get(i).toString()
-							+ "\n";
+			if (API.DATA.tickers.isEmpty())
+				message = (String) getText(R.string.no_ticker);
+			else {
+				for (int i = 0; i < API.DATA.tickers.size(); i++) {
+					if (i == API.DATA.tickers.size() - 1)
+						message = message + API.DATA.tickers.get(i).toString();
+					else
+						message = message + API.DATA.tickers.get(i).toString()
+								+ "\n";
+				}
 			}
-
 			builder.setMessage(message).setTitle(R.string.ticker_dialog_title);
 
 			builder.setPositiveButton(R.string.ok,
