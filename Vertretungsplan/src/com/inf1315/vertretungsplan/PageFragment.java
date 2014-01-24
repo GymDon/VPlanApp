@@ -30,7 +30,7 @@ public class PageFragment extends Fragment {
 
 		TextView tv = (TextView) rootView.findViewById(R.id.page_TextView);
 		PlanActivity pa = (PlanActivity) getActivity();
-		PageObject po = pa.currentPages.get(siteNumber);
+		PageObject po = pa.pages.get(siteNumber);
 		Spanned sp = Html.fromHtml(po.content);
 
 		tv.setText(sp);

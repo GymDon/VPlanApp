@@ -38,7 +38,6 @@ public class PlanActivity extends FragmentActivity implements
 	VertretungsplanAdapter todayReplacements;
 	VertretungsplanAdapter tomorrowReplacements;
 	List<PageObject> pages = new ArrayList<PageObject>();
-	List<PageObject> currentPages = new ArrayList<PageObject>();
 	List<OtherObject> todayOthers = new ArrayList<OtherObject>();
 	List<OtherObject> tomorrowOthers = new ArrayList<OtherObject>();
 	private String username;
@@ -120,7 +119,6 @@ public class PlanActivity extends FragmentActivity implements
 	void finishedLoading() {
 		loadingDialog.dismiss();
 
-		currentPages = getCurrentPages();
 		planPagerAdapter.notifyDataSetChanged();
 
 		ActionBar actionBar = getActionBar();
@@ -275,15 +273,6 @@ public class PlanActivity extends FragmentActivity implements
 
 	}
 
-	public List<PageObject> getCurrentPages() {
-		long time = System.currentTimeMillis() / 1000;
-		List<PageObject> newList = new ArrayList<PageObject>();
-		for (PageObject o : pages)
-			if (o.fromTimestamp <= time && o.toTimestamp >= time)
-				newList.add(o);
-		return newList;
-	}
-
 	public class PlanPagerAdapter extends FragmentPagerAdapter {
 
 		public PlanPagerAdapter(FragmentManager fm) {
@@ -307,7 +296,7 @@ public class PlanActivity extends FragmentActivity implements
 				return fragment;
 			}
 			position -= reps;
-			if (currentPages.size() > position) {
+			if (pages.size() > position) {
 				Fragment fragment = new PageFragment();
 				Bundle args = new Bundle();
 				args.putInt(PageFragment.SITE_NUMBER, position);
@@ -324,8 +313,8 @@ public class PlanActivity extends FragmentActivity implements
 				count++;
 			if (tomorrowReplacements.hasReplacements())
 				count++;
-			if (!currentPages.isEmpty())
-				count += currentPages.size();
+			if (!pages.isEmpty())
+				count += pages.size();
 			return count;
 		}
 
@@ -346,8 +335,8 @@ public class PlanActivity extends FragmentActivity implements
 					return getResources().getString(R.string.tomorrow);
 			}
 			position -= reps;
-			if (currentPages.size() > position)
-				return currentPages.get(position).title;
+			if (pages.size() > position)
+				return pages.get(position).title;
 			return null;
 		}
 	}
