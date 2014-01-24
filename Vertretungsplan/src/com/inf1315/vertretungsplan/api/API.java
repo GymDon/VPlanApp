@@ -99,7 +99,7 @@ public class API {
 	 * @throws IOException
 	 * @see {@link API#request(ApiAction, String...)}
 	 */
-	@SuppressLint("NewApi")
+	@SuppressLint({ "NewApi", "DefaultLocale" })
 	@SuppressWarnings("deprecation")
 	public ApiResponse request(ApiAction action, Map<String, String> params) {
 		ApiResponse r;
@@ -163,6 +163,7 @@ public class API {
 	 *            Additional params for GET/POST
 	 * @return A JSONObject parsed from the specified url
 	 */
+	@SuppressLint("DefaultLocale")
 	public static JSONObject getJSONfromURL(URL url, String requestMethod,
 			Map<String, String> params) throws IOException, JSONException {
 		requestMethod = requestMethod.toUpperCase();

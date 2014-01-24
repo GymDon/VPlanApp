@@ -11,7 +11,6 @@
     <string name="tomorrow">Morgen</string>
     <string name="show_ticker">Ticker anzeigen</string>
     <string name="no_ticker">Keine Ticker vorhanden</string>
-    <string name="ticker_loading_error">Ticker konnten nicht geladen werden</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="action_info">Info</string>
     <string name="title_activity_info">Informationen</string>
