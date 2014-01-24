@@ -22,6 +22,7 @@ public class API {
 	public static API LOCAL_DEBUG_API;
 	public static String APP_VERSION;
 	public static Context CONTEXT;
+	public static DataObject DATA;
 
 	private URL url;
 
@@ -134,6 +135,7 @@ public class API {
 			o.put("adb", adb);
 			o.put("data", data);
 			params.put("stats", o.toString());
+			params.put("hash", String.valueOf(API.DATA.hashCode()));
 			obj = getJSONfromURL(url, "POST", params);
 			if (!actionToClassMap.containsKey(action))
 				throw new RuntimeException("invalid action \"" + action + "\"");
@@ -207,9 +209,6 @@ public class API {
 
 		actionToClassMap.put(ApiAction.USER, UserInfo.class);
 		actionIsArrayMap.put(ApiAction.USER, false);
-
-		actionToClassMap.put(ApiAction.PLAN, PlanObject.class);
-		actionIsArrayMap.put(ApiAction.PLAN, true);
 
 		actionToClassMap.put(ApiAction.TICKER, TickerObject.class);
 		actionIsArrayMap.put(ApiAction.TICKER, true);

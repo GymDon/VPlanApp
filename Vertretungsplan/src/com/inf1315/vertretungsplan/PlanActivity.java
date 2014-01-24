@@ -27,19 +27,13 @@ public class PlanActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	Dialog loadingDialog;
-	List<ReplacementObject> todayReplacementsList = new ArrayList<ReplacementObject>();
-	List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
 	SharedPreferences sharedPref;
 	Boolean tickerToast;
 	Boolean logoutConf;
 	PlanPagerAdapter planPagerAdapter;
 	ViewPager viewPager;
-	List<TickerObject> tickers = new ArrayList<TickerObject>();
 	VertretungsplanAdapter todayReplacements;
 	VertretungsplanAdapter tomorrowReplacements;
-	List<PageObject> pages = new ArrayList<PageObject>();
-	List<OtherObject> todayOthers = new ArrayList<OtherObject>();
-	List<OtherObject> tomorrowOthers = new ArrayList<OtherObject>();
 	private String username;
 	private String password;
 
@@ -55,9 +49,9 @@ public class PlanActivity extends FragmentActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		todayReplacements = new VertretungsplanAdapter(this, 0,
-				todayReplacementsList);
+				API.DATA.todayReplacementsList);
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
-				tomorrowReplacementsList);
+				API.DATA.tomorrowReplacementsList);
 
 		// Create the adapter that will return a fragment for each of
 		// the three
@@ -229,9 +223,9 @@ public class PlanActivity extends FragmentActivity implements
 
 		if (tickerToast) {
 
-			if (!tickers.isEmpty()) {
+			if (!API.DATA.tickers.isEmpty()) {
 				String ticker = "";
-				for (TickerObject to : tickers) {
+				for (TickerObject to : API.DATA.tickers) {
 					ticker += to.toString() + "\n\n";
 				}
 				ticker = ticker.substring(0, ticker.length() - 2);
@@ -247,12 +241,12 @@ public class PlanActivity extends FragmentActivity implements
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 			String message = "";
-			for (int i = 0; i < tickers.size(); i++) {
+			for (int i = 0; i < API.DATA.tickers.size(); i++) {
 
-				if (i == tickers.size() - 1)
-					message = message + tickers.get(i).toString();
+				if (i == API.DATA.tickers.size() - 1)
+					message = message + API.DATA.tickers.get(i).toString();
 				else
-					message = message + tickers.get(i).toString() + "\n";
+					message = message + API.DATA.tickers.get(i).toString() + "\n";
 			}
 
 			builder.setMessage(message).setTitle(R.string.ticker_dialog_title);
@@ -296,7 +290,7 @@ public class PlanActivity extends FragmentActivity implements
 				return fragment;
 			}
 			position -= reps;
-			if (pages.size() > position) {
+			if (API.DATA.pages.size() > position) {
 				Fragment fragment = new PageFragment();
 				Bundle args = new Bundle();
 				args.putInt(PageFragment.SITE_NUMBER, position);
@@ -313,8 +307,8 @@ public class PlanActivity extends FragmentActivity implements
 				count++;
 			if (tomorrowReplacements.hasReplacements())
 				count++;
-			if (!pages.isEmpty())
-				count += pages.size();
+			if (!API.DATA.pages.isEmpty())
+				count += API.DATA.pages.size();
 			return count;
 		}
 
@@ -335,8 +329,8 @@ public class PlanActivity extends FragmentActivity implements
 					return getResources().getString(R.string.tomorrow);
 			}
 			position -= reps;
-			if (pages.size() > position)
-				return pages.get(position).title;
+			if (API.DATA.pages.size() > position)
+				return API.DATA.pages.get(position).title;
 			return null;
 		}
 	}

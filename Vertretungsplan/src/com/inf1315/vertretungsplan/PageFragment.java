@@ -1,5 +1,6 @@
 package com.inf1315.vertretungsplan;
 
+import com.inf1315.vertretungsplan.api.API;
 import com.inf1315.vertretungsplan.api.PageObject;
 
 import android.os.Bundle;
@@ -29,8 +30,7 @@ public class PageFragment extends Fragment {
 				false);
 
 		TextView tv = (TextView) rootView.findViewById(R.id.page_TextView);
-		PlanActivity pa = (PlanActivity) getActivity();
-		PageObject po = pa.pages.get(siteNumber);
+		PageObject po = API.DATA.pages.get(siteNumber);
 		Spanned sp = Html.fromHtml(po.content);
 
 		tv.setText(sp);

@@ -1,6 +1,7 @@
 package com.inf1315.vertretungsplan;
 
 import com.inf1315.vertretungsplan.api.API;
+import com.inf1315.vertretungsplan.api.DataObject;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,17 +21,11 @@ public class LoginActivity extends Activity {
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
+	private static boolean isFirstLaunch = true;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_login);
-
-		// Initalize variables
-		usernameEditText = (EditText) findViewById(R.id.username_EditText);
-		passwordEditText = (EditText) findViewById(R.id.password_EditText);
-
+	
+	private void runOnFirstLaunch() {
+		API.DATA = new DataObject();
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 
 		try {
@@ -42,6 +37,20 @@ public class LoginActivity extends Activity {
 			Log.w("Startup", "Couldn't determine app version");
 			e.printStackTrace();
 		}
+		
+		LoginActivity.isFirstLaunch = false;
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (isFirstLaunch) runOnFirstLaunch();
+		
+		setContentView(R.layout.activity_login);
+
+		// Initalize variables
+		usernameEditText = (EditText) findViewById(R.id.username_EditText);
+		passwordEditText = (EditText) findViewById(R.id.password_EditText);
 
 		String username = getSharedPreferences("data", MODE_PRIVATE).getString(
 				"username", "");
@@ -59,10 +68,10 @@ public class LoginActivity extends Activity {
 			adb.setMessage(R.string.server_request_failed);
 		if (error.equals("NoInternetConnection")) {
 			adb.setMessage(R.string.no_internet_connection);
-			String password = getIntent().getStringExtra("password");
-			if (password != null)
-				passwordEditText.setText(password);
 		}
+		String password = getIntent().getStringExtra("password");
+		if (password != null)
+			passwordEditText.setText(password);
 
 		adb.show();
 

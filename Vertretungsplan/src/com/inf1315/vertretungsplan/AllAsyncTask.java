@@ -50,30 +50,30 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		}
 
 		else {
-			plan.tickers = Arrays.asList(result.ticker);
+			API.DATA.tickers = Arrays.asList(result.ticker);
 
-			plan.todayReplacements.clear();
-			plan.tomorrowReplacements.clear();
+			API.DATA.todayReplacementsList.clear();
+			API.DATA.tomorrowReplacementsList.clear();
 			for (ReplacementObject ro : result.replacements) {
 				if (ro.isToday)
-					plan.todayReplacementsList.add(ro);
+					API.DATA.todayReplacementsList.add(ro);
 				else
-					plan.tomorrowReplacementsList.add(ro);
+					API.DATA.tomorrowReplacementsList.add(ro);
 			}
-			Collections.sort(plan.todayReplacementsList);
-			Collections.sort(plan.tomorrowReplacementsList);
+			Collections.sort(API.DATA.todayReplacementsList);
+			Collections.sort(API.DATA.tomorrowReplacementsList);
 			plan.todayReplacements.notifyDataSetChanged();
 			plan.tomorrowReplacements.notifyDataSetChanged();
 
-			plan.pages = Arrays.asList(result.pages);
+			API.DATA.pages = Arrays.asList(result.pages);
 
-			plan.todayOthers.clear();
-			plan.tomorrowOthers.clear();
+			API.DATA.todayOthers.clear();
+			API.DATA.tomorrowOthers.clear();
 			for (OtherObject oo : result.others) {
 				if (oo.isToday)
-					plan.todayOthers.add(oo);
+					API.DATA.todayOthers.add(oo);
 				else
-					plan.tomorrowOthers.add(oo);
+					API.DATA.tomorrowOthers.add(oo);
 			}
 
 			plan.finishedLoading();
