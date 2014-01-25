@@ -69,9 +69,6 @@ public class AllObject extends ApiResult {
 
 		userInfo = new UserInfo(json.getJSONObject("user"));
 		
-		//TODO add hash to json
-		//hash = json.getString("hash");
-		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		timeString = sdf.format(new Date());
 		

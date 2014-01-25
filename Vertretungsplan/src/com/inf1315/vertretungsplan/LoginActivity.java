@@ -1,5 +1,6 @@
 package com.inf1315.vertretungsplan;
 
+import com.google.gson.Gson;
 import com.inf1315.vertretungsplan.api.API;
 import com.inf1315.vertretungsplan.api.AllObject;
 
@@ -23,9 +24,12 @@ public class LoginActivity extends Activity {
 	private EditText passwordEditText;
 	private static boolean isFirstLaunch = true;
 
-	
 	private void runOnFirstLaunch() {
-		API.DATA = new AllObject();
+		SharedPreferences sharedPrefs = getSharedPreferences("data",
+				MODE_PRIVATE);
+		String json = sharedPrefs.getString("data", "");
+		API.DATA = "".equals(json) ? new AllObject() : new Gson().fromJson(json, AllObject.class);
+
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 
 		try {
@@ -37,15 +41,16 @@ public class LoginActivity extends Activity {
 			Log.w("Startup", "Couldn't determine app version");
 			e.printStackTrace();
 		}
-		
+
 		LoginActivity.isFirstLaunch = false;
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (isFirstLaunch) runOnFirstLaunch();
-		
+		if (isFirstLaunch)
+			runOnFirstLaunch();
+
 		setContentView(R.layout.activity_login);
 
 		// Initalize variables

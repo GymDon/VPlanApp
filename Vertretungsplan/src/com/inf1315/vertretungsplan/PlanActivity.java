@@ -89,12 +89,12 @@ public class PlanActivity extends FragmentActivity implements
 
 	}
 
-	private void dataChanged() {		
+	private void dataChanged() {
 		todayReplacements = new VertretungsplanAdapter(this, 0,
 				API.DATA.todayReplacementsList);
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
 				API.DATA.tomorrowReplacementsList);
-		
+
 		todayReplacements.notifyDataSetChanged();
 		tomorrowReplacements.notifyDataSetChanged();
 		planPagerAdapter.notifyDataSetChanged();
@@ -111,21 +111,14 @@ public class PlanActivity extends FragmentActivity implements
 	}
 
 	private void loadData(String username, String password) {
-		if (!isNetworkAvailable()) {
-			SharedPreferences sharedPrefs = getSharedPreferences("data",
-					MODE_PRIVATE);
-			String json = sharedPrefs.getString("data", "");
-			if ("".equals(json)) {
-				Intent intent = new Intent(this, LoginActivity.class);
-				intent.putExtra("error", "NoInternetConnection");
-				intent.putExtra("password", password);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				return;
-			}
-
-			API.DATA = gson.fromJson(json, AllObject.class);
-
+		if (!isNetworkAvailable() && "".equals(API.DATA.hash)) {
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.putExtra("error", "NoInternetConnection");
+			intent.putExtra("password", password);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return;
+		} else if (!isNetworkAvailable()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.no_internet_connection_title);
 			builder.setMessage(getText(R.string.no_internet_connection) + "\n"
@@ -139,6 +132,7 @@ public class PlanActivity extends FragmentActivity implements
 
 			return;
 		}
+
 		loadingDialog = ProgressDialog.show(this, "",
 				getText(R.string.loading_plan), true);
 		loadingDialog.show();

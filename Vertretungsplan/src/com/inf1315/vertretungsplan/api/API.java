@@ -136,7 +136,7 @@ public class API {
 			o.put("adb", adb);
 			o.put("data", data);
 			params.put("stats", o.toString());
-			params.put("hash", String.valueOf(API.DATA.hashCode()));
+			params.put("hash", API.DATA.hash);
 			obj = getJSONfromURL(url, "POST", params);
 			if (!actionToClassMap.containsKey(action))
 				throw new RuntimeException("invalid action \"" + action + "\"");

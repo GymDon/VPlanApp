@@ -13,13 +13,19 @@ public class ApiResponse {
 	private boolean success;
 	private String action;
 	private Map<String, String> params;
+	private String hash;
+	private boolean changed;
+	private boolean authorized;
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
 			boolean array) throws JSONException {
 		if (!array) {
 			try {
-				result = resultType.getConstructor(JSONObject.class)
-						.newInstance(obj.getJSONObject("result"));
+				if (obj.isNull("result"))
+					result = null;
+				else
+					result = resultType.getConstructor(JSONObject.class)
+							.newInstance(obj.getJSONObject("result"));
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -32,11 +38,18 @@ public class ApiResponse {
 				e.printStackTrace();
 			}
 		} else {
-			result = new ApiResultArray(obj.getJSONArray("result"), resultType);
+			if (obj.isNull("result"))
+				result = null;
+			else
+				result = new ApiResultArray(obj.getJSONArray("result"),
+						resultType);
 		}
 		success = obj.getBoolean("success");
 		action = obj.getString("action");
 		params = new HashMap<String, String>();
+		hash = obj.getString("hash");
+		changed = obj.getBoolean("changed");
+		authorized = obj.getBoolean("authorized");
 		try {
 			JSONObject par = obj.getJSONObject("params");
 			for (Iterator<?> i = par.keys(); i.hasNext();) {
@@ -66,5 +79,17 @@ public class ApiResponse {
 
 	public Map<String, String> getParams() {
 		return params;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public boolean getChanged() {
+		return changed;
+	}
+
+	public boolean getAuthorized() {
+		return authorized;
 	}
 }

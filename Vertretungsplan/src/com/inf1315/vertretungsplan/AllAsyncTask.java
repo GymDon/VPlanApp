@@ -27,7 +27,12 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 				Log.w("All Loader", "Loading unsuccesfull");
 				return null;
 			}
-			return (AllObject) resp.getResult();
+			if (!resp.getChanged())
+				return API.DATA;
+			
+			AllObject ao = (AllObject) resp.getResult();
+			ao.hash = resp.getHash();
+			return ao;
 
 		} catch (Exception e) {
 			e.printStackTrace();
