@@ -1,7 +1,12 @@
 package com.inf1315.vertretungsplan;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.google.gson.Gson;
 import com.inf1315.vertretungsplan.api.*;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -32,6 +37,7 @@ public class PlanActivity extends FragmentActivity implements
 	VertretungsplanAdapter tomorrowReplacements;
 	private String username;
 	private String password;
+	private Gson gson;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,9 @@ public class PlanActivity extends FragmentActivity implements
 					}
 				});
 
+		gson = new Gson();
+		getPreferences();
+
 		username = getIntent().getStringExtra("username");
 		password = getIntent().getStringExtra("password");
 		loadData(username, password);
@@ -84,13 +93,50 @@ public class PlanActivity extends FragmentActivity implements
 
 	}
 
+	private void dataChanged() {
+		todayReplacements.notifyDataSetChanged();
+		tomorrowReplacements.notifyDataSetChanged();
+		planPagerAdapter.notifyDataSetChanged();
+
+		ActionBar actionBar = getActionBar();
+		actionBar.removeAllTabs();
+		for (int i = 0; i < planPagerAdapter.getCount(); i++) {
+			actionBar.addTab(actionBar.newTab()
+					.setText(planPagerAdapter.getPageTitle(i))
+					.setTabListener(this));
+		}
+
+		showTicker();
+	}
+
 	private void loadData(String username, String password) {
 		if (!isNetworkAvailable()) {
-			Intent intent = new Intent(this, LoginActivity.class);
-			intent.putExtra("error", "NoInternetConnection");
-			intent.putExtra("password", password);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+			SharedPreferences sharedPrefs = getSharedPreferences("data",
+					MODE_PRIVATE);
+			String json = sharedPrefs.getString("data", "");
+			if ("".equals(json)) {
+				Intent intent = new Intent(this, LoginActivity.class);
+				intent.putExtra("error", "NoInternetConnection");
+				intent.putExtra("password", password);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return;
+			}
+			String time = sharedPrefs.getString("data_time", "");
+			String user = sharedPrefs.getString("data_username", "");
+
+			API.DATA = gson.fromJson(json, DataObject.class);
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.no_internet_connection_title);
+			builder.setMessage(getText(R.string.no_internet_connection) + "\n"
+					+ getText(R.string.usernanme) + user + "\n"
+					+ getText(R.string.old_data_message) + "\n" + time);
+			builder.setPositiveButton(R.string.ok, null);
+			builder.show();
+
+			dataChanged();
+
 			return;
 		}
 		loadingDialog = ProgressDialog.show(this, "",
@@ -106,20 +152,23 @@ public class PlanActivity extends FragmentActivity implements
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	void finishedLoading() {
 		loadingDialog.dismiss();
+		dataChanged();
 
-		planPagerAdapter.notifyDataSetChanged();
+		SharedPreferences.Editor spe = getSharedPreferences("data",
+				MODE_PRIVATE).edit();
+		String json = gson.toJson(API.DATA);
+		spe.putString("data", json);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.removeAllTabs();
-		for (int i = 0; i < planPagerAdapter.getCount(); i++) {
-			actionBar.addTab(actionBar.newTab()
-					.setText(planPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+		String time = sdf.format(new Date());
+		spe.putString("data_time", time);
+		
+		spe.putString("data_username", username);
 
-		showTicker();
+		spe.apply();
 	}
 
 	public void getPreferences() {

@@ -62,8 +62,6 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 			}
 			Collections.sort(API.DATA.todayReplacementsList);
 			Collections.sort(API.DATA.tomorrowReplacementsList);
-			plan.todayReplacements.notifyDataSetChanged();
-			plan.tomorrowReplacements.notifyDataSetChanged();
 
 			API.DATA.pages = Arrays.asList(result.pages);
 
