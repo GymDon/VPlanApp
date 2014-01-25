@@ -22,7 +22,7 @@ public class API {
 	public static API LOCAL_DEBUG_API;
 	public static String APP_VERSION;
 	public static Context CONTEXT;
-	public static DataObject DATA;
+	public static AllObject DATA;
 
 	private URL url;
 

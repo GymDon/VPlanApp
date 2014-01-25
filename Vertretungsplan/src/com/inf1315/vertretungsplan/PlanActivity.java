@@ -1,12 +1,8 @@
 package com.inf1315.vertretungsplan;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.google.gson.Gson;
 import com.inf1315.vertretungsplan.api.*;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -93,7 +89,12 @@ public class PlanActivity extends FragmentActivity implements
 
 	}
 
-	private void dataChanged() {
+	private void dataChanged() {		
+		todayReplacements = new VertretungsplanAdapter(this, 0,
+				API.DATA.todayReplacementsList);
+		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
+				API.DATA.tomorrowReplacementsList);
+		
 		todayReplacements.notifyDataSetChanged();
 		tomorrowReplacements.notifyDataSetChanged();
 		planPagerAdapter.notifyDataSetChanged();
@@ -122,16 +123,15 @@ public class PlanActivity extends FragmentActivity implements
 				startActivity(intent);
 				return;
 			}
-			String time = sharedPrefs.getString("data_time", "");
-			String user = sharedPrefs.getString("data_username", "");
 
-			API.DATA = gson.fromJson(json, DataObject.class);
+			API.DATA = gson.fromJson(json, AllObject.class);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.no_internet_connection_title);
 			builder.setMessage(getText(R.string.no_internet_connection) + "\n"
-					+ getText(R.string.usernanme) + user + "\n"
-					+ getText(R.string.old_data_message) + "\n" + time);
+					+ getText(R.string.usernanme) + API.DATA.userInfo.fullname
+					+ "\n" + getText(R.string.old_data_message) + "\n"
+					+ API.DATA.timeString);
 			builder.setPositiveButton(R.string.ok, null);
 			builder.show();
 
@@ -152,7 +152,6 @@ public class PlanActivity extends FragmentActivity implements
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
-	@SuppressLint("SimpleDateFormat")
 	void finishedLoading() {
 		loadingDialog.dismiss();
 		dataChanged();
@@ -161,12 +160,6 @@ public class PlanActivity extends FragmentActivity implements
 				MODE_PRIVATE).edit();
 		String json = gson.toJson(API.DATA);
 		spe.putString("data", json);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-		String time = sdf.format(new Date());
-		spe.putString("data_time", time);
-		
-		spe.putString("data_username", username);
 
 		spe.apply();
 	}

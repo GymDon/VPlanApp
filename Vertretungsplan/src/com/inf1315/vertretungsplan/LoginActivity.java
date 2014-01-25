@@ -1,7 +1,7 @@
 package com.inf1315.vertretungsplan;
 
 import com.inf1315.vertretungsplan.api.API;
-import com.inf1315.vertretungsplan.api.DataObject;
+import com.inf1315.vertretungsplan.api.AllObject;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,7 +25,7 @@ public class LoginActivity extends Activity {
 
 	
 	private void runOnFirstLaunch() {
-		API.DATA = new DataObject();
+		API.DATA = new AllObject();
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 
 		try {

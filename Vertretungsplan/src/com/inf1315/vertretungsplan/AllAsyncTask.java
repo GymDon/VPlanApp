@@ -1,8 +1,5 @@
 package com.inf1315.vertretungsplan;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -50,30 +47,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		}
 
 		else {
-			API.DATA.tickers = Arrays.asList(result.ticker);
-
-			API.DATA.todayReplacementsList.clear();
-			API.DATA.tomorrowReplacementsList.clear();
-			for (ReplacementObject ro : result.replacements) {
-				if (ro.isToday)
-					API.DATA.todayReplacementsList.add(ro);
-				else
-					API.DATA.tomorrowReplacementsList.add(ro);
-			}
-			Collections.sort(API.DATA.todayReplacementsList);
-			Collections.sort(API.DATA.tomorrowReplacementsList);
-
-			API.DATA.pages = Arrays.asList(result.pages);
-
-			API.DATA.todayOthers.clear();
-			API.DATA.tomorrowOthers.clear();
-			for (OtherObject oo : result.others) {
-				if (oo.isToday)
-					API.DATA.todayOthers.add(oo);
-				else
-					API.DATA.tomorrowOthers.add(oo);
-			}
-
+			API.DATA = result;
 			plan.finishedLoading();
 		}
 	}
