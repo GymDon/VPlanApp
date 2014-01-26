@@ -15,8 +15,10 @@ public class ReplacementObject extends ApiResult implements
 	public final String replacement;
 	public final String room;
 	public final String comment;
+	public final String teacherLong;
 	public final boolean isToday;
 	public final boolean addition;
+	public final boolean teacherChange;
 
 	public ReplacementObject(JSONObject json) throws JSONException {
 		id = json.getInt("id");
@@ -28,8 +30,10 @@ public class ReplacementObject extends ApiResult implements
 		replacement = (json.getString("replacement"));
 		room = json.getString("room");
 		comment = json.getString("comment");
+		teacherLong = json.getString("teacher_long");
 		isToday = json.getBoolean("is_today");
 		addition = json.getBoolean("addition");
+		teacherChange = json.getBoolean("teacher_change");
 	}
 
 	@Override
