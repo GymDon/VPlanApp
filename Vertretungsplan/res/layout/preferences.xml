@@ -20,5 +20,15 @@
             android:defaultValue="true"  />
         
     </PreferenceCategory>
+    
+    
+    <PreferenceCategory
+        android:title="@string/advanced">
+        
+        <Preference
+            android:key="pref_clear_cache"
+            android:title="@string/pref_clear_cache"/>
+        
+    </PreferenceCategory>
 
 </PreferenceScreen>

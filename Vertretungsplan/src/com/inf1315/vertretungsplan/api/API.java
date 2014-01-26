@@ -23,6 +23,7 @@ public class API {
 	public static String APP_VERSION;
 	public static Context CONTEXT;
 	public static AllObject DATA;
+	public static boolean reload = false;
 
 	private URL url;
 

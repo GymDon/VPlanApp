@@ -86,10 +86,12 @@ public class PlanActivity extends FragmentActivity implements
 
 		super.onResume();
 		getPreferences();
-
+		if(API.reload)
+			loadData(username, password);
 	}
 
 	private void dataChanged() {
+			
 		todayReplacements = new VertretungsplanAdapter(this, 0,
 				API.DATA.todayReplacementsList);
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
@@ -106,11 +108,11 @@ public class PlanActivity extends FragmentActivity implements
 					.setText(planPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-
 		showTicker();
 	}
 
 	private void loadData(String username, String password) {
+		API.reload = false;
 		if (!isNetworkAvailable() && "".equals(API.DATA.hash)) {
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("error", "NoInternetConnection");
