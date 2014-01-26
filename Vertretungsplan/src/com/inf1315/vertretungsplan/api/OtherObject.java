@@ -28,7 +28,17 @@ public class OtherObject extends ApiResult {
 	}
 
 	public static enum OtherType {
-		T, G, R, S, A, N;
+		T("teacher"), G("grade"), R("room"), S("school"), A("supervisor"), N("note");
+		
+		private String fullname;
+		private OtherType(String fullname) {
+			this.fullname = fullname;
+		}
+		
+		@Override
+		public String toString() {
+			return fullname;
+		}
 	}
 
 	@Override
