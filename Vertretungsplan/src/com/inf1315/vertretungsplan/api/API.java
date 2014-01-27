@@ -26,7 +26,7 @@ public class API {
 	public static Context CONTEXT;
 	public static AllObject DATA;
 	public static boolean reload = false;
-	public final static String API_VERSION = "0.1";
+	public final static String API_VERSION = "0.2";
 
 	private URL url;
 

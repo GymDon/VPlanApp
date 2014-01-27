@@ -9,12 +9,14 @@ public class UserInfo extends ApiResult {
 	public final String mainGroup;
 	public final String[] groups;
 	public final String fullname;
+	public final boolean isStudent;
 
 	public UserInfo(JSONObject obj) throws JSONException {
 		username = obj.getString("user");
 		uid = obj.getInt("uid");
 		gid = obj.getInt("gid");
 		mainGroup = obj.getString("group");
+		isStudent = obj.getBoolean("student");
 
 		JSONArray arr = obj.getJSONArray("groups");
 		groups = new String[arr.length()];

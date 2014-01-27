@@ -2,7 +2,7 @@ package com.inf1315.vertretungsplan;
 
 import java.util.List;
 
-import com.inf1315.vertretungsplan.api.ReplacementObject;
+import com.inf1315.vertretungsplan.api.*;
 
 import android.content.*;
 import android.view.*;
@@ -31,12 +31,20 @@ public class VertretungsplanAdapter extends ArrayAdapter<ReplacementObject> {
 		lesson.setId(4944941);
 		line1.setId(4944942);
 		line2.setId(4944943);
-		
+
 		lesson.setText(Integer.toString(o.lesson));
-		
-		line1.setText(	(o.room.length() > 0 ? o.room + (o.teacherChange ? ": " : "") : "") + 
-						(o.teacherChange ? (o.teacherLong != null ? o.teacherLong + " (" + o.teacher + ")" : o.teacher) +
-						(o.replacement.length() > 0 ?  " -> " + o.replacement : "") : ""));
+
+		if (API.DATA.userInfo.isStudent)
+			line1.setText((o.room.length() > 0 ? o.room
+					+ (o.teacherChange ? ": " : "") : "")
+					+ (o.teacherChange ? (o.teacherLong != null ? o.teacherLong
+							+ " (" + o.teacher + ")" : o.teacher)
+							+ (o.replacement.length() > 0 ? " -> "
+									+ o.replacement : "") : ""));
+		else
+			line1.setText((o.room.length() > 0 ? o.room + ": " : "")
+					+ (o.grade.length() > 0 ? o.grade : ""));
+
 		line2.setText(o.comment);
 
 		lesson.setTextSize(30);

@@ -21,19 +21,37 @@ public class ReplacementObject extends ApiResult implements
 	public final boolean teacherChange;
 
 	public ReplacementObject(JSONObject json) throws JSONException {
-		id = json.getInt("id");
-		gradePre = json.getString("grade_pre");
-		grade = json.getString("grade");
-		gradeLast = json.getString("grade_last");
-		lesson = json.getInt("lesson");
-		teacher = json.getString("teacher");
-		replacement = (json.getString("replacement"));
-		room = json.getString("room");
-		comment = json.getString("comment");
-		teacherLong = json.getString("teacher_long");
-		isToday = json.getBoolean("is_today");
-		addition = json.getBoolean("addition");
-		teacherChange = json.getBoolean("teacher_change");
+		if (API.DATA.userInfo.isStudent) {
+			id = json.getInt("id");
+			gradePre = json.getString("grade_pre");
+			grade = json.getString("grade");
+			gradeLast = json.getString("grade_last");
+			lesson = json.getInt("lesson");
+			teacher = json.getString("teacher");
+			replacement = json.getString("replacement");
+			room = json.getString("room");
+			comment = json.getString("comment");
+			teacherLong = json.getString("teacher_long");
+			isToday = json.getBoolean("is_today");
+			addition = json.getBoolean("addition");
+			teacherChange = json.getBoolean("teacher_change");
+		}
+		else {
+			id = json.getInt("id");
+			teacher = json.getString("short");
+			teacherLong = json.getString("teacher");
+			lesson = json.getInt("lesson");
+			grade = json.getString("grade");
+			room = json.getString("room");
+			comment = json.getString("comment");
+			isToday = json.getBoolean("is_today");
+			addition = json.getBoolean("addition");
+			
+			gradePre = "";
+			gradeLast = "";
+			replacement = "";
+			teacherChange = false;
+		}
 	}
 
 	@Override

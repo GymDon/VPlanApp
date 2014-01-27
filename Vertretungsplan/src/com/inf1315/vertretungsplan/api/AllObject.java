@@ -30,6 +30,9 @@ public class AllObject extends ApiResult {
 
 	@SuppressLint("SimpleDateFormat")
 	public AllObject(JSONObject json) throws JSONException {
+		userInfo = new UserInfo(json.getJSONObject("user"));
+		API.DATA.userInfo = userInfo;
+		
 		TickerObject[] ticker = new ApiResultArray(json.getJSONArray("ticker"),
 				TickerObject.class).getArray(new TickerObject[0]);
 		tickers = Arrays.asList(ticker);
@@ -66,8 +69,6 @@ public class AllObject extends ApiResult {
 			else
 				tomorrowOthers.add(oo);
 		}
-
-		userInfo = new UserInfo(json.getJSONObject("user"));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		timeString = sdf.format(new Date());
