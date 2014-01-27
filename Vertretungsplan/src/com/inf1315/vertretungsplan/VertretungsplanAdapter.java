@@ -28,6 +28,10 @@ public class VertretungsplanAdapter extends ArrayAdapter<ReplacementObject> {
 		TextView line2 = new TextView(getContext());
 		ReplacementObject o = getItem(position);
 
+		lesson.setId(4944941);
+		line1.setId(4944942);
+		line2.setId(4944943);
+		
 		lesson.setText(Integer.toString(o.lesson));
 		
 		line1.setText(	(o.room.length() > 0 ? o.room + (o.teacherChange ? ": " : "") : "") + 
@@ -36,7 +40,7 @@ public class VertretungsplanAdapter extends ArrayAdapter<ReplacementObject> {
 		line2.setText(o.comment);
 
 		lesson.setTextSize(30);
-		lesson.setEms(3);
+		lesson.setEms(1);
 
 		line1.setGravity(Gravity.LEFT | Gravity.TOP);
 		line2.setGravity(Gravity.LEFT | Gravity.BOTTOM);
@@ -56,11 +60,10 @@ public class VertretungsplanAdapter extends ArrayAdapter<ReplacementObject> {
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 
 		params1.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-		params1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
 		params1.addRule(RelativeLayout.RIGHT_OF, lesson.getId());
+		params1.setMargins(15, 0, 0, 0);
 
 		params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-		params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
 		params2.addRule(RelativeLayout.ALIGN_LEFT, line1.getId());
 		params2.addRule(RelativeLayout.BELOW, line1.getId());
 
