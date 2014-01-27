@@ -8,6 +8,8 @@ import org.json.*;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
@@ -24,6 +26,7 @@ public class API {
 	public static Context CONTEXT;
 	public static AllObject DATA;
 	public static boolean reload = false;
+	public final static String API_VERSION = "0.1";
 
 	private URL url;
 
@@ -111,25 +114,28 @@ public class API {
 			params.put("os", "Android " + Build.VERSION.RELEASE + " ("
 					+ Build.DISPLAY + ")");
 			params.put("app", APP_VERSION);
-			//TODO fi bug (System -> Secure and data)
 			boolean wifi;
 			boolean adb;
 			boolean data;
 			if (Build.VERSION.SDK_INT < 17) {
-				wifi = Settings.System.getInt(CONTEXT.getContentResolver(),
-						Settings.System.WIFI_ON) != 0;
-				adb = Settings.System.getInt(CONTEXT.getContentResolver(),
-						Settings.System.ADB_ENABLED) != 0;
-				data = Settings.System.getInt(CONTEXT.getContentResolver(),
-						Settings.System.DATA_ROAMING) != 0;
+				wifi = Settings.Secure.getInt(CONTEXT.getContentResolver(),
+						Settings.Secure.WIFI_ON) != 0;
+				adb = Settings.Secure.getInt(CONTEXT.getContentResolver(),
+						Settings.Secure.ADB_ENABLED) != 0;
 			} else {
 				wifi = Settings.Global.getInt(CONTEXT.getContentResolver(),
 						Settings.Global.WIFI_ON) != 0;
 				adb = Settings.Global.getInt(CONTEXT.getContentResolver(),
 						Settings.Global.ADB_ENABLED) != 0;
-				data = Settings.Global.getInt(CONTEXT.getContentResolver(),
-						Settings.Global.DATA_ROAMING) != 0;
 			}
+			
+			ConnectivityManager cm = (ConnectivityManager) CONTEXT.getSystemService(Context.CONNECTIVITY_SERVICE);
+	        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+	            if(activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+	                data = true;
+	            else
+	            	data = false;
+			
 			JSONObject o = new JSONObject();
 			o.put("android_id", Settings.Secure.getString(
 					CONTEXT.getContentResolver(), Settings.Secure.ANDROID_ID));
@@ -137,7 +143,8 @@ public class API {
 			o.put("adb", adb);
 			o.put("data", data);
 			params.put("stats", o.toString());
-			params.put("hash", API.DATA.hash);
+			params.put("hash", DATA.hash);
+			params.put("api", API_VERSION);
 			obj = getJSONfromURL(url, "POST", params);
 			if (!actionToClassMap.containsKey(action))
 				throw new RuntimeException("invalid action \"" + action + "\"");
