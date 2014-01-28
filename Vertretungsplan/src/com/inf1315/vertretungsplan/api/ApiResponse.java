@@ -1,10 +1,13 @@
 package com.inf1315.vertretungsplan.api;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +19,7 @@ public class ApiResponse {
 	private String hash;
 	private boolean changed;
 	private boolean authorized;
+	private List<ApiWarning> warnings;
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
 			boolean array) throws JSONException {
@@ -59,6 +63,15 @@ public class ApiResponse {
 		} catch (JSONException e) {
 			// params is no object but empty array
 		}
+		try {
+			JSONArray warns = obj.getJSONArray("warnings");
+			warnings = new ArrayList<ApiWarning>(warns.length());
+			for (int i = 0; i < warns.length(); i++) {
+				warnings.add(new ApiWarning(warns.getJSONObject(i)));
+			}
+		} catch (JSONException e) {
+			warnings = new ArrayList<ApiWarning>(0);
+		}
 	}
 
 	public ApiResponse(Exception e) {
@@ -67,6 +80,11 @@ public class ApiResponse {
 
 	public ApiResult getResult() {
 		return result;
+	}
+	
+	public List<ApiWarning> getWarnings()
+	{
+		return warnings;
 	}
 
 	public boolean getSuccess() {

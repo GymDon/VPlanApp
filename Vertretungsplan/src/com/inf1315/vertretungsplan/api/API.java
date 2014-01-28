@@ -128,14 +128,16 @@ public class API {
 				adb = Settings.Global.getInt(CONTEXT.getContentResolver(),
 						Settings.Global.ADB_ENABLED) != 0;
 			}
-			
-			ConnectivityManager cm = (ConnectivityManager) CONTEXT.getSystemService(Context.CONNECTIVITY_SERVICE);
-	        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-	            if(activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
-	                data = true;
-	            else
-	            	data = false;
-			
+
+			ConnectivityManager cm = (ConnectivityManager) CONTEXT
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			if (activeNetwork != null
+					&& activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+				data = true;
+			else
+				data = false;
+
 			JSONObject o = new JSONObject();
 			o.put("android_id", Settings.Secure.getString(
 					CONTEXT.getContentResolver(), Settings.Secure.ANDROID_ID));
@@ -145,6 +147,7 @@ public class API {
 			params.put("stats", o.toString());
 			params.put("hash", DATA.hash);
 			params.put("api", API_VERSION);
+			params.put("lang", Locale.getDefault().getLanguage());
 			obj = getJSONfromURL(url, "POST", params);
 			if (!actionToClassMap.containsKey(action))
 				throw new RuntimeException("invalid action \"" + action + "\"");
@@ -159,6 +162,12 @@ public class API {
 				} catch (JSONException e1) {
 				}
 			r = new ApiResponse(e);
+		}
+		if(r.getWarnings().isEmpty())
+			Log.i("API-Warning", "No Warnings");
+		else
+		for (ApiWarning w : r.getWarnings()) {
+			Log.w("API-Warning", w.getWarning() + ": " + w.getDescription());
 		}
 		return r;
 	}
