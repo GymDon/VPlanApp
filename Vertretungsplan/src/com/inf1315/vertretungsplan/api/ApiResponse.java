@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.util.Log;
 
 public class ApiResponse {
 	private ApiResult result;
@@ -19,6 +22,8 @@ public class ApiResponse {
 	private String hash;
 	private boolean changed;
 	private boolean authorized;
+	private String developer;
+	private String language;
 	private List<ApiWarning> warnings;
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
@@ -54,6 +59,10 @@ public class ApiResponse {
 		hash = obj.getString("hash");
 		changed = obj.getBoolean("changed");
 		authorized = obj.getBoolean("authorized");
+		developer = obj.optString("developer");
+		if(developer != null)
+			Log.i("ApiResponse", "Developer: " + developer);
+		language = obj.optString("language");
 		try {
 			JSONObject par = obj.getJSONObject("params");
 			for (Iterator<?> i = par.keys(); i.hasNext();) {
@@ -107,7 +116,23 @@ public class ApiResponse {
 		return changed;
 	}
 
-	public boolean getAuthorized() {
+	public boolean isAuthorized() {
 		return authorized;
+	}
+	
+	public boolean isDeveloper() {
+		return developer != null;
+	}
+
+	public String getDeveloper() {
+		return developer;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+	
+	public Locale getLocaleForLanguage() {
+		return new Locale(language);
 	}
 }

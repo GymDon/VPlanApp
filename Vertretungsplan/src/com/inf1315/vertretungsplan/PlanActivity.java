@@ -18,6 +18,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -77,6 +78,7 @@ public class PlanActivity extends FragmentActivity implements
 		getPreferences();
 
 		username = getIntent().getStringExtra("username");
+		Log.i("PlanActivity", "User logged in: " + username);
 		password = getIntent().getStringExtra("password");
 		loadData(username, password);
 	}
@@ -119,6 +121,7 @@ public class PlanActivity extends FragmentActivity implements
 			intent.putExtra("password", password);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
+			Log.w("LoadingData", "No network and no chache");
 			return;
 		} else if (!isNetworkAvailable()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -129,6 +132,7 @@ public class PlanActivity extends FragmentActivity implements
 					+ API.DATA.timeString);
 			builder.setPositiveButton(R.string.ok, null);
 			builder.show();
+			Log.i("LoadingData", "No network: loading chache");
 
 			dataChanged();
 
@@ -138,6 +142,7 @@ public class PlanActivity extends FragmentActivity implements
 		loadingDialog = ProgressDialog.show(this, "",
 				getText(R.string.loading_plan), true);
 		loadingDialog.show();
+		Log.i("LoadingData", "Loading new data from remote");
 
 		new AllAsyncTask(this, username, password).execute();
 	}

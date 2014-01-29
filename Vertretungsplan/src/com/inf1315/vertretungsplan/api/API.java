@@ -18,7 +18,7 @@ public class API {
 	/**
 	 * The standard url: {@value #STANDARD_URL}
 	 */
-	public static final String STANDARD_URL = "http://skirising.no-ip.org/VPlanApp/api/";
+	public static final String STANDARD_URL = "https://pvpctutorials.de/VPlanApp/api/";
 
 	public static API STANDARD_API;
 	public static API LOCAL_DEBUG_API;
