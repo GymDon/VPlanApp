@@ -52,6 +52,31 @@ public class PlanActivity extends FragmentActivity implements
 		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
 				API.DATA.tomorrowReplacementsList);
 
+		gson = new Gson();
+		getPreferences();
+
+		username = getIntent().getStringExtra("username");
+		Log.i("PlanActivity", "User logged in: " + username);
+		password = getIntent().getStringExtra("password");
+		loadData(username, password);
+	}
+
+	@Override
+	public void onResume() {
+
+		super.onResume();
+		getPreferences();
+		if (API.reload)
+			loadData(username, password);
+	}
+
+	private void dataChanged() {
+
+		todayReplacements = new VertretungsplanAdapter(this, 0,
+				API.DATA.todayReplacementsList);
+		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
+				API.DATA.tomorrowReplacementsList);
+
 		// Create the adapter that will return a fragment for each of
 		// the three
 		// primary sections of the app.
@@ -70,34 +95,9 @@ public class PlanActivity extends FragmentActivity implements
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
+						getActionBar().setSelectedNavigationItem(position);
 					}
 				});
-
-		gson = new Gson();
-		getPreferences();
-
-		username = getIntent().getStringExtra("username");
-		Log.i("PlanActivity", "User logged in: " + username);
-		password = getIntent().getStringExtra("password");
-		loadData(username, password);
-	}
-
-	@Override
-	public void onResume() {
-
-		super.onResume();
-		getPreferences();
-		if(API.reload)
-			loadData(username, password);
-	}
-
-	private void dataChanged() {
-			
-		todayReplacements = new VertretungsplanAdapter(this, 0,
-				API.DATA.todayReplacementsList);
-		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
-				API.DATA.tomorrowReplacementsList);
 
 		todayReplacements.notifyDataSetChanged();
 		tomorrowReplacements.notifyDataSetChanged();
