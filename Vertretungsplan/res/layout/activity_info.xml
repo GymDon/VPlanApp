@@ -15,6 +15,7 @@
         android:text="@string/info_message1" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
@@ -22,5 +23,15 @@
         android:layout_marginTop="21dp"
         android:text="@string/info_message2"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignParentBottom="true"
+        android:text="@string/github"
+        android:textSize="12sp" />
+
 
 </RelativeLayout>

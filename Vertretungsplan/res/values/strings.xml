@@ -39,5 +39,6 @@
 	<string name="old_data_message">Dieser alte Stand der Daten ist von: </string>
 	<string name="no_internet_connection_title">Keine Internetverbindung</string>
 	<string name="usernanme">Benutzername der Daten : </string>
-
+	<string name="github">https://github.com/skyrising/VPlanApp</string>
+	
 </resources>
