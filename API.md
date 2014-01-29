@@ -76,22 +76,78 @@ For other actions `result` immediately contains the requested informatin corresp
 * `auth`: [Auth](#auth)
 
 ####User Info####
-Coming soon
+The user info is a JSON-Object consisting of:
+* `user`: the username
+* `uid`: the user id
+* `gid`: the group id of the main group
+* `group`: the main group
+* `groups`: array containing all the groups a user is in
+* `fullname`: the full name (normally first and last name) of the user
+* `student`: boolean indicating if the user is not in the *teachers* group
+* `type`: either 'student' or 'teacher'
 
 ####Replacements####
-Coming soon
+The array of replacements contains objects for every replacement.  
+These look like this for students:
+* `id`
+* `grade_pre`: the non-numeric first part of the class
+* `grade`: the numeric part of the class
+* `grade_last`: the non-numeric last part of the class
+* `lesson`
+* `teacher`: the short-code of the original teacher
+* `replacement`: the short-code of the replaceing teacher or empty
+* `room`
+* `comment`
+* `timestamp`: the timestamp of the day the replacement occurs
+* `timestamp_update`: the timestamp of the last update
+* `addition`: boolean indicating if the replacement was just added
+* `teacher_long`: the full name of the original teacher
+* `is_today`: boolean indicating if the replacement is for today
+* `teacher_change`: boolean indicating if the teacher is changed as a result of this replacement
+
+And like this for teachers:
+* `id`
+* `short`: the short-code of the selected teacher
+* `teacher`: full name of the specified teacher
+* `lesson`
+* `grade`: *grade([short-code of original teacher])*
+* `room`
+* `comment`
+* `timestamp`: the timestamp of the day the replacement occurs
+* `timestamp_update`: the timestamp of the last update
+* `addition`: boolean indicating if the replacement was just added
+* `is_today`: boolean indicating if the replacement is for today
 
 ####Tickers####
-Coming soon
+* `id`
+* `automatic`: boolean indicationg if this ticker was generated from a note (see [Others](#others))
+* `value`: the content of the ticker
+* `from_stamp`: the earliest timestamp this ticker should occur
+* `to_stamp`: the last timestamp this ticker should occur
+* `order`: if multiple tickers are active at the same time this specifies the order
 
 ####Pages####
-Coming soon
+* `id`
+* `ordern_num`: ask [@flx5](https://github.com/flx5)
+* `content`: the content of the page (HTML)
+* `timestamp_from`: the earliest timestamp this page should occur
+* `timestamp_end`: the last timestamp this page should occur
+* `pupils`: if this page should be displayed for pupils
+* `teachers`: if this page should be displayed for teachers
 
 ####Others####
-Coming soon
+* `id`
+* `type`: one of t=*teacher*, g=*grade*, r=*room*, s=*school*, a=*supervisor*, n=*note* (are converted to tickers automatically)
+* `name`: the name of the subject
+* `comment`
+* `timestamp`: the timestamp of the day this occurs
+* `timestamp_update`: the timestamp of the last update
+* `addition`: boolean indicating if this was just added
+* `is_today`: boolean indicating if this is for today
 
 ####Auth####
-Coming soon
+The result is a boolean: *true* if logging in was successful, *false* otherwise  
+In case of *false* more information is found in the [warnings](#warning)
 
 ---
 
