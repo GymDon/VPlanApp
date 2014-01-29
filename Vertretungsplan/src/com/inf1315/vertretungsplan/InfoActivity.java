@@ -1,9 +1,7 @@
 package com.inf1315.vertretungsplan;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
