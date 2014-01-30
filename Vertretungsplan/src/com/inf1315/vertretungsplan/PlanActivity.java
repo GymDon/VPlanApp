@@ -47,10 +47,8 @@ public class PlanActivity extends FragmentActivity implements
 		// Show the Up button in the action bar.
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		todayReplacements = new VertretungsplanAdapter(this, 0,
-				API.DATA.todayReplacementsList);
-		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
-				API.DATA.tomorrowReplacementsList);
+		todayReplacements = new VertretungsplanAdapter(this, true);
+		tomorrowReplacements = new VertretungsplanAdapter(this, false);
 
 		gson = new Gson();
 		getPreferences();
@@ -71,11 +69,6 @@ public class PlanActivity extends FragmentActivity implements
 	}
 
 	private void dataChanged() {
-
-		todayReplacements = new VertretungsplanAdapter(this, 0,
-				API.DATA.todayReplacementsList);
-		tomorrowReplacements = new VertretungsplanAdapter(this, 0,
-				API.DATA.tomorrowReplacementsList);
 
 		// Create the adapter that will return a fragment for each of
 		// the three

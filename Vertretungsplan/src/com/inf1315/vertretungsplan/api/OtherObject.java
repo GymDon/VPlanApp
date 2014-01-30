@@ -3,7 +3,7 @@ package com.inf1315.vertretungsplan.api;
 import android.annotation.SuppressLint;
 import org.json.*;
 
-public class OtherObject extends ApiResult {
+public class OtherObject extends ApiResult implements Comparable<OtherObject> {
 	public final int id;
 	public final OtherType type;
 	public final String name;
@@ -28,13 +28,15 @@ public class OtherObject extends ApiResult {
 	}
 
 	public static enum OtherType {
-		T("teacher"), G("grade"), R("room"), S("school"), A("supervisor"), N("note");
-		
+		T("Abwesenheit Lehrer"), G("Abwesenheit Klassen"), R("Belegte Räume"), S(
+				"Schule"), A("Aufsicht"), N("Notizen");
+
 		private String fullname;
+
 		private OtherType(String fullname) {
 			this.fullname = fullname;
 		}
-		
+
 		@Override
 		public String toString() {
 			return fullname;
@@ -95,6 +97,12 @@ public class OtherObject extends ApiResult {
 		if (type != other.type)
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(OtherObject o) {
+		return this.type.ordinal() < o.type.ordinal() ? -1 : this.type
+				.ordinal() > o.type.ordinal() ? 1 : this.id - o.id;
 	}
 
 }

@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 public class PlanFragment extends Fragment {
 
@@ -24,7 +24,7 @@ public class PlanFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_plan, container,
 				false);
 
-		ListView lv = (ListView) rootView.findViewById(R.id.plan_ListView);
+		ExpandableListView lv = (ExpandableListView) rootView.findViewById(R.id.plan_ListView);
 		PlanActivity pa = (PlanActivity) getActivity();
 		VertretungsplanAdapter va = argToday ? pa.todayReplacements
 				: pa.tomorrowReplacements;
