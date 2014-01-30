@@ -41,5 +41,7 @@
 	<string name="usernanme">Benutzername der Daten : </string>
 	<string name="github">https://github.com/skyrising/VPlanApp</string>
 	<string name="others">Andere Änderungen</string>
+	<string name="whatsnew">Neuerungen</string>
+	<string name="whatsnewNews">Neu in dieser Version: Das hier.</string>
 	
 </resources>
