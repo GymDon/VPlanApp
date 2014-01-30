@@ -34,7 +34,8 @@ public class PlanActivity extends FragmentActivity implements
 	private String username;
 	private String password;
 	private Gson gson;
-
+	private int c = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -208,7 +209,15 @@ public class PlanActivity extends FragmentActivity implements
 			}
 			return true;
 		case R.id.action_show_ticker:
-			showTicker();
+			c++
+			if(c>4)
+			{
+				startActivity(startSettings);
+			}
+			else
+			{
+				showTicker();
+			}
 			return true;
 		case R.id.action_reload_plan:
 			loadData(username, password);
