@@ -24,7 +24,6 @@ public class LoginActivity extends Activity {
 	private EditText usernameEditText;
 	private EditText passwordEditText;
 	private static boolean isFirstLaunch = true;
-	final static int appVersion = 2;
 
 	private void runOnFirstLaunch() {
 		SharedPreferences sharedPrefs = getSharedPreferences("data",
@@ -54,8 +53,21 @@ public class LoginActivity extends Activity {
 		SharedPreferences sharedPrefs = getSharedPreferences("data",
 				MODE_PRIVATE);
 		int appVersionPref = sharedPrefs.getInt("appVersionPref", 0);
+		int appVersion;
+		try {
+			appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+		} catch (NameNotFoundException e) {
+			appVersion = -1;
+			e.printStackTrace();
+		}
 		
 		if(appVersionPref != appVersion) {
+			
+			if(appVersion == -1) {
+				
+				return;
+				
+			}
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.whatsnewNews).setTitle(R.string.whatsnew);
