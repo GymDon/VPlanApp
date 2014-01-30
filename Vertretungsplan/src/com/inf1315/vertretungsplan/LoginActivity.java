@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -23,6 +24,7 @@ public class LoginActivity extends Activity {
 	private EditText usernameEditText;
 	private EditText passwordEditText;
 	private static boolean isFirstLaunch = true;
+	final static int appVersion = 2;
 
 	private void runOnFirstLaunch() {
 		SharedPreferences sharedPrefs = getSharedPreferences("data",
@@ -48,6 +50,34 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		SharedPreferences sharedPrefs = getSharedPreferences("data",
+				MODE_PRIVATE);
+		int appVersionPref = sharedPrefs.getInt("appVersionPref", 0);
+		
+		if(appVersionPref != appVersion) {
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.whatsnewNews).setTitle(R.string.whatsnew);
+			builder.setPositiveButton(R.string.ok,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+
+						}
+
+					});
+
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			
+			SharedPreferences sharedP = getSharedPreferences("data", MODE_PRIVATE);
+			SharedPreferences.Editor spe = sharedP.edit();
+			spe.putInt("appVersionPref", appVersion);
+			spe.apply();
+			
+		}
+		
 		if (isFirstLaunch)
 			runOnFirstLaunch();
 
