@@ -1,9 +1,11 @@
 package com.inf1315.vertretungsplan;
 
-import com.google.gson.Gson;
-import com.inf1315.vertretungsplan.api.API;
-import com.inf1315.vertretungsplan.api.AllObject;
+import java.io.IOException;
 
+import com.google.gson.Gson;
+import com.inf1315.vertretungsplan.api.*;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,6 +27,8 @@ public class LoginActivity extends Activity {
 	private EditText usernameEditText;
 	private EditText passwordEditText;
 	private static boolean isFirstLaunch = true;
+	private int appVersion;
+	private int prevAppVersion;
 
 	private void runOnFirstLaunch() {
 		SharedPreferences sharedPrefs = getSharedPreferences("data",
@@ -52,46 +57,27 @@ public class LoginActivity extends Activity {
 		
 		SharedPreferences sharedPrefs = getSharedPreferences("data",
 				MODE_PRIVATE);
-		int appVersionPref = sharedPrefs.getInt("appVersionPref", 0);
-		int appVersion;
+		prevAppVersion = sharedPrefs.getInt("appVersionPref", 0);
 		try {
 			appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
 		} catch (NameNotFoundException e) {
 			appVersion = -1;
 			e.printStackTrace();
 		}
+		if (isFirstLaunch)
+			runOnFirstLaunch();
 		
-		if(appVersionPref != appVersion) {
-			
-			if(appVersion == -1) {
-				
+		if(prevAppVersion != appVersion) {
+			if(appVersion == -1) 
 				return;
-				
-			}
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.whatsnewNews).setTitle(R.string.whatsnew);
-			builder.setPositiveButton(R.string.ok,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-
-						}
-
-					});
-
-			AlertDialog dialog = builder.create();
-			dialog.show();
+			showChangelog(prevAppVersion, appVersion);
 			
 			SharedPreferences sharedP = getSharedPreferences("data", MODE_PRIVATE);
 			SharedPreferences.Editor spe = sharedP.edit();
 			spe.putInt("appVersionPref", appVersion);
 			spe.apply();
-			
 		}
 		
-		if (isFirstLaunch)
-			runOnFirstLaunch();
 
 		setContentView(R.layout.activity_login);
 
@@ -124,6 +110,59 @@ public class LoginActivity extends Activity {
 
 	}
 
+	public void showChangelog(final int from, final int to) {
+		new AsyncTask<Object, Object, Commit[]>() {
+			@Override
+			protected Commit[] doInBackground(Object... params) {
+				try {
+					return ((ApiResultArray) API.STANDARD_API.request(
+							ApiAction.CHANGELOG,
+							"from="+ (from > 0 ? Commit.versionTags.get(from) : "start"),
+							"to=" + (to > 0 ? Commit.versionTags.get(to) : "end"))
+							.getResult()).getArray(new Commit[0]);
+				} catch (IOException e) {
+					return new Commit[0];
+				}
+			}
+			
+			@Override
+			protected void onPostExecute(Commit[] result) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+				
+				StringBuilder message = new StringBuilder("<h2>" + LoginActivity.this.getText(R.string.whatsnewNews) + "</h2>");
+				boolean hasUl = false;
+				for(Commit commit : result)
+				{
+					if(commit.tag != null) {
+						message.append(hasUl ? "</ul>" : "").append("<h3>Version ").append(commit.tag.name).append(":</h3><ul>");
+						hasUl = true;
+					}
+					if(!hasUl) {
+						message.append("<ul>");
+						hasUl = true;
+					}
+					message.append("<li>").append(commit.comment.replace("\n", "<br />")).append("</li>");
+				}
+				message.append("</ul>");
+				//Log.d("Html", message.toString());
+				WebView webView = new WebView(LoginActivity.this);
+				webView.loadDataWithBaseURL(null, message.toString(), "text/html", "UTF-8", null);
+				builder.setView(webView);
+				builder.setTitle(R.string.whatsnew);
+				builder.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+
+							}
+						});
+
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			}
+		}.execute();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is
@@ -142,6 +181,9 @@ public class LoginActivity extends Activity {
 		case R.id.action_info:
 			Intent startInfo = new Intent(this, InfoActivity.class);
 			startActivity(startInfo);
+			return true;
+		case R.id.action_changelog:
+			showChangelog(appVersion - 1, appVersion);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

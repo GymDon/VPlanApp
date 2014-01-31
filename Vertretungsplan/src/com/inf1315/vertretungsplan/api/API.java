@@ -114,9 +114,10 @@ public class API {
 			params.put("os", "Android " + Build.VERSION.RELEASE + " ("
 					+ Build.DISPLAY + ")");
 			params.put("app", APP_VERSION);
-			boolean wifi;
-			boolean adb;
+			boolean wifi = false;
+			boolean adb = false;
 			boolean data;
+			if(CONTEXT != null)
 			if (Build.VERSION.SDK_INT < 17) {
 				wifi = Settings.Secure.getInt(CONTEXT.getContentResolver(),
 						Settings.Secure.WIFI_ON) != 0;
@@ -163,7 +164,7 @@ public class API {
 				}
 			r = new ApiResponse(e);
 		}
-		if(r.getWarnings().isEmpty())
+		if(r.getWarnings() == null || r.getWarnings().isEmpty())
 			Log.i("API-Warning", "No Warnings");
 		else
 		for (ApiWarning w : r.getWarnings()) {
@@ -198,6 +199,8 @@ public class API {
 			url = new URL(url.toExternalForm() + "?" + get);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod(requestMethod);
+		conn.setReadTimeout(2000);
+
 		conn.connect();
 		if (requestMethod.equals("POST"))
 			conn.getOutputStream().write(get.toString().getBytes());
@@ -209,7 +212,12 @@ public class API {
 			sb.append(line).append('\n');
 		reader.close();
 		conn.disconnect();
-		return new JSONObject(sb.toString());
+		try {
+			return new JSONObject(sb.toString());
+		} catch (JSONException e) {
+			Log.i("Response", sb.toString());
+			throw e;
+		}
 	}
 
 	private static Map<ApiAction, Class<? extends ApiResult>> actionToClassMap;
@@ -233,5 +241,8 @@ public class API {
 
 		actionToClassMap.put(ApiAction.ALL, AllObject.class);
 		actionIsArrayMap.put(ApiAction.ALL, false);
+		
+		actionToClassMap.put(ApiAction.CHANGELOG, Commit.class);
+		actionIsArrayMap.put(ApiAction.CHANGELOG, true);
 	}
 }

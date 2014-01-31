@@ -13,4 +13,9 @@
       android:title="@string/action_info"/>
 
 
+      <item 
+      android:id="@+id/action_changelog"
+      android:orderInCategory="200"
+      android:showAsAction="never"
+      android:title="@string/action_changelog"/>
 </menu>
