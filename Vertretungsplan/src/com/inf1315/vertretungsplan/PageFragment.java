@@ -5,12 +5,10 @@ import com.inf1315.vertretungsplan.api.PageObject;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.webkit.WebView;
 
 public class PageFragment extends Fragment {
 
@@ -29,11 +27,9 @@ public class PageFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_page, container,
 				false);
 
-		TextView tv = (TextView) rootView.findViewById(R.id.page_TextView);
+		WebView web = (WebView) rootView.findViewById(R.id.page_WebView);
 		PageObject po = API.DATA.pages.get(siteNumber);
-		Spanned sp = Html.fromHtml(po.content);
-
-		tv.setText(sp);
+		web.loadDataWithBaseURL(null, po.content, "text/html", "UTF-8", null);
 
 		return rootView;
 	}
