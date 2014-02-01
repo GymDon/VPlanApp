@@ -183,7 +183,7 @@ public class LoginActivity extends Activity {
 			startActivity(startInfo);
 			return true;
 		case R.id.action_changelog:
-			showChangelog(appVersion - 1, appVersion);
+			showChangelog(appVersion - 1, BuildConfig.DEBUG ? -1 : appVersion);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
