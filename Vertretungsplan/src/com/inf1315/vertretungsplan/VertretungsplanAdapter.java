@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -181,6 +182,11 @@ public class VertretungsplanAdapter extends BaseExpandableListAdapter {
 		} else {
 			RelativeLayout group = new RelativeLayout(context);
 			group.setPadding(10, 4, 8, 4);
+
+			ImageView iv = new ImageView(context);
+			iv.setImageResource(isExpanded ? R.drawable.ic_action_collapse
+					: R.drawable.ic_action_expand);
+
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					RelativeLayout.LayoutParams.WRAP_CONTENT,
 					RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -190,6 +196,7 @@ public class VertretungsplanAdapter extends BaseExpandableListAdapter {
 			tv.setText(R.string.others);
 			tv.setTextSize(20);
 
+			group.addView(iv);
 			group.addView(tv, params);
 
 			return group;
