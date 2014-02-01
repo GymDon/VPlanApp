@@ -31,6 +31,8 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignParentBottom="true"
         android:text="@string/github"
+        android:autoLink="web"
+        android:linksClickable="true"
         android:textSize="12sp" />
 
 
