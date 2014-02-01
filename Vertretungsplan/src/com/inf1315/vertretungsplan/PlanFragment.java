@@ -29,6 +29,8 @@ public class PlanFragment extends Fragment {
 		VertretungsplanAdapter va = argToday ? pa.todayReplacements
 				: pa.tomorrowReplacements;
 		lv.setAdapter(va);
+		if (va.getGroupCount() == 1)
+			lv.expandGroup(0);
 
 		return rootView;
 	}
