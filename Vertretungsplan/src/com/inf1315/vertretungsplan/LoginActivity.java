@@ -30,11 +30,33 @@ public class LoginActivity extends Activity {
 	private int appVersion;
 	private int prevAppVersion;
 
-	private void runOnFirstLaunch() {
+	private boolean runOnFirstLaunch() {
+		LoginActivity.isFirstLaunch = false;
+
 		SharedPreferences sharedPrefs = getSharedPreferences("data",
 				MODE_PRIVATE);
+
 		String json = sharedPrefs.getString("data", "");
-		API.DATA = "".equals(json) ? new AllObject() : new Gson().fromJson(json, AllObject.class);
+		API.DATA = "".equals(json) ? new AllObject() : new Gson().fromJson(
+				json, AllObject.class);
+
+		prevAppVersion = sharedPrefs.getInt("appVersionPref", 0);
+		try {
+			appVersion = getPackageManager()
+					.getPackageInfo(getPackageName(), 0).versionCode;
+		} catch (NameNotFoundException e) {
+			appVersion = -1;
+			e.printStackTrace();
+		}
+		//TODO alcros test something
+		if (prevAppVersion != appVersion) {
+			if (appVersion == -1)
+				return false;
+			showChangelog(prevAppVersion, appVersion);
+			SharedPreferences.Editor spe = sharedPrefs.edit();
+			spe.putInt("appVersionPref", appVersion);
+			spe.apply();
+		}
 
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 
@@ -48,36 +70,24 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		LoginActivity.isFirstLaunch = false;
+		long currentTimestamp = System.currentTimeMillis() / 1000L;
+		if (!"".equals(API.DATA.token)
+				&& API.DATA.timestamp + 86400L > currentTimestamp) {
+			Intent intent = new Intent(this, PlanActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		SharedPreferences sharedPrefs = getSharedPreferences("data",
-				MODE_PRIVATE);
-		prevAppVersion = sharedPrefs.getInt("appVersionPref", 0);
-		try {
-			appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-		} catch (NameNotFoundException e) {
-			appVersion = -1;
-			e.printStackTrace();
-		}
+
 		if (isFirstLaunch)
-			runOnFirstLaunch();
-		
-		if(prevAppVersion != appVersion) {
-			if(appVersion == -1) 
+			if (runOnFirstLaunch())
 				return;
-			showChangelog(prevAppVersion, appVersion);
-			
-			SharedPreferences sharedP = getSharedPreferences("data", MODE_PRIVATE);
-			SharedPreferences.Editor spe = sharedP.edit();
-			spe.putInt("appVersionPref", appVersion);
-			spe.apply();
-		}
-		
 
 		setContentView(R.layout.activity_login);
 
@@ -107,7 +117,6 @@ public class LoginActivity extends Activity {
 			passwordEditText.setText(password);
 
 		adb.show();
-
 	}
 
 	public void showChangelog(final int from, final int to) {
@@ -117,36 +126,47 @@ public class LoginActivity extends Activity {
 				try {
 					return ((ApiResultArray) API.STANDARD_API.request(
 							ApiAction.CHANGELOG,
-							"from="+ (from > 0 ? Commit.versionTags.get(from) : "start"),
-							"to=" + (to > 0 ? Commit.versionTags.get(to) : "end"))
-							.getResult()).getArray(new Commit[0]);
+							"from="
+									+ (from > 0 ? Commit.versionTags.get(from)
+											: "start"),
+							"to="
+									+ (to > 0 ? Commit.versionTags.get(to)
+											: "end")).getResult())
+							.getArray(new Commit[0]);
 				} catch (IOException e) {
 					return new Commit[0];
 				}
 			}
-			
+
 			@Override
 			protected void onPostExecute(Commit[] result) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-				
-				StringBuilder message = new StringBuilder("<h2>" + LoginActivity.this.getText(R.string.whatsnewNews) + "</h2>");
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						LoginActivity.this);
+
+				StringBuilder message = new StringBuilder("<h2>"
+						+ LoginActivity.this.getText(R.string.whatsnewNews)
+						+ "</h2>");
 				boolean hasUl = false;
-				for(Commit commit : result)
-				{
-					if(commit.tag != null) {
-						message.append(hasUl ? "</ul>" : "").append("<h3>Version ").append(commit.tag.name).append(":</h3><ul>");
+				for (Commit commit : result) {
+					if (commit.tag != null) {
+						message.append(hasUl ? "</ul>" : "")
+								.append("<h3>Version ").append(commit.tag.name)
+								.append(":</h3><ul>");
 						hasUl = true;
 					}
-					if(!hasUl) {
+					if (!hasUl) {
 						message.append("<ul>");
 						hasUl = true;
 					}
-					message.append("<li>").append(commit.comment.replace("\n", "<br />")).append("</li>");
+					message.append("<li>")
+							.append(commit.comment.replace("\n", "<br />"))
+							.append("</li>");
 				}
 				message.append("</ul>");
-				//Log.d("Html", message.toString());
+				// Log.d("Html", message.toString());
 				WebView webView = new WebView(LoginActivity.this);
-				webView.loadDataWithBaseURL(null, message.toString(), "text/html", "UTF-8", null);
+				webView.loadDataWithBaseURL(null, message.toString(),
+						"text/html", "UTF-8", null);
 				builder.setView(webView);
 				builder.setTitle(R.string.whatsnew);
 				builder.setPositiveButton(R.string.ok,

@@ -24,6 +24,7 @@ public class AllObject extends ApiResult {
 	public String hash = "";
 	public String timeString = "";
 	public long timestamp;
+	public String token = "";
 
 	public AllObject() {
 	}
@@ -32,7 +33,7 @@ public class AllObject extends ApiResult {
 	public AllObject(JSONObject json) throws JSONException {
 		userInfo = new UserInfo(json.getJSONObject("user"));
 		API.DATA.userInfo = userInfo;
-		
+
 		TickerObject[] ticker = new ApiResultArray(json.getJSONArray("ticker"),
 				TickerObject.class).getArray(new TickerObject[0]);
 		tickers = Arrays.asList(ticker);
@@ -40,7 +41,7 @@ public class AllObject extends ApiResult {
 		ReplacementObject[] replacementsArray = new ApiResultArray(
 				json.getJSONArray("replacements"), ReplacementObject.class)
 				.getArray(new ReplacementObject[0]);
-		List<ReplacementObject> replacements = Arrays.asList(replacementsArray);		
+		List<ReplacementObject> replacements = Arrays.asList(replacementsArray);
 		todayReplacementsList.clear();
 		tomorrowReplacementsList.clear();
 		for (ReplacementObject ro : replacements) {
@@ -69,10 +70,10 @@ public class AllObject extends ApiResult {
 			else
 				tomorrowOthers.add(oo);
 		}
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		timeString = sdf.format(new Date());
-		
-		timestamp = System.currentTimeMillis()/1000L;
+
+		timestamp = System.currentTimeMillis() / 1000L;
 	}
 }

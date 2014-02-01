@@ -11,6 +11,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 	private PlanActivity plan;
 	private String username;
 	private String password;
+	private String token;
 
 	AllAsyncTask(PlanActivity plan, String username, String password) {
 		this.plan = plan;
@@ -18,20 +19,33 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		this.password = password;
 	}
 
+	AllAsyncTask(PlanActivity plan) {
+		this.plan = plan;
+		this.username = API.DATA.userInfo.username;
+		this.token = API.DATA.token;
+	}
+
 	@Override
 	protected AllObject doInBackground(Object... args) {
 		try {
-			ApiResponse resp = API.STANDARD_API.request(ApiAction.ALL, "u="
-					+ username, "pass=" + password);
+			ApiResponse resp;
+			if (token == null)
+				resp = API.STANDARD_API.request(ApiAction.ALL, "u=" + username,
+						"pass=" + password);
+			else
+				resp = API.STANDARD_API.request(ApiAction.ALL, "u=" + username,
+						"sync=true", "token=" + token);
 			if (!resp.getSuccess()) {
 				Log.w("All Loader", "Loading unsuccesfull");
 				return null;
 			}
+			API.DATA.token = resp.getToken();
 			if (!resp.getChanged())
 				return API.DATA;
-			
+
 			AllObject ao = (AllObject) resp.getResult();
 			ao.hash = resp.getHash();
+			ao.token = resp.getToken();
 			return ao;
 
 		} catch (Exception e) {

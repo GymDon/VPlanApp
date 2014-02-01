@@ -56,7 +56,7 @@ public class PlanActivity extends FragmentActivity implements
 		username = getIntent().getStringExtra("username");
 		Log.i("PlanActivity", "User logged in: " + username);
 		password = getIntent().getStringExtra("password");
-		loadData(username, password);
+		loadData();
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class PlanActivity extends FragmentActivity implements
 		super.onResume();
 		getPreferences();
 		if (API.reload)
-			loadData(username, password);
+			loadData();
 	}
 
 	private void dataChanged() {
@@ -106,7 +106,7 @@ public class PlanActivity extends FragmentActivity implements
 		showTicker();
 	}
 
-	private void loadData(String username, String password) {
+	private void loadData() {
 		API.reload = false;
 		if (!isNetworkAvailable() && "".equals(API.DATA.hash)) {
 			Intent intent = new Intent(this, LoginActivity.class);
@@ -137,7 +137,10 @@ public class PlanActivity extends FragmentActivity implements
 		loadingDialog.show();
 		Log.i("LoadingData", "Loading new data from remote");
 
-		new AllAsyncTask(this, username, password).execute();
+		if (username == null || password == null)
+			new AllAsyncTask(this).execute();
+		else
+			new AllAsyncTask(this, username, password).execute();
 	}
 
 	private boolean isNetworkAvailable() {
@@ -171,7 +174,8 @@ public class PlanActivity extends FragmentActivity implements
 
 		}
 	}
-
+	
+	//TODO do logout
 	private void logoutFromPlan() {
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setTitle(R.string.logout);
@@ -209,7 +213,7 @@ public class PlanActivity extends FragmentActivity implements
 			showTicker();
 			return true;
 		case R.id.action_reload_plan:
-			loadData(username, password);
+			loadData();
 			return true;
 		case R.id.action_settings:
 			Intent startSettings = new Intent(this, SettingsActivity.class);

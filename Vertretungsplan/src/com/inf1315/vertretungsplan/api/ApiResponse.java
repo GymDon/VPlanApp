@@ -25,6 +25,7 @@ public class ApiResponse {
 	private String developer;
 	private String language;
 	private List<ApiWarning> warnings;
+	private String token;
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
 			boolean array) throws JSONException {
@@ -60,7 +61,8 @@ public class ApiResponse {
 		changed = obj.getBoolean("changed");
 		authorized = obj.getBoolean("authorized");
 		developer = obj.optString("developer");
-		if(developer != null)
+		token = obj.getString("token");
+		if (developer != null)
 			Log.i("ApiResponse", "Developer: " + developer);
 		language = obj.optString("language");
 		try {
@@ -90,9 +92,8 @@ public class ApiResponse {
 	public ApiResult getResult() {
 		return result;
 	}
-	
-	public List<ApiWarning> getWarnings()
-	{
+
+	public List<ApiWarning> getWarnings() {
 		return warnings;
 	}
 
@@ -119,7 +120,7 @@ public class ApiResponse {
 	public boolean isAuthorized() {
 		return authorized;
 	}
-	
+
 	public boolean isDeveloper() {
 		return developer != null;
 	}
@@ -131,8 +132,12 @@ public class ApiResponse {
 	public String getLanguage() {
 		return language;
 	}
-	
+
 	public Locale getLocaleForLanguage() {
 		return new Locale(language);
+	}
+
+	public String getToken() {
+		return token;
 	}
 }
