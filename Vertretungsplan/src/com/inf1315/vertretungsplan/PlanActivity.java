@@ -8,13 +8,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
@@ -64,8 +61,10 @@ public class PlanActivity extends FragmentActivity implements
 
 		super.onResume();
 		getPreferences();
-		if (API.reload)
+		if (API.reload) {
+			planPagerAdapter.notifyDataSetChanged();
 			loadData();
+		}
 	}
 
 	private void dataChanged() {
@@ -108,7 +107,7 @@ public class PlanActivity extends FragmentActivity implements
 
 	private void loadData() {
 		API.reload = false;
-		if (!isNetworkAvailable() && "".equals(API.DATA.hash)) {
+		if (!API.isNetworkAvailable() && "".equals(API.DATA.hash)) {
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("error", "NoInternetConnection");
 			intent.putExtra("password", password);
@@ -116,7 +115,7 @@ public class PlanActivity extends FragmentActivity implements
 			startActivity(intent);
 			Log.w("LoadingData", "No network and no chache");
 			return;
-		} else if (!isNetworkAvailable()) {
+		} else if (!API.isNetworkAvailable()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.no_internet_connection_title);
 			builder.setMessage(getText(R.string.no_internet_connection) + "\n"
@@ -141,12 +140,6 @@ public class PlanActivity extends FragmentActivity implements
 			new AllAsyncTask(this).execute();
 		else
 			new AllAsyncTask(this, username, password).execute();
-	}
-
-	private boolean isNetworkAvailable() {
-		ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = conMan.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	void finishedLoading() {

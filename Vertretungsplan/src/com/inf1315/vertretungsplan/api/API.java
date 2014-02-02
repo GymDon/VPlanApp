@@ -239,6 +239,12 @@ public class API {
 		spe.apply();
 	}
 
+	public static boolean isNetworkAvailable() {
+		ConnectivityManager conMan = (ConnectivityManager) CONTEXT.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = conMan.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
 	public static void showNotification(AllObject o1, AllObject o2) {
 		boolean[] changed = new boolean[4];
 		for (int i = 0; i < changed.length; i++)
