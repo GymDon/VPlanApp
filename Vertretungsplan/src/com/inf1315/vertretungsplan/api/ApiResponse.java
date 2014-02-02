@@ -29,11 +29,9 @@ public class ApiResponse {
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
 			boolean array) throws JSONException {
+		if(!obj.isNull("result"))
 		if (!array) {
 			try {
-				if (obj.isNull("result"))
-					result = null;
-				else
 					result = resultType.getConstructor(JSONObject.class)
 							.newInstance(obj.getJSONObject("result"));
 			} catch (InstantiationException e) {
@@ -48,9 +46,6 @@ public class ApiResponse {
 				e.printStackTrace();
 			}
 		} else {
-			if (obj.isNull("result"))
-				result = null;
-			else
 				result = new ApiResultArray(obj.getJSONArray("result"),
 						resultType);
 		}
@@ -61,7 +56,10 @@ public class ApiResponse {
 		changed = obj.getBoolean("changed");
 		authorized = obj.getBoolean("authorized");
 		developer = obj.optString("developer");
-		token = obj.getString("token");
+		if(obj.has("token")) {
+			token = obj.getString("token");
+			API.DATA.token = token;
+		}
 		if (developer != null)
 			Log.i("ApiResponse", "Developer: " + developer);
 		language = obj.optString("language");
