@@ -303,8 +303,10 @@ public class API {
 		NotificationManager nm = (NotificationManager) CONTEXT
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification n = ncb.build();
-		n.defaults |= Notification.DEFAULT_VIBRATE;
-		nm.notify((int) Math.random()*10000, n);
+		if (CONTEXT.getSharedPreferences("com.inf1315.vertretungsplan_preferences", Context.MODE_PRIVATE)
+				.getBoolean("pref_vibrate", true))
+			n.defaults |= Notification.DEFAULT_VIBRATE;
+		nm.notify((int) Math.random() * 10000, n);
 	}
 
 	private static Map<ApiAction, Class<? extends ApiResult>> actionToClassMap;

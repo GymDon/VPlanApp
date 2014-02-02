@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    
-    <PreferenceCategory
-        android:title="@string/ticker">
-    
-    <CheckBoxPreference
-        android:key="pref_toast"
-        android:title="@string/pref_toast"
-        android:defaultValue="true" />
-    
-    </PreferenceCategory>
-    
-    <PreferenceCategory
-        android:title="@string/logout">
-        
+
+    <PreferenceCategory android:title="@string/ticker" >
+
         <CheckBoxPreference
-            android:key="pref_logout"
-            android:title="@string/pref_logout"
-            android:defaultValue="true"  />
-        
+            android:defaultValue="true"
+            android:key="pref_toast"
+            android:title="@string/pref_toast" />
     </PreferenceCategory>
-    
-    
-    <PreferenceCategory
-        android:title="@string/advanced">
-        
+
+    <PreferenceCategory android:title="@string/logout" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_logout"
+            android:title="@string/pref_logout" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notifications" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_notifications"
+            android:title="@string/pref_notifications" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_vibrate"
+            android:title="@string/pref_vibrate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/advanced" >
+
         <Preference
             android:key="pref_clear_cache"
-            android:title="@string/pref_clear_cache"/>
-        
+            android:title="@string/pref_clear_cache" />
     </PreferenceCategory>
 
 </PreferenceScreen>
