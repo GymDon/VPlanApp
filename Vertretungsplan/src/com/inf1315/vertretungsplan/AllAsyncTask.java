@@ -1,5 +1,9 @@
 package com.inf1315.vertretungsplan;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -25,6 +29,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 		this.token = API.DATA.token;
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	@Override
 	protected AllObject doInBackground(Object... args) {
 		try {
@@ -39,9 +44,12 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 				Log.w("All Loader", "Loading unsuccesfull");
 				return null;
 			}
-			if (!resp.getChanged())
+			if (!resp.getChanged()) {
+				API.DATA.timestamp = System.currentTimeMillis() / 1000L;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+				API.DATA.timeString = sdf.format(new Date());
 				return API.DATA;
-
+			}	
 			AllObject ao = (AllObject) resp.getResult();
 			ao.hash = resp.getHash();
 			ao.token = resp.getToken();

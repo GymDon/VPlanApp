@@ -1,7 +1,5 @@
 package com.inf1315.vertretungsplan;
 
-import java.io.IOException;
-
 import com.google.gson.Gson;
 import com.inf1315.vertretungsplan.api.*;
 
@@ -48,6 +46,7 @@ public class LoginActivity extends Activity {
 			appVersion = -1;
 			e.printStackTrace();
 		}
+
 		// TODO alcros test something
 		if (prevAppVersion != appVersion) {
 			if (appVersion == -1)
@@ -60,6 +59,7 @@ public class LoginActivity extends Activity {
 
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 
+
 		try {
 			API.CONTEXT = getApplicationContext();
 			API.APP_VERSION = getPackageName()
@@ -68,6 +68,18 @@ public class LoginActivity extends Activity {
 		} catch (NameNotFoundException e) {
 			Log.w("Startup", "Couldn't determine app version");
 			e.printStackTrace();
+		}
+
+		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+
+		if (prevAppVersion != appVersion && API.isNetworkAvailable()) {
+			if (appVersion == -1)
+				return false;
+			showChangelog(prevAppVersion, appVersion);
+			SharedPreferences.Editor spe = sharedPrefs.edit();
+			spe.putInt("appVersionPref", appVersion);
+			spe.apply();
+			return false;
 		}
 
 		long currentTimestamp = System.currentTimeMillis() / 1000L;
@@ -133,7 +145,8 @@ public class LoginActivity extends Activity {
 									+ (to > 0 ? Commit.versionTags.get(to)
 											: "end")).getResult())
 							.getArray(new Commit[0]);
-				} catch (IOException e) {
+				} catch (Exception e) {
+					e.printStackTrace();
 					return new Commit[0];
 				}
 			}
@@ -173,7 +186,15 @@ public class LoginActivity extends Activity {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface arg0, int arg1) {
-
+								long currentTimestamp = System
+										.currentTimeMillis() / 1000L;
+								if (!"".equals(API.DATA.token)
+										&& API.DATA.timestamp + 86400L > currentTimestamp) {
+									Intent intent = new Intent(
+											LoginActivity.this,
+											PlanActivity.class);
+									startActivity(intent);
+								}
 							}
 						});
 

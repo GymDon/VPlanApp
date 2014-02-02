@@ -24,6 +24,19 @@
             android:title="@string/pref_clear_cache" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/notifications" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_notifications"
+            android:title="@string/pref_notifications" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_vibrate"
+            android:title="@string/pref_vibrate" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/info" >
 
         <Preference

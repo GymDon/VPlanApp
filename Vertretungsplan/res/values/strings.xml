@@ -47,5 +47,18 @@
     <string name="whatsnewNews">Neu in dieser Version:</string>
     <string name="action_changelog">Neuerungen</string>
     <string name="info">Informationen</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="pref_notifications">Änderungen per Benachrichtigung</string>
+    <string name="pref_notifications_summary">anzeigen</string>
+    <string name="pref_notifications_summary_false">nicht anzeigen</string>
+    <string name="pref_vibrate">Bei Benachrichtigungen</string>
+    <string name="pref_vibrate_summary">vibrieren</string>
+    <string name="pref_vibrate_summary_false">nicht vibrieren</string>
+    <string name="replacements_changed">Vertretungen geändert</string>
+    <string name="others_changed">Andere Änderungen geändert</string>
+    <string name="tickers_changed">Ticker geändert</string>
+    <string name="pages_changed">Seiten geändert</string>
+    <string name="data_changed">Geänderte Daten</string>
 
 </resources>
+

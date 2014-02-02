@@ -2,6 +2,7 @@ package com.inf1315.vertretungsplan;
 
 import com.inf1315.vertretungsplan.api.API;
 import com.inf1315.vertretungsplan.api.AllObject;
+import com.inf1315.vertretungsplan.api.UserInfo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,18 +22,7 @@ public class SettingsFragment extends PreferenceFragment implements
 		super.onCreate(savedInstanceState);
 
 		addPreferencesFromResource(R.layout.preferences);
-		findPreference("pref_clear_cache").setOnPreferenceClickListener(
-				new OnPreferenceClickListener() {
-					@Override
-					public boolean onPreferenceClick(Preference preference) {
-						API.DATA = new AllObject();
-						API.reload = true;
-						Toast.makeText(getActivity(),
-								getText(R.string.cache_cleared),
-								Toast.LENGTH_SHORT).show();
-						return true;
-					}
-				});
+
 		findPreference("pref_github").setOnPreferenceClickListener(
 				new OnPreferenceClickListener() {
 					@Override
@@ -45,6 +35,24 @@ public class SettingsFragment extends PreferenceFragment implements
 						return true;
 					}
 				});
+
+		findPreference("pref_clear_cache").setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						String token = API.DATA.token;
+						String user = API.DATA.userInfo.username;
+						API.DATA = new AllObject();
+						API.DATA.token = token;
+						API.DATA.userInfo = new UserInfo(user);
+						API.reload = true;
+						Toast.makeText(getActivity(),
+								getText(R.string.cache_cleared),
+								Toast.LENGTH_SHORT).show();
+						return true;
+					}
+				});
+
 	}
 
 	@Override
@@ -80,6 +88,19 @@ public class SettingsFragment extends PreferenceFragment implements
 		} else {
 			toastPref.setSummary(R.string.pref_toast_summary_false);
 		}
+		Preference notificationsPref = findPreference("pref_notifications");
+		if (sp.getBoolean("pref_notifitcations", true)) {
+			notificationsPref.setSummary(R.string.pref_notifications_summary);
+		} else {
+			notificationsPref
+					.setSummary(R.string.pref_notifications_summary_false);
+		}
+		Preference vibratePref = findPreference("pref_vibrate");
+		if (sp.getBoolean("pref_vibrate", true)) {
+			vibratePref.setSummary(R.string.pref_vibrate_summary);
+		} else {
+			vibratePref.setSummary(R.string.pref_vibrate_summary_false);
+		}
 		Preference clearCachePref = findPreference("pref_clear_cache");
 		clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		// TODO: (lemuecke)Find better way to update the app's version in
@@ -103,6 +124,26 @@ public class SettingsFragment extends PreferenceFragment implements
 				toastPref.setSummary(R.string.pref_toast_summary);
 			} else {
 				toastPref.setSummary(R.string.pref_toast_summary_false);
+			}
+		}
+
+		if (key.equals("pref_notifications")) {
+			Preference notificationsPref = findPreference(key);
+			if (sharedPreferences.getBoolean(key, true)) {
+				notificationsPref
+						.setSummary(R.string.pref_notifications_summary);
+			} else {
+				notificationsPref
+						.setSummary(R.string.pref_notifications_summary_false);
+			}
+		}
+
+		if (key.equals("pref_vibrate")) {
+			Preference vibratePref = findPreference(key);
+			if (sharedPreferences.getBoolean(key, true)) {
+				vibratePref.setSummary(R.string.pref_vibrate_summary);
+			} else {
+				vibratePref.setSummary(R.string.pref_vibrate_summary_false);
 			}
 		}
 
