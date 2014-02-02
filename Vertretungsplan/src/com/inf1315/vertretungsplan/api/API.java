@@ -6,8 +6,11 @@ import java.util.*;
 
 import org.json.*;
 
+import com.google.gson.Gson;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -117,18 +120,18 @@ public class API {
 			boolean wifi = false;
 			boolean adb = false;
 			boolean data;
-			if(CONTEXT != null)
-			if (Build.VERSION.SDK_INT < 17) {
-				wifi = Settings.Secure.getInt(CONTEXT.getContentResolver(),
-						Settings.Secure.WIFI_ON) != 0;
-				adb = Settings.Secure.getInt(CONTEXT.getContentResolver(),
-						Settings.Secure.ADB_ENABLED) != 0;
-			} else {
-				wifi = Settings.Global.getInt(CONTEXT.getContentResolver(),
-						Settings.Global.WIFI_ON) != 0;
-				adb = Settings.Global.getInt(CONTEXT.getContentResolver(),
-						Settings.Global.ADB_ENABLED) != 0;
-			}
+			if (CONTEXT != null)
+				if (Build.VERSION.SDK_INT < 17) {
+					wifi = Settings.Secure.getInt(CONTEXT.getContentResolver(),
+							Settings.Secure.WIFI_ON) != 0;
+					adb = Settings.Secure.getInt(CONTEXT.getContentResolver(),
+							Settings.Secure.ADB_ENABLED) != 0;
+				} else {
+					wifi = Settings.Global.getInt(CONTEXT.getContentResolver(),
+							Settings.Global.WIFI_ON) != 0;
+					adb = Settings.Global.getInt(CONTEXT.getContentResolver(),
+							Settings.Global.ADB_ENABLED) != 0;
+				}
 
 			ConnectivityManager cm = (ConnectivityManager) CONTEXT
 					.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -164,12 +167,12 @@ public class API {
 				}
 			r = new ApiResponse(e);
 		}
-		if(r.getWarnings() == null || r.getWarnings().isEmpty())
+		if (r.getWarnings() == null || r.getWarnings().isEmpty())
 			Log.i("API-Warning", "No Warnings");
 		else
-		for (ApiWarning w : r.getWarnings()) {
-			Log.w("API-Warning", w.getWarning() + ": " + w.getDescription());
-		}
+			for (ApiWarning w : r.getWarnings()) {
+				Log.w("API-Warning", w.getWarning() + ": " + w.getDescription());
+			}
 		return r;
 	}
 
@@ -220,6 +223,15 @@ public class API {
 		}
 	}
 
+	public static void deleteToken() {
+		DATA.token = "";
+		SharedPreferences.Editor spe = CONTEXT.getSharedPreferences("data",
+				Context.MODE_PRIVATE).edit();
+		String json = (new Gson()).toJson(DATA);
+		spe.putString("data", json);
+		spe.apply();
+	}
+
 	private static Map<ApiAction, Class<? extends ApiResult>> actionToClassMap;
 	private static Map<ApiAction, Boolean> actionIsArrayMap;
 
@@ -241,7 +253,7 @@ public class API {
 
 		actionToClassMap.put(ApiAction.ALL, AllObject.class);
 		actionIsArrayMap.put(ApiAction.ALL, false);
-		
+
 		actionToClassMap.put(ApiAction.CHANGELOG, Commit.class);
 		actionIsArrayMap.put(ApiAction.CHANGELOG, true);
 	}

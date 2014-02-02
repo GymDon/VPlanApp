@@ -174,20 +174,25 @@ public class PlanActivity extends FragmentActivity implements
 
 		}
 	}
-	
-	//TODO do logout
+
 	private void logoutFromPlan() {
-		AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		adb.setTitle(R.string.logout);
-		adb.setMessage(R.string.really_logout);
-		adb.setNegativeButton(android.R.string.no, null);
-		adb.setPositiveButton(android.R.string.yes, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				NavUtils.navigateUpFromSameTask(PlanActivity.this);
-			}
-		});
-		adb.show();
+		if (logoutConf) {
+			AlertDialog.Builder adb = new AlertDialog.Builder(this);
+			adb.setTitle(R.string.logout);
+			adb.setMessage(R.string.really_logout);
+			adb.setNegativeButton(android.R.string.no, null);
+			adb.setPositiveButton(android.R.string.yes, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					NavUtils.navigateUpFromSameTask(PlanActivity.this);
+					API.deleteToken();
+				}
+			});
+			adb.show();
+		} else {
+			NavUtils.navigateUpFromSameTask(PlanActivity.this);
+			API.deleteToken();
+		}
 	}
 
 	@Override
@@ -203,11 +208,7 @@ public class PlanActivity extends FragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			if (logoutConf) {
-				logoutFromPlan();
-			} else {
-				NavUtils.navigateUpFromSameTask(PlanActivity.this);
-			}
+			logoutFromPlan();
 			return true;
 		case R.id.action_show_ticker:
 			showTicker();
@@ -229,11 +230,7 @@ public class PlanActivity extends FragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-		if (logoutConf)
-			logoutFromPlan();
-		else {
-			NavUtils.navigateUpFromSameTask(PlanActivity.this);
-		}
+		logoutFromPlan();
 	}
 
 	@Override
