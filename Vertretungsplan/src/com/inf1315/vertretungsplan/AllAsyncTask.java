@@ -26,7 +26,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 	AllAsyncTask(PlanActivity plan) {
 		this.plan = plan;
 		this.username = API.DATA.userInfo.username;
-		this.token = API.DATA.token;
+		this.token = API.DATA.getToken();
 	}
 
 	@SuppressLint("SimpleDateFormat")
@@ -52,7 +52,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 			}	
 			AllObject ao = (AllObject) resp.getResult();
 			ao.hash = resp.getHash();
-			ao.token = resp.getToken();
+			ao.setToken(resp.getToken());
 			return ao;
 
 		} catch (Exception e) {

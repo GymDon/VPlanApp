@@ -6,7 +6,6 @@ import java.util.*;
 
 import org.json.*;
 
-import com.google.gson.Gson;
 import com.inf1315.vertretungsplan.LoginActivity;
 import com.inf1315.vertretungsplan.R;
 
@@ -16,7 +15,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -228,15 +226,6 @@ public class API {
 			Log.i("Response", sb.toString());
 			throw e;
 		}
-	}
-
-	public static void deleteToken() {
-		DATA.token = "";
-		SharedPreferences.Editor spe = CONTEXT.getSharedPreferences("data",
-				Context.MODE_PRIVATE).edit();
-		String json = (new Gson()).toJson(DATA);
-		spe.putString("data", json);
-		spe.apply();
 	}
 
 	public static boolean isNetworkAvailable() {

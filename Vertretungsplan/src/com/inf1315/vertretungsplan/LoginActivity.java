@@ -83,7 +83,7 @@ public class LoginActivity extends Activity {
 		}
 
 		long currentTimestamp = System.currentTimeMillis() / 1000L;
-		if (!"".equals(API.DATA.token)
+		if (!"".equals(API.DATA.getToken())
 				&& API.DATA.timestamp + 86400L > currentTimestamp) {
 			Intent intent = new Intent(this, PlanActivity.class);
 			startActivity(intent);
@@ -188,7 +188,7 @@ public class LoginActivity extends Activity {
 							public void onClick(DialogInterface arg0, int arg1) {
 								long currentTimestamp = System
 										.currentTimeMillis() / 1000L;
-								if (!"".equals(API.DATA.token)
+								if (!"".equals(API.DATA.getToken())
 										&& API.DATA.timestamp + 86400L > currentTimestamp) {
 									Intent intent = new Intent(
 											LoginActivity.this,

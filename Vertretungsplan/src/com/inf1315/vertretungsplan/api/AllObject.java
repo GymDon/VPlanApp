@@ -10,7 +10,11 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class AllObject extends ApiResult {
 
@@ -24,7 +28,7 @@ public class AllObject extends ApiResult {
 	public String hash = "";
 	public String timeString = "";
 	public long timestamp;
-	public String token = "";
+	private String token = "";
 
 	public AllObject() {
 	}
@@ -75,5 +79,23 @@ public class AllObject extends ApiResult {
 		timeString = sdf.format(new Date());
 
 		timestamp = System.currentTimeMillis() / 1000L;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+		SharedPreferences.Editor spe = API.CONTEXT.getSharedPreferences("data",
+				Context.MODE_PRIVATE).edit();
+		String json = (new Gson()).toJson(this);
+		spe.putString("data", json);
+		spe.apply();
+	}
+	
+	public void deleteToken()
+	{
+		setToken("");
 	}
 }

@@ -40,10 +40,10 @@ public class SettingsFragment extends PreferenceFragment implements
 				new OnPreferenceClickListener() {
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						String token = API.DATA.token;
+						String token = API.DATA.getToken();
 						String user = API.DATA.userInfo.username;
 						API.DATA = new AllObject();
-						API.DATA.token = token;
+						API.DATA.setToken(token);
 						API.DATA.userInfo = new UserInfo(user);
 						API.reload = true;
 						Toast.makeText(getActivity(),

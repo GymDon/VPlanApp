@@ -181,13 +181,13 @@ public class PlanActivity extends FragmentActivity implements
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					NavUtils.navigateUpFromSameTask(PlanActivity.this);
-					API.deleteToken();
+					API.DATA.deleteToken();
 				}
 			});
 			adb.show();
 		} else {
 			NavUtils.navigateUpFromSameTask(PlanActivity.this);
-			API.deleteToken();
+			API.DATA.deleteToken();
 		}
 	}
 
