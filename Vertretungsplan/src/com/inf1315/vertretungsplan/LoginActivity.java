@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
 			appVersion = -1;
 			e.printStackTrace();
 		}
-		//TODO alcros test something
+		// TODO alcros test something
 		if (prevAppVersion != appVersion) {
 			if (appVersion == -1)
 				return false;
@@ -77,7 +77,7 @@ public class LoginActivity extends Activity {
 			startActivity(intent);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -197,10 +197,6 @@ public class LoginActivity extends Activity {
 		case R.id.action_settings:
 			Intent startSettings = new Intent(this, SettingsActivity.class);
 			startActivity(startSettings);
-			return true;
-		case R.id.action_info:
-			Intent startInfo = new Intent(this, InfoActivity.class);
-			startActivity(startInfo);
 			return true;
 		case R.id.action_changelog:
 			showChangelog(appVersion - 1, BuildConfig.DEBUG ? -1 : appVersion);

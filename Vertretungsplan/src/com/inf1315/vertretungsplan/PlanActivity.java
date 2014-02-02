@@ -174,8 +174,8 @@ public class PlanActivity extends FragmentActivity implements
 
 		}
 	}
-	
-	//TODO do logout
+
+	// TODO do logout
 	private void logoutFromPlan() {
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setTitle(R.string.logout);
@@ -218,10 +218,6 @@ public class PlanActivity extends FragmentActivity implements
 		case R.id.action_settings:
 			Intent startSettings = new Intent(this, SettingsActivity.class);
 			startActivity(startSettings);
-			return true;
-		case R.id.action_info:
-			Intent startInfo = new Intent(this, InfoActivity.class);
-			startActivity(startInfo);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

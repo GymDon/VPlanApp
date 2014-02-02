@@ -28,9 +28,9 @@
         </activity>
         <activity
             android:name="com.inf1315.vertretungsplan.PlanActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity"
-            android:configChanges="orientation|screenSize" >
+            android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.inf1315.vertretungsplan.LoginActivity" />
@@ -38,14 +38,6 @@
         <activity
             android:name="com.inf1315.vertretungsplan.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.inf1315.vertretungsplan.LoginActivity" />
-        </activity>
-        <activity
-            android:name="com.inf1315.vertretungsplan.InfoActivity"
-            android:label="@string/title_activity_info"
             android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
