@@ -11,6 +11,16 @@ public class UserInfo extends ApiResult {
 	public final String fullname;
 	public final boolean isStudent;
 
+	public UserInfo(String user) {
+		username = user;
+		uid = 0;
+		gid = 0;
+		mainGroup = null;
+		groups = null;
+		fullname = null;
+		isStudent = true;
+	}
+
 	public UserInfo(JSONObject obj) throws JSONException {
 		username = obj.getString("user");
 		uid = obj.getInt("uid");
