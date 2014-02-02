@@ -44,4 +44,10 @@
 	<string name="whatsnew">Neuerungen</string>
 	<string name="whatsnewNews">Neu in dieser Version:</string>
     <string name="action_changelog">Neuerungen</string>
+
+    <string name="replacements_changed">Vertretungen geändert</string>
+    <string name="others_changed">Andere Änderungen geändert</string>
+    <string name="tickers_changed">Ticker geändert</string>
+    <string name="pages_changed">Seiten geändert</string>
+    <string name="data_changed">Geänderte Daten</string>
 </resources>

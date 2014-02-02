@@ -7,14 +7,21 @@ import java.util.*;
 import org.json.*;
 
 import com.google.gson.Gson;
+import com.inf1315.vertretungsplan.LoginActivity;
+import com.inf1315.vertretungsplan.R;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class API {
@@ -230,6 +237,74 @@ public class API {
 		String json = (new Gson()).toJson(DATA);
 		spe.putString("data", json);
 		spe.apply();
+	}
+
+	public static void showNotification(AllObject o1, AllObject o2) {
+		boolean[] changed = new boolean[4];
+		for (int i = 0; i < changed.length; i++)
+			changed[i] = false;
+
+		if (o1.hash.equals(o2.hash)) {
+			displayNotification(changed);
+			return;
+		}
+		if (o1.todayReplacementsList.hashCode() != o2.todayReplacementsList
+				.hashCode()
+				|| o1.tomorrowReplacementsList.hashCode() != o2.tomorrowReplacementsList
+						.hashCode())
+			changed[0] = true;
+		if (o1.tickers.hashCode() != o2.tickers.hashCode())
+			changed[1] = true;
+		if (o1.todayOthers.hashCode() != o2.todayOthers.hashCode()
+				|| o1.tomorrowOthers.hashCode() != o2.tomorrowOthers.hashCode())
+			changed[2] = true;
+		if (o1.pages.hashCode() != o2.pages.hashCode())
+			changed[3] = true;
+		displayNotification(changed);
+	}
+
+	private static void displayNotification(boolean[] changed) {
+		if (changed.length != 4) {
+			Log.i("showNotification", "boolean[] must have size 4");
+			return;
+		}
+		int count = 0;
+		int where = 0;
+		for (int i = 0; i < changed.length; i++) {
+			count += changed[i] ? 1 : 0;
+			if (changed[i])
+				where = i;
+		}
+		if (count == 0)
+			return;
+
+		NotificationCompat.Builder ncb = new NotificationCompat.Builder(CONTEXT);
+		ncb.setAutoCancel(true);
+		if (count != 1)
+			ncb.setNumber(count);
+		ncb.setSmallIcon(R.drawable.ic_launcher);
+		if (count == 1) {
+			CharSequence text = where == 0 ? CONTEXT
+					.getText(R.string.replacements_changed)
+					: where == 1 ? CONTEXT.getText(R.string.tickers_changed)
+							: where == 2 ? CONTEXT
+									.getText(R.string.others_changed) : CONTEXT
+									.getText(R.string.pages_changed);
+			ncb.setContentText(text);
+		} else
+			ncb.setContentText(CONTEXT.getText(R.string.data_changed));
+		ncb.setContentTitle(CONTEXT.getText(R.string.app_name));
+
+		Intent intent = new Intent(API.CONTEXT, LoginActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(API.CONTEXT, 0,
+				intent, 0);
+		ncb.setContentIntent(pendingIntent);
+
+		NotificationManager nm = (NotificationManager) CONTEXT
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification n = ncb.build();
+		n.defaults |= Notification.DEFAULT_VIBRATE;
+		nm.notify((int) Math.random()*10000, n);
 	}
 
 	private static Map<ApiAction, Class<? extends ApiResult>> actionToClassMap;
