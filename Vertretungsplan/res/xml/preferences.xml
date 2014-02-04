@@ -30,6 +30,23 @@
             android:title="@string/pref_vibrate" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/auto_synchronisation" >
+
+       <SwitchPreference
+            android:defaultValue="on"
+            android:key="pref_synchronisation"
+            android:summaryOn="@string/synchronisation_summary"
+            android:summaryOff="@string/synchronisation_summary_false"
+            android:title="@string/synchronisation_title" />
+
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/synchronisation_intervall_entries"
+            android:entryValues="@array/synchronisation_intervall_entryValues"
+            android:key="pref_intervall"
+            android:title="@string/synchronisation_intervall" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/advanced" >
 
         <Preference

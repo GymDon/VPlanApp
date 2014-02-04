@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
@@ -21,7 +22,7 @@ public class SettingsFragment extends PreferenceFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		addPreferencesFromResource(R.layout.preferences);
+		addPreferencesFromResource(R.xml.preferences);
 
 		findPreference("pref_github").setOnPreferenceClickListener(
 				new OnPreferenceClickListener() {
@@ -101,6 +102,8 @@ public class SettingsFragment extends PreferenceFragment implements
 		} else {
 			vibratePref.setSummary(R.string.pref_vibrate_summary_false);
 		}
+		ListPreference intervallPref = (ListPreference) findPreference("pref_intervall");
+		intervallPref.setSummary(intervallPref.getEntry());
 		Preference clearCachePref = findPreference("pref_clear_cache");
 		clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		// TODO: (lemuecke)Find better way to update the app's version in
@@ -151,6 +154,9 @@ public class SettingsFragment extends PreferenceFragment implements
 			Preference clearCachePref = findPreference(key);
 			clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		}
+		
+		ListPreference intervallPref = (ListPreference) findPreference("pref_intervall");
+		intervallPref.setSummary(intervallPref.getEntry());
 
 	}
 }

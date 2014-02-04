@@ -49,9 +49,6 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
-
-
 		try {
 			API.CONTEXT = getApplicationContext();
 			API.APP_VERSION = getPackageName()
@@ -62,7 +59,7 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		if (prevAppVersion != appVersion && API.isNetworkAvailable()) {
 			if (appVersion == -1)

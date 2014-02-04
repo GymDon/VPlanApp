@@ -60,5 +60,25 @@
     <string name="tickers_changed">Ticker geändert</string>
     <string name="pages_changed">Seiten geändert</string>
     <string name="data_changed">Geänderte Daten</string>
+    <string name="auto_synchronisation">Automatische Synchronisation</string>
+    <string name="synchronisation_title">Vertretungsplan</string>
+    <string name="synchronisation_summary">automatisch synchronisieren</string>
+    <string name="synchronisation_summary_false">nicht synchronisieren</string>
+    <string name="synchronisation_intervall">Synchronisationsintervall</string>
+
+    <string-array name="synchronisation_intervall_entries">
+        <item>5 Minuten</item>
+        <item>10 Minuten</item>
+        <item>30 Minuten</item>
+        <item>1 Stunde</item>
+        <item>2 Stunden</item>
+    </string-array>
+    <string-array name="synchronisation_intervall_entryValues">
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </string-array>
 
 </resources>
