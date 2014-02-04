@@ -17,13 +17,6 @@
             android:title="@string/pref_logout" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/advanced" >
-
-        <Preference
-            android:key="pref_clear_cache"
-            android:title="@string/pref_clear_cache" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/notifications" >
 
         <CheckBoxPreference
@@ -35,6 +28,13 @@
             android:defaultValue="true"
             android:key="pref_vibrate"
             android:title="@string/pref_vibrate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/advanced" >
+
+        <Preference
+            android:key="pref_clear_cache"
+            android:title="@string/pref_clear_cache" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/info" >

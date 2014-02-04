@@ -25,6 +25,7 @@
     <string name="logout">Logout</string>
     <string name="no_internet_connection">Bitte aktivieren Sie WLAN oder mobile Daten.</string>
     <string name="loading_plan">Lädt Vertretungsplan…</string>
+    <string name="loading_commits">Lädt Neuerungen…</string>
     <string name="reload_plan">Vertretungsplan aktualisieren</string>
     <string name="pref_logout">Beim Verlassen des Plans</string>
     <string name="pref_logout_summary">Logout bestätigen</string>

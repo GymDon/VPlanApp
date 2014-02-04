@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,16 +47,6 @@ public class LoginActivity extends Activity {
 		} catch (NameNotFoundException e) {
 			appVersion = -1;
 			e.printStackTrace();
-		}
-
-		// TODO alcros test something
-		if (prevAppVersion != appVersion) {
-			if (appVersion == -1)
-				return false;
-			showChangelog(prevAppVersion, appVersion);
-			SharedPreferences.Editor spe = sharedPrefs.edit();
-			spe.putInt("appVersionPref", appVersion);
-			spe.apply();
 		}
 
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
@@ -132,7 +124,11 @@ public class LoginActivity extends Activity {
 	}
 
 	public void showChangelog(final int from, final int to) {
+		final Dialog loadingDialog = ProgressDialog.show(this, "",
+				getText(R.string.loading_commits), true);
+		loadingDialog.show();
 		new AsyncTask<Object, Object, Commit[]>() {
+
 			@Override
 			protected Commit[] doInBackground(Object... params) {
 				try {
@@ -153,6 +149,7 @@ public class LoginActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(Commit[] result) {
+				loadingDialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						LoginActivity.this);
 

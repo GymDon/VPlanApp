@@ -168,9 +168,6 @@ public class PlanActivity extends FragmentActivity implements
 		}
 	}
 
-
-	// TODO do logout
-
 	private void logoutFromPlan() {
 		if (logoutConf) {
 			AlertDialog.Builder adb = new AlertDialog.Builder(this);
