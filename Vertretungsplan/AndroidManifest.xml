@@ -44,14 +44,20 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.inf1315.vertretungsplan.LoginActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service
-            android:name=".PullPlanService"
+            android:name="com.inf1315.vertretungsplan.PullPlanService"
             android:exported="false" />
 
         <receiver
-            android:name=".BootReceiver"
+            android:name="com.inf1315.vertretungsplan.BootReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" >

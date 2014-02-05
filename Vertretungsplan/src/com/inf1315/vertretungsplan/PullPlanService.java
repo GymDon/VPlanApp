@@ -8,6 +8,7 @@ import com.inf1315.vertretungsplan.api.AllObject;
 import com.inf1315.vertretungsplan.api.ApiAction;
 import com.inf1315.vertretungsplan.api.ApiResponse;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
@@ -18,8 +19,8 @@ public class PullPlanService extends IntentService {
 	private String password;
 	private String token;
 
-	public PullPlanService(String name) { // Auto generated
-		super(name);
+	public PullPlanService() {
+		super("com.inf1315.vertretungsplan.PullPlanService");
 
 		Log.e("TROL", "SUCCESS");
 
@@ -27,6 +28,7 @@ public class PullPlanService extends IntentService {
 		this.token = API.DATA.getToken();
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	public AllObject download() {
 		// TODO: Do a cleanup
 

@@ -11,8 +11,7 @@ public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (intent.getAction().equals("ACTION.BOOT_COMPLETED")) {
-			// Not received, but else doesn't do anything either
+		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 			Log.e("BootReceiver", "BootReceiver started!");
 			AlarmManager alarmMgr = (AlarmManager) context
 					.getSystemService(Context.ALARM_SERVICE);
