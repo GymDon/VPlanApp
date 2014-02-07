@@ -20,9 +20,10 @@ public class PullPlanService extends IntentService {
 	private String token;
 
 	public PullPlanService() {
+		
 		super("com.inf1315.vertretungsplan.PullPlanService");
 
-		Log.e("TROL", "SUCCESS");
+		Log.e("PULLPLAN", "Constructor started");
 
 		this.username = API.DATA.userInfo.username;
 		this.token = API.DATA.getToken();
@@ -31,6 +32,8 @@ public class PullPlanService extends IntentService {
 	@SuppressLint("SimpleDateFormat")
 	public AllObject download() {
 		// TODO: Do a cleanup
+		
+		Log.e("PULLPLAN", "Download started!");
 
 		try {
 			ApiResponse resp;
@@ -66,6 +69,7 @@ public class PullPlanService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent workIntent) {
 
+		Log.e("PULLPLAN", "onHandleIntent");
 		API.DATA = download();
 
 	}

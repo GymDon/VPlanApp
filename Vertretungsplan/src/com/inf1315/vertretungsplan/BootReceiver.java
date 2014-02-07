@@ -11,8 +11,11 @@ public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		
+		Log.e("BOOTREC","onReceive started");
+		
 		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-			Log.e("BootReceiver", "BootReceiver started!");
+			Log.e("BOOTREC", "if is working!");
 			AlarmManager alarmMgr = (AlarmManager) context
 					.getSystemService(Context.ALARM_SERVICE);
 			Intent serviceIntent = new Intent(context, PullPlanService.class);
