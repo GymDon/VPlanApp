@@ -1,11 +1,13 @@
 package com.inf1315.vertretungsplan;
 
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class SettingsActivity extends Activity {
+@SuppressLint("NewApi")
+public class Settings30 extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

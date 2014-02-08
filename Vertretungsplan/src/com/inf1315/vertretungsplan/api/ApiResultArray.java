@@ -1,7 +1,7 @@
 package com.inf1315.vertretungsplan.api;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 import org.json.*;
 
@@ -37,10 +37,21 @@ public class ApiResultArray extends ApiResult {
 	public <T> T[] getArray(T[] a) {
 		if (a.length < array.length)
 			// Make a new array of a's runtime type, but my contents:
-			return (T[]) Arrays.copyOf(array, array.length, a.getClass());
+			return (T[]) copyOf(array, array.length, a.getClass());
 		System.arraycopy(array, 0, a, 0, array.length);
 		if (a.length > array.length)
 			a[array.length] = null;
 		return a;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T, U> T[] copyOf(U[] original, int newLength,
+			Class<? extends T[]> newType) {
+		T[] copy = ((Object) newType == (Object) Object[].class) ? (T[]) new Object[newLength]
+				: (T[]) Array
+						.newInstance(newType.getComponentType(), newLength);
+		System.arraycopy(original, 0, copy, 0,
+				Math.min(original.length, newLength));
+		return copy;
 	}
 }

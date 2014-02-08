@@ -3,23 +3,24 @@ package com.inf1315.vertretungsplan;
 import com.google.gson.Gson;
 import com.inf1315.vertretungsplan.api.*;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
-public class PlanActivity extends FragmentActivity implements
+public class PlanActivity extends ActionBarActivity implements
 		ActionBar.TabListener {
 
 	Dialog loadingDialog;
@@ -39,7 +40,7 @@ public class PlanActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_plan);
 
 		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
+		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Show the Up button in the action bar.
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -87,7 +88,8 @@ public class PlanActivity extends FragmentActivity implements
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
-						getActionBar().setSelectedNavigationItem(position);
+						getSupportActionBar().setSelectedNavigationItem(
+								position);
 					}
 				});
 
@@ -95,7 +97,7 @@ public class PlanActivity extends FragmentActivity implements
 		tomorrowReplacements.notifyDataSetChanged();
 		planPagerAdapter.notifyDataSetChanged();
 
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		actionBar.removeAllTabs();
 		for (int i = 0; i < planPagerAdapter.getCount(); i++) {
 			actionBar.addTab(actionBar.newTab()
@@ -151,7 +153,7 @@ public class PlanActivity extends FragmentActivity implements
 		String json = gson.toJson(API.DATA);
 		spe.putString("data", json);
 
-		spe.apply();
+		spe.commit();
 	}
 
 	public void getPreferences() {
@@ -199,18 +201,22 @@ public class PlanActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
 			logoutFromPlan();
 			return true;
-		case R.id.action_show_ticker:
+		} else if (itemId == R.id.action_show_ticker) {
 			showTicker();
 			return true;
-		case R.id.action_reload_plan:
+		} else if (itemId == R.id.action_reload_plan) {
 			loadData();
 			return true;
-		case R.id.action_settings:
-			Intent startSettings = new Intent(this, SettingsActivity.class);
+		} else if (itemId == R.id.action_settings) {
+			Intent startSettings;
+			if (Build.VERSION.SDK_INT >= 11)
+				startSettings = new Intent(this, Settings30.class);
+			else
+				startSettings = new Intent(this, Settings21.class);
 			startActivity(startSettings);
 			return true;
 		}

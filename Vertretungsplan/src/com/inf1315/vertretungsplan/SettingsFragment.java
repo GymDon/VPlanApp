@@ -4,6 +4,7 @@ import com.inf1315.vertretungsplan.api.API;
 import com.inf1315.vertretungsplan.api.AllObject;
 import com.inf1315.vertretungsplan.api.UserInfo;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -15,6 +16,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class SettingsFragment extends PreferenceFragment implements
 		OnSharedPreferenceChangeListener {
 

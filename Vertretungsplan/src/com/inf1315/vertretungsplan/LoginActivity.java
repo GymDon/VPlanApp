@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.inf1315.vertretungsplan.api.*;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends ActionBarActivity {
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
@@ -67,7 +68,7 @@ public class LoginActivity extends Activity {
 			showChangelog(prevAppVersion, appVersion);
 			SharedPreferences.Editor spe = sharedPrefs.edit();
 			spe.putInt("appVersionPref", appVersion);
-			spe.apply();
+			spe.commit();
 			return false;
 		}
 
@@ -208,12 +209,16 @@ public class LoginActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_settings:
-			Intent startSettings = new Intent(this, SettingsActivity.class);
+		int itemId = item.getItemId();
+		if (itemId == R.id.action_settings) {
+			Intent startSettings;
+			if (Build.VERSION.SDK_INT >= 11)
+				startSettings = new Intent(this, Settings30.class);
+			else
+				startSettings = new Intent(this, Settings21.class);
 			startActivity(startSettings);
 			return true;
-		case R.id.action_changelog:
+		} else if (itemId == R.id.action_changelog) {
 			showChangelog(appVersion - 1, BuildConfig.DEBUG ? -1 : appVersion);
 			return true;
 		}
@@ -238,7 +243,7 @@ public class LoginActivity extends Activity {
 			SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
 			SharedPreferences.Editor spe = sp.edit();
 			spe.putString("username", username);
-			spe.apply();
+			spe.commit();
 
 			Intent intent = new Intent(this, PlanActivity.class);
 			intent.putExtra("username", username);

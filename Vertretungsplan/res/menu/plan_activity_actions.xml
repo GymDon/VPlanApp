@@ -1,19 +1,20 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:vplan="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/action_show_ticker"
         android:icon="@drawable/ic_action_about"
-        android:showAsAction="ifRoom"
-        android:title="@string/show_ticker"/>
+        android:title="@string/show_ticker"
+        vplan:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_reload_plan"
         android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="ifRoom"
-        android:title="@string/reload_plan"/>
+        android:title="@string/reload_plan"
+        vplan:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings"
+        vplan:showAsAction="never"/>
 
 </menu>

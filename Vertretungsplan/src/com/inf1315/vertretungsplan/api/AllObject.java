@@ -91,7 +91,7 @@ public class AllObject extends ApiResult {
 				Context.MODE_PRIVATE).edit();
 		String json = (new Gson()).toJson(this);
 		spe.putString("data", json);
-		spe.apply();
+		spe.commit();
 	}
 	
 	public void deleteToken()

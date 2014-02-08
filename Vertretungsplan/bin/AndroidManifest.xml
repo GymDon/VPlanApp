@@ -5,7 +5,7 @@
     android:versionName="0.2" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="7"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -37,9 +37,23 @@
                 android:value="com.inf1315.vertretungsplan.LoginActivity" />
         </activity>
         <activity
-            android:name="com.inf1315.vertretungsplan.SettingsActivity"
+            android:name="com.inf1315.vertretungsplan.Settings30"
             android:label="@string/title_activity_settings"
             android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.inf1315.vertretungsplan.LoginActivity" />
+        </activity>
+        <activity
+            android:name="com.inf1315.vertretungsplan.Settings21"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="com.inf1315.vertretungsplan.LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.inf1315.vertretungsplan.LoginActivity" />
