@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="transparent">#00000000</color>
+	<color name="action_bar">#FF002D4D</color>
+	<color name="tab_highlight">#FF003D5D</color>
+	<color name="tab_selected">@color/tab_highlight</color>
+	<color name="tab">#FF167BAA</color>
+	<color name="addition">#FFFF5555</color>
+</resources>
