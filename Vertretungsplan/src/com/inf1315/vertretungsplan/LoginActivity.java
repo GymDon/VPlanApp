@@ -123,7 +123,7 @@ public class LoginActivity extends ActionBarActivity {
 
 	public void showChangelog(final int from, final int to) {
 		final Dialog loadingDialog = ProgressDialog.show(this, "",
-				getText(R.string.loading_commits), true);
+				getText(R.string.loading_changelog), true);
 		loadingDialog.show();
 		new AsyncTask<Object, Object, Commit[]>() {
 

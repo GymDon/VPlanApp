@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Settings</string>
+    <string name="welcome_message">Welcome to the replacement plan app</string>
+    <string name="username_message">Please input username:</string>
+    <string name="password_message">Please input password:</string>
+    <string name="login">Login</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="show_ticker">Show tickers</string>
+    <string name="no_ticker">No tickers available</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_toast">Tickers</string>
+    <string name="pref_toast_summary">Show as toast</string>
+    <string name="pref_toast_summary_false">Show as dialog</string>
+    <string name="ticker">Tickers</string>
+    <string name="ticker_dialog_title">Tickers</string>
+    <string name="ok">OK</string>
+    <string name="error">Error</string>
+    <string name="server_request_failed">Requst failed: specify valid username and password</string>
+    <string name="really_logout">Do you want to log out</string>
+    <string name="logout">Logout</string>
+    <string name="no_internet_connection">Please activate Wi-Fi or mobile data</string>
+    <string name="loading_plan">Loading plan…</string>
+    <string name="loading_changelog">Loading changelog…</string>
+    <string name="reload_plan">Reload plan</string>
+    <string name="pref_logout">On quit</string>
+    <string name="pref_logout_summary">Confirm logout</string>
+    <string name="pref_logout_summary_false">Don\'t confirm logout</string>
+    <string name="pref_clear_cache">Clear cache</string>
+    <string name="pref_clear_cache_summary">Force reloading plan</string>
+    <string name="pref_creator">Creators</string>
+    <string name="pref_version">Version</string>
+    <string name="pref_version_summary">0.2</string>
+    <string name="pref_notifications">On change</string>
+    <string name="pref_notifications_summary">show notification</string>
+    <string name="pref_notifications_summary_false">don\'t show notification</string>
+    <string name="pref_vibrate">On notification</string>
+    <string name="pref_vibrate_summary">vibrate</string>
+    <string name="pref_vibrate_summary_false">don\'t vibrate</string>
+    <string name="cache_cleared">Cache cleared</string>
+    <string name="advanced">Advanced</string>
+    <string name="old_data_message">This old data is from: </string>
+    <string name="no_internet_connection_title">No internet connection</string>
+    <string name="usernanme">Username of data: </string>
+    <string name="others">Other changes</string>
+    <string name="whatsnew">Changelog</string>
+    <string name="whatsnewNews">New in this version:</string>
+    <string name="action_changelog">Changelog</string>
+    <string name="info">Information</string>
+    <string name="notifications">Notifications</string>
+    <string name="replacements_changed">Replacements changed</string>
+    <string name="others_changed">Others changed</string>
+    <string name="tickers_changed">Tickers changed</string>
+    <string name="pages_changed">Pages changed</string>
+    <string name="data_changed">Changed data</string>
+    <string name="auto_synchronisation">Synchronisation</string>
+    <string name="synchronisation_title">Auto Sync</string>
+    <string name="synchronisation_summary">do Auto Sync</string>
+    <string name="synchronisation_summary_false">don\'t do Auto Sync</string>
+    <string name="synchronisation_intervall">Auto Sync interval</string>
+
+    <string-array name="synchronisation_intervall_entries">
+        <item>5 Minutes</item>
+        <item>10 Minutes</item>
+        <item>30 Minutes</item>
+        <item>1 Hour</item>
+        <item>2 Hours</item>
+    </string-array>
+    <string-array name="synchronisation_intervall_entryValues">
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </string-array>
+</resources>
