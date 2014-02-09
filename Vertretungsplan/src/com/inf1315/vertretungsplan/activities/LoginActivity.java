@@ -47,14 +47,6 @@ public class LoginActivity extends ActionBarActivity {
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-		long currentTimestamp = System.currentTimeMillis() / 1000L;
-		if (!"".equals(API.DATA.getToken())
-				&& API.DATA.timestamp + 86400L > currentTimestamp) {
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-			return true;
-		}
-
 		return false;
 	}
 
@@ -75,8 +67,18 @@ public class LoginActivity extends ActionBarActivity {
 				"username", "");
 		usernameEditText.setText(username);
 
-		if (getIntent().getBooleanExtra("closeapp", false))
+		if (getIntent().getBooleanExtra("closeapp", false)) {
 			onBackPressed();
+			return;
+		}
+
+		long currentTimestamp = System.currentTimeMillis() / 1000L;
+		if (!"".equals(API.DATA.getToken())
+				&& API.DATA.timestamp + 86400L > currentTimestamp) {
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		}		
+
 		String error = getIntent().getStringExtra("error");
 		if (error == null)
 			return;

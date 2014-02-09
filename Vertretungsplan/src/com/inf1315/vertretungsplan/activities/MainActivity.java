@@ -111,7 +111,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			loadData();
 			return true;
 		} else if (itemid == R.id.action_show_ticker) {
-			VPlanFragment.showTicker();
+			VPlanFragment.showTicker(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

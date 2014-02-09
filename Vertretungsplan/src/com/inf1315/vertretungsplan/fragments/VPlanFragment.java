@@ -5,6 +5,7 @@ import com.inf1315.vertretungsplan.activities.MainActivity;
 import com.inf1315.vertretungsplan.api.*;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.*;
@@ -28,7 +29,7 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 		// Set up the action bar.
 		final ActionBar actionBar = parentActivity.getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		showTicker();
+		showTicker(getActivity());
 	}
 
 	@Override
@@ -92,8 +93,8 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	public static void showTicker() {
-		if (PreferenceManager.getDefaultSharedPreferences(API.CONTEXT)
+	public static void showTicker(Context context) {
+		if (PreferenceManager.getDefaultSharedPreferences(context)
 				.getBoolean("pref_toast", true)) {
 			if (!API.DATA.tickers.isEmpty()) {
 				String ticker = "";
@@ -101,17 +102,17 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 					ticker += to.toString() + "\n\n";
 				}
 				ticker = ticker.substring(0, ticker.length() - 2);
-				Toast.makeText(API.CONTEXT, ticker, Toast.LENGTH_LONG).show();
+				Toast.makeText(context, ticker, Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(API.CONTEXT, R.string.no_ticker,
+				Toast.makeText(context, R.string.no_ticker,
 						Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(API.CONTEXT);
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
 			String message = "";
 			if (API.DATA.tickers.isEmpty())
-				message = (String) API.CONTEXT.getText(R.string.no_ticker);
+				message = (String) context.getText(R.string.no_ticker);
 			else {
 				for (int i = 0; i < API.DATA.tickers.size(); i++) {
 					if (i == API.DATA.tickers.size() - 1)
