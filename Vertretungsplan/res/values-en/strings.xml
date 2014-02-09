@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="action_settings">Settings</string>
     <string name="welcome_message">Welcome to the replacement plan app</string>
     <string name="username_message">Please input username:</string>
@@ -15,11 +16,9 @@
     <string name="pref_toast_summary_false">Show as dialog</string>
     <string name="ticker">Tickers</string>
     <string name="ticker_dialog_title">Tickers</string>
-    <string name="ok">OK</string>
     <string name="error">Error</string>
     <string name="server_request_failed">Requst failed: specify valid username and password</string>
     <string name="really_logout">Do you want to log out</string>
-    <string name="logout">Logout</string>
     <string name="no_internet_connection">Please activate Wi-Fi or mobile data</string>
     <string name="loading_plan">Loading plan…</string>
     <string name="loading_changelog">Loading changelog…</string>
@@ -28,7 +27,6 @@
     <string name="pref_clear_cache">Clear cache</string>
     <string name="pref_clear_cache_summary">Force reloading plan</string>
     <string name="pref_creator">Creators</string>
-    <string name="pref_version">Version</string>
     <string name="pref_notifications">Notifications</string>
     <string name="pref_vibrate">Vibrate</string>
     <string name="cache_cleared">Cache cleared</string>
@@ -48,6 +46,10 @@
     <string name="pages_changed">Pages changed</string>
     <string name="data_changed">Changed data</string>
     <string name="synchronisation_interval">Auto Sync interval</string>
+    <string name="home_welcome_message">"Welcome at the Gym-Don-App.\n\n With this App you can see the newest Appointments, Mensa eating plans and your personal replacement plan.\n\n\n\nTHIS IS A BETA VERSION\n\nHave Fun with this app wish you the Gym-Don APP Developer."</string>
+    <string name="not_yet_implemented">This function was not implemented yet</string>
+    <string name="open_navigation_drawer">Open Navigation Drawer</string>
+    <string name="close_navigation_drawer">Close Navigation Drawer</string>
 
     <string-array name="synchronisation_interval_entries">
         <item>5 Minutes</item>
@@ -63,4 +65,14 @@
         <item>60</item>
         <item>120</item>
     </string-array>
+    <string-array name="navigation_list">
+        <item>Home</item>
+        <item>Replacement plan</item>
+        <item>Mensa</item>
+        <item>Appointments</item>
+        <item>Changelog</item>
+        <item>Settings</item>
+        <item>Logout</item>
+    </string-array>
+
 </resources>

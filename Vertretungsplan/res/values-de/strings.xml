@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="action_settings">Einstellungen</string>
     <string name="welcome_message">Herzlich Willkommen bei der Vertretungsplan-App</string>
     <string name="username_message">Bitte Benutzername eingeben:</string>
@@ -15,11 +16,9 @@
     <string name="pref_toast_summary_false">Als Dialog anzeigen</string>
     <string name="ticker">Ticker</string>
     <string name="ticker_dialog_title">Ticker</string>
-    <string name="ok">OK</string>
     <string name="error">Fehler</string>
     <string name="server_request_failed">Geben sie einen gültigen Benutzernamen an oder wenden Sie sich an die Herausgeber dieser App.</string>
     <string name="really_logout">Wollen Sie sich wirklich abmelden ?</string>
-    <string name="logout">Logout</string>
     <string name="no_internet_connection">Bitte aktivieren Sie WLAN oder mobile Daten.</string>
     <string name="loading_plan">Lädt Vertretungsplan…</string>
     <string name="loading_changelog">Lädt Neuerungen…</string>
@@ -28,10 +27,6 @@
     <string name="pref_clear_cache">Cache leeren</string>
     <string name="pref_clear_cache_summary">Neuladen des Plans erzwingen</string>
     <string name="pref_creator">Ersteller</string>
-    <string name="pref_creator_summary">Alexander Krabler, Simon Klimaschka, Simon Wanner</string>
-    <string name="pref_version">Version</string>
-    <string name="pref_github">Github</string>
-    <string name="pref_github_summary">https://github.com/GymDon/VPlanApp</string>
     <string name="pref_notifications">Benachrichtigungen</string>
     <string name="pref_vibrate">Vibrieren</string>
     <string name="cache_cleared">Cache geleert</string>
@@ -51,6 +46,10 @@
     <string name="pages_changed">Seiten geändert</string>
     <string name="data_changed">Geänderte Daten</string>
     <string name="synchronisation_interval">Synchronisationsintervall</string>
+    <string name="home_welcome_message">"Herzlich Willkommen bei der Gym-Don-App.\n\n Mithilfe dieser App kannst du die neuesten Termine, Mensaspeisepläne und deinen persönlichen Vertretungsplan einsehen.\n\n\n\nDIES IST EINE BETA VERSION\n\nViel Spaß bei der Nutzung wünschen dir die Gym-Don APP Entwickler."</string>
+    <string name="not_yet_implemented">Diese Funktion wurde bis jetzt noch nicht implementiert</string>
+    <string name="open_navigation_drawer">Öffne Navigation Drawer</string>
+    <string name="close_navigation_drawer">Schließe Navigation Drawer</string>
 
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>
@@ -66,4 +65,14 @@
         <item>60</item>
         <item>120</item>
     </string-array>
+    <string-array name="navigation_list">
+        <item>Home</item>
+        <item>Vertretungsplan</item>
+        <item>Mensa</item>
+        <item>Termine</item>
+        <item>Neuerungen</item>
+        <item>Einstellungen</item>
+        <item>Logout</item>
+    </string-array>
+
 </resources>
