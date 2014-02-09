@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -16,10 +17,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebChromeClient.CustomViewCallback;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -145,12 +148,9 @@ public class LoginActivity extends ActionBarActivity {
 				}
 			}
 
-			@Override
+			@SuppressLint("NewApi") @Override
 			protected void onPostExecute(Commit[] result) {
 				loadingDialog.dismiss();
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						LoginActivity.this);
-
 				StringBuilder message = new StringBuilder("<h2>"
 						+ LoginActivity.this.getText(R.string.whatsnewNews)
 						+ "</h2>");
@@ -158,7 +158,10 @@ public class LoginActivity extends ActionBarActivity {
 				for (Commit commit : result) {
 					if (commit.tag != null) {
 						message.append(hasUl ? "</ul>" : "")
-								.append("<h3>Version ").append(commit.tag.name)
+								.append("<h3>")
+								.append(LoginActivity.this.getText(R.string.pref_version))
+								.append(" ")
+								.append(commit.tag.name)
 								.append(":</h3><ul>");
 						hasUl = true;
 					}
@@ -175,6 +178,10 @@ public class LoginActivity extends ActionBarActivity {
 				WebView webView = new WebView(LoginActivity.this);
 				webView.loadDataWithBaseURL(null, message.toString(),
 						"text/html", "UTF-8", null);
+				
+				AlertDialog.Builder builder = Build.VERSION.SDK_INT >= 11 ? 
+						new AlertDialog.Builder(LoginActivity.this, R.style.DialogTheme) : 
+						new AlertDialog.Builder(new ContextThemeWrapper(LoginActivity.this, R.style.DialogTheme));
 				builder.setView(webView);
 				builder.setTitle(R.string.whatsnew);
 				builder.setPositiveButton(R.string.ok,
@@ -194,6 +201,7 @@ public class LoginActivity extends ActionBarActivity {
 						});
 
 				AlertDialog dialog = builder.create();
+				dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_full_dark_blue);
 				dialog.show();
 			}
 		}.execute();

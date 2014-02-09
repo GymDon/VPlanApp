@@ -6,4 +6,7 @@
 	<color name="tab_selected">@color/tab_highlight</color>
 	<color name="tab">#FF167BAA</color>
 	<color name="addition">#FFFF5555</color>
+	<color name="grey">#FFCCCCCC</color>
+	<color name="blue">#FF167BAA</color>
+	<color name="dark_blue">#FF003D5D</color>
 </resources>

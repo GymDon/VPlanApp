@@ -16,5 +16,8 @@ backward-compatibility can go here.
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
+    
+    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+        <!-- <item name="android:background">@color/action_bar</item> -->
+    </style>
 </resources>

@@ -1,10 +1,11 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 <!--         Will be done better, just to be reviewed, bugs or sth to me.   (LeMuecke) -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabView</item>
         <item name="android:actionBarTabBarStyle">@style/ActionBarTabBar</item>
+        <item name="android:alertDialogStyle">@style/DialogTheme</item>
     </style>
 
     <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
@@ -22,6 +23,16 @@
 
         <!-- tab indicator -->
         <item name="android:background">@color/tab_highlight</item>
+    </style>
+    
+    <style name="DialogTheme" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowTitleStyle">@style/DialogTitle</item>
+        <item name="android:windowBackground">@drawable/dialog_full_dark_blue</item>
+    </style>
+    
+    <style name="DialogTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
+    	<item name="android:textColor">@android:color/white</item>
+    	<item name="android:gravity">center_horizontal</item>
     </style>
 
 </resources>
