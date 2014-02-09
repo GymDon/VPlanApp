@@ -1,5 +1,6 @@
-package com.inf1315.vertretungsplan;
+package com.inf1315.vertretungsplan.fragments;
 
+import com.inf1315.vertretungsplan.R;
 import com.inf1315.vertretungsplan.api.API;
 import com.inf1315.vertretungsplan.api.PageObject;
 

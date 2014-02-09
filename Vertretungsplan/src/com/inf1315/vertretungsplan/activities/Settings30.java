@@ -1,4 +1,7 @@
-package com.inf1315.vertretungsplan;
+package com.inf1315.vertretungsplan.activities;
+
+import com.inf1315.vertretungsplan.R;
+import com.inf1315.vertretungsplan.fragments.SettingsFragment;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;

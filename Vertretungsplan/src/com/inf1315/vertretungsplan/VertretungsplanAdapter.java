@@ -37,10 +37,6 @@ public class VertretungsplanAdapter extends BaseExpandableListAdapter {
 		return today ? API.DATA.todayOthers : API.DATA.tomorrowOthers;
 	}
 
-	public boolean hasReplacements() {
-		return !(getReplacements().isEmpty() && getOthers().isEmpty());
-	}
-
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		return groupPosition < getReplacements().size() ? null : getOthers()

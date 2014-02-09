@@ -6,8 +6,8 @@ import java.util.*;
 
 import org.json.*;
 
-import com.inf1315.vertretungsplan.LoginActivity;
 import com.inf1315.vertretungsplan.R;
+import com.inf1315.vertretungsplan.activities.LoginActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -229,7 +229,8 @@ public class API {
 	}
 
 	public static boolean isNetworkAvailable() {
-		ConnectivityManager conMan = (ConnectivityManager) CONTEXT.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager conMan = (ConnectivityManager) CONTEXT
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = conMan.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
@@ -238,18 +239,21 @@ public class API {
 		if (o1.hash.equals(o2.hash))
 			return;
 
-		boolean replacementsChanged = o1.todayReplacementsList.hashCode() != o2.todayReplacementsList.hashCode()
-								   || o1.tomorrowReplacementsList.hashCode() != o2.tomorrowReplacementsList.hashCode();
+		boolean replacementsChanged = o1.todayReplacementsList.hashCode() != o2.todayReplacementsList
+				.hashCode()
+				|| o1.tomorrowReplacementsList.hashCode() != o2.tomorrowReplacementsList
+						.hashCode();
 		boolean tickersChanged = o1.tickers.hashCode() != o2.tickers.hashCode();
-		boolean othersChanged = o1.todayOthers.hashCode() != o2.todayOthers.hashCode()
-							 || o1.tomorrowOthers.hashCode() != o2.tomorrowOthers.hashCode();
+		boolean othersChanged = o1.todayOthers.hashCode() != o2.todayOthers
+				.hashCode()
+				|| o1.tomorrowOthers.hashCode() != o2.tomorrowOthers.hashCode();
 		boolean pagesChanged = o1.pages.hashCode() != o2.pages.hashCode();
 		displayNotification(replacementsChanged, tickersChanged, othersChanged,
 				pagesChanged);
 	}
 
-	private static void displayNotification(boolean replacementsChanged, boolean tickersChanged, 
-											boolean othersChanged, boolean pagesChanged) {
+	private static void displayNotification(boolean replacementsChanged,
+			boolean tickersChanged, boolean othersChanged, boolean pagesChanged) {
 		if (!replacementsChanged && !tickersChanged && !othersChanged
 				&& !pagesChanged)
 			return;
@@ -269,29 +273,41 @@ public class API {
 			ncb.setNumber(count);
 		ncb.setSmallIcon(R.drawable.ic_launcher);
 		if (count == 1) {
-			CharSequence text = 
-					replacementsChanged ? CONTEXT.getText(R.string.replacements_changed)
-					: tickersChanged ? CONTEXT.getText(R.string.tickers_changed)
-					: othersChanged ? CONTEXT.getText(R.string.others_changed) : 
-									CONTEXT.getText(R.string.pages_changed);
+			CharSequence text = replacementsChanged ? CONTEXT
+					.getText(R.string.replacements_changed)
+					: tickersChanged ? CONTEXT
+							.getText(R.string.tickers_changed)
+							: othersChanged ? CONTEXT
+									.getText(R.string.others_changed) : CONTEXT
+									.getText(R.string.pages_changed);
 			ncb.setContentText(text);
 		} else
 			ncb.setContentText(CONTEXT.getText(R.string.data_changed));
-		
+
 		ncb.setContentTitle(CONTEXT.getText(R.string.app_name));
 
 		Intent intent = new Intent(API.CONTEXT, LoginActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(API.CONTEXT, 0, intent, 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(API.CONTEXT, 0,
+				intent, 0);
 		ncb.setContentIntent(pendingIntent);
 
-		NotificationManager nm = (NotificationManager) CONTEXT.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager nm = (NotificationManager) CONTEXT
+				.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification n = ncb.build();
-		boolean vibrate = CONTEXT.getSharedPreferences("com.inf1315.vertretungsplan_preferences",
-				Context.MODE_PRIVATE).getBoolean("pref_vibrate", true);
-		
+		boolean vibrate = CONTEXT
+				.getSharedPreferences(
+						"com.inf1315.vertretungsplan_preferences",
+						Context.MODE_PRIVATE).getBoolean("pref_vibrate", true);
+
 		if (vibrate)
 			n.defaults |= Notification.DEFAULT_VIBRATE;
 		nm.notify(0, n);
+	}
+
+	public static boolean hasReplacements(boolean forToday) {
+		return !((forToday ? API.DATA.todayReplacementsList
+				: API.DATA.tomorrowReplacementsList).isEmpty() && (forToday ? API.DATA.todayOthers
+				: API.DATA.tomorrowOthers).isEmpty());
 	}
 
 	private static Map<ApiAction, Class<? extends ApiResult>> actionToClassMap;

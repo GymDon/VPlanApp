@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Vertretungsplan</string>
+    <string name="app_name">Gymnasium Donauwörth</string>
     <string name="action_settings">Einstellungen</string>
     <string name="welcome_message">Herzlich Willkommen bei der Vertretungsplan-App</string>
     <string name="username_message">Bitte Benutzername eingeben:</string>
@@ -25,7 +25,7 @@
     <string name="no_internet_connection">Bitte aktivieren Sie WLAN oder mobile Daten.</string>
     <string name="loading_plan">Lädt Vertretungsplan…</string>
     <string name="loading_commits">Lädt Neuerungen…</string>
-    <string name="reload_plan">Vertretungsplan aktualisieren</string>
+    <string name="reload_plan">Daten aktualisieren</string>
     <string name="pref_logout">Beim Verlassen des Plans</string>
     <string name="pref_logout_summary">Logout bestätigen</string>
     <string name="pref_logout_summary_false">Logout nicht bestätigen</string>
@@ -64,6 +64,10 @@
     <string name="synchronisation_summary">automatisch synchronisieren</string>
     <string name="synchronisation_summary_false">nicht synchronisieren</string>
     <string name="synchronisation_intervall">Synchronisationsintervall</string>
+    <string name="home_welcome_message">"Herzlich Willkommen bei der Gym-Don-App.\n\n Mithilfe dieser App kannst du die neuesten Termine, Mensaspeisepläne und deinen persönlichen Vertretungsplan einsehen.\n\n\n\nDIES IST EINE BETA VERSION\n\nViel Spaß bei der Nutzung wünschen dir die Gym-Don APP Entwickler."</string>
+    <string name="not_yet_implemented">Diese Funktion wurde bis jetzt noch nicht implementiert</string>
+    <string name="open_navigation_drawer">Öffne Navigation Drawer</string>
+    <string name="close_navigation_drawer">Schließe Navigation Drawer</string>
 
     <string-array name="synchronisation_intervall_entries">
         <item>5 Minuten</item>
@@ -78,6 +82,15 @@
         <item>30</item>
         <item>60</item>
         <item>120</item>
+    </string-array>
+    <string-array name="navigation_list">
+        <item>Home</item>
+        <item>Vertretungsplan</item>
+        <item>Mensa</item>
+        <item>Termine</item>
+        <item>Neuerungen</item>
+        <item>Einstellungen</item>
+        <item>Logout</item>
     </string-array>
 
 </resources>
