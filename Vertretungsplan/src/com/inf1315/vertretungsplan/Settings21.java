@@ -117,9 +117,9 @@ public class Settings21 extends PreferenceActivity implements
 			Preference clearCachePref = findPreference(key);
 			clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		}
-		
-		ListPreference intervallPref = (ListPreference) findPreference("pref_intervall");
-		intervallPref.setSummary(intervallPref.getEntry());
+
+		ListPreference intervalPref = (ListPreference) findPreference("pref_interval");
+		intervalPref.setSummary(intervalPref.getEntry());
 
 	}
 }
