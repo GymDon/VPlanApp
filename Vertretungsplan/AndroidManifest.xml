@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.inf1315.vertretungsplan.activities.Settings30"
+            android:name="com.inf1315.vertretungsplan.activities.Settings11"
             android:label="@string/title_activity_settings"
             android:parentActivityName="com.inf1315.vertretungsplan.activities.LoginActivity" >
             <meta-data
@@ -36,7 +36,7 @@
                 android:value="com.inf1315.vertretungsplan.LoginActivity" />
         </activity>
         <activity
-            android:name="com.inf1315.vertretungsplan.activities.Settings21"
+            android:name="com.inf1315.vertretungsplan.activities.Settings7"
             android:label="@string/title_activity_settings"
             android:parentActivityName="com.inf1315.vertretungsplan.activities.LoginActivity" >
             <intent-filter>

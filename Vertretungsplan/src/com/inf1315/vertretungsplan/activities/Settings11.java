@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 @SuppressLint("NewApi")
-public class Settings30 extends Activity {
+public class Settings11 extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -111,9 +111,9 @@ public class LoginActivity extends ActionBarActivity {
 		int itemId = item.getItemId();
 		if (itemId == R.id.action_settings) {
 			if (Build.VERSION.SDK_INT >= 11)
-				startActivity(new Intent(this, Settings30.class));
+				startActivity(new Intent(this, Settings11.class));
 			else
-				startActivity(new Intent(this, Settings21.class));
+				startActivity(new Intent(this, Settings7.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

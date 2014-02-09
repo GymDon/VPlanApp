@@ -150,13 +150,13 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			break;
 		case 4:
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.content_frame, new NewsFragment()).commit();
+					.replace(R.id.content_frame, new ChangelogFragment()).commit();
 			break;
 		case 5:
 			if (Build.VERSION.SDK_INT >= 11)
-				startActivity(new Intent(this, Settings30.class));
+				startActivity(new Intent(this, Settings11.class));
 			else
-				startActivity(new Intent(this, Settings21.class));
+				startActivity(new Intent(this, Settings7.class));
 			return;
 		case 6:
 			logout();

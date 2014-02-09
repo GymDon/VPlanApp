@@ -17,7 +17,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.widget.Toast;
 
-public class Settings21 extends PreferenceActivity implements
+public class Settings7 extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
 
 	@SuppressWarnings("deprecation")
@@ -50,7 +50,7 @@ public class Settings21 extends PreferenceActivity implements
 						API.DATA.setToken(token);
 						API.DATA.userInfo = new UserInfo(user);
 						API.reload = true;
-						Toast.makeText(Settings21.this,
+						Toast.makeText(Settings7.this,
 								getText(R.string.cache_cleared),
 								Toast.LENGTH_SHORT).show();
 						return true;
