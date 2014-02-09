@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Einstellungen</string>
+    <string name="welcome_message">Herzlich Willkommen bei der Vertretungsplan-App</string>
+    <string name="username_message">Bitte Benutzername eingeben:</string>
+    <string name="password_message">Bitte Passwort eingeben:</string>
+    <string name="login">Login</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="show_ticker">Ticker anzeigen</string>
+    <string name="no_ticker">Keine Ticker vorhanden</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="pref_toast">Ticker</string>
+    <string name="pref_toast_summary">Als Toast anzeigen</string>
+    <string name="pref_toast_summary_false">Als Dialog anzeigen</string>
+    <string name="ticker">Ticker</string>
+    <string name="ticker_dialog_title">Ticker</string>
+    <string name="ok">OK</string>
+    <string name="error">Fehler</string>
+    <string name="server_request_failed">Geben sie einen gültigen Benutzernamen an oder wenden Sie sich an die Herausgeber dieser App.</string>
+    <string name="really_logout">Wollen Sie sich wirklich abmelden ?</string>
+    <string name="logout">Logout</string>
+    <string name="no_internet_connection">Bitte aktivieren Sie WLAN oder mobile Daten.</string>
+    <string name="loading_plan">Lädt Vertretungsplan…</string>
+    <string name="loading_changelog">Lädt Neuerungen…</string>
+    <string name="reload_plan">Vertretungsplan aktualisieren</string>
+    <string name="pref_logout">Logout bestätigen</string>
+    <string name="pref_clear_cache">Cache leeren</string>
+    <string name="pref_clear_cache_summary">Neuladen des Plans erzwingen</string>
+    <string name="pref_creator">Ersteller</string>
+    <string name="pref_creator_summary">Alexander Krabler, Simon Klimaschka, Simon Wanner</string>
+    <string name="pref_version">Version</string>
+    <string name="pref_github">Github</string>
+    <string name="pref_github_summary">https://github.com/GymDon/VPlanApp</string>
+    <string name="pref_notifications">Benachrichtigungen</string>
+    <string name="pref_vibrate">Vibrieren</string>
+    <string name="cache_cleared">Cache geleert</string>
+    <string name="advanced">Fortgeschritten</string>
+    <string name="old_data_message">Dieser alte Stand der Daten ist von: </string>
+    <string name="no_internet_connection_title">Keine Internetverbindung</string>
+    <string name="usernanme">Benutzername der Daten : </string>
+    <string name="others">Andere Änderungen</string>
+    <string name="whatsnew">Neuerungen</string>
+    <string name="whatsnewNews">Neu in dieser Version:</string>
+    <string name="action_changelog">Neuerungen</string>
+    <string name="info">Informationen</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="replacements_changed">Vertretungen geändert</string>
+    <string name="others_changed">Andere Änderungen geändert</string>
+    <string name="tickers_changed">Ticker geändert</string>
+    <string name="pages_changed">Seiten geändert</string>
+    <string name="data_changed">Geänderte Daten</string>
+    <string name="synchronisation_interval">Synchronisationsintervall</string>
+
+    <string-array name="synchronisation_interval_entries">
+        <item>5 Minuten</item>
+        <item>10 Minuten</item>
+        <item>30 Minuten</item>
+        <item>1 Stunde</item>
+        <item>2 Stunden</item>
+    </string-array>
+    <string-array name="synchronisation_interval_entryValues">
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </string-array>
+</resources>

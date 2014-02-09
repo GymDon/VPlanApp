@@ -173,7 +173,7 @@ public class VertretungsplanAdapter extends BaseExpandableListAdapter {
 			group.addView(line2, params2);
 
 			if (o.addition)
-				group.setBackgroundColor(0xFFFF5555);
+				group.setBackgroundColor(context.getResources().getColor(R.color.addition));
 			return group;
 		} else {
 			RelativeLayout group = new RelativeLayout(context);

@@ -7,6 +7,7 @@
         android:title="@string/show_ticker"
         android:visible="false"
         vplan:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/action_reload_plan"
         android:icon="@drawable/ic_action_refresh"
