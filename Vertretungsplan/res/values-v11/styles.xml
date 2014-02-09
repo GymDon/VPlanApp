@@ -1,38 +1,36 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-<!--         Will be done better, just to be reviewed, bugs or sth to me.   (LeMuecke) -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabView</item>
         <item name="android:actionBarTabBarStyle">@style/ActionBarTabBar</item>
-        <item name="android:alertDialogStyle">@style/DialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
     </style>
 
     <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/action_bar</item>
- <!-- #003D4D -->
     </style>
 
     <style name="ActionBarTabView" parent="@style/Widget.AppCompat.ActionBar.TabView">
-
-        <!-- tab indicator -->
         <item name="android:background">@drawable/tab_bar_background</item>
     </style>
     
     <style name="ActionBarTabBar" parent="@style/Widget.AppCompat.ActionBar.TabBar">
-
-        <!-- tab indicator -->
         <item name="android:background">@color/tab_highlight</item>
     </style>
     
-    <style name="DialogTheme" parent="@android:style/Theme.Holo.Light.Dialog">
-        <item name="android:windowTitleStyle">@style/DialogTitle</item>
-        <item name="android:windowBackground">@drawable/dialog_full_dark_blue</item>
+    <!-- Dialogs not "fully" working - skyrising -->
+    <style name="AlertDialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowTitleStyle">@style/AlertDialogTitle</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowTitleBackgroundStyle">@style/AlertDialogTitleBackground</item><!-- No effect -->
     </style>
     
-    <style name="DialogTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
-    	<item name="android:textColor">@android:color/white</item>
-    	<item name="android:gravity">center_horizontal</item>
+    <style name="AlertDialogTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
+    	<!--<item name="android:textColor">@android:color/holo_blue_dark</item>-->
+    </style>
+    <style name="AlertDialogTitleBackground">
+    	<item name="android:background">@color/dark_blue</item>
     </style>
 
 </resources>
