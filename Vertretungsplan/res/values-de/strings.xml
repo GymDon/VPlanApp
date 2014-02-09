@@ -24,23 +24,16 @@
     <string name="loading_plan">Lädt Vertretungsplan…</string>
     <string name="loading_changelog">Lädt Neuerungen…</string>
     <string name="reload_plan">Vertretungsplan aktualisieren</string>
-    <string name="pref_logout">Beim Verlassen des Plans</string>
-    <string name="pref_logout_summary">Logout bestätigen</string>
-    <string name="pref_logout_summary_false">Logout nicht bestätigen</string>
+    <string name="pref_logout">Logout bestätigen</string>
     <string name="pref_clear_cache">Cache leeren</string>
     <string name="pref_clear_cache_summary">Neuladen des Plans erzwingen</string>
     <string name="pref_creator">Ersteller</string>
     <string name="pref_creator_summary">Alexander Krabler, Simon Klimaschka, Simon Wanner</string>
     <string name="pref_version">Version</string>
-    <string name="pref_version_summary">0.2</string>
     <string name="pref_github">Github</string>
     <string name="pref_github_summary">https://github.com/GymDon/VPlanApp</string>
-    <string name="pref_notifications">Bei Änderung</string>
-    <string name="pref_notifications_summary">benachrichtigen</string>
-    <string name="pref_notifications_summary_false">nicht benachrichtigen</string>
-    <string name="pref_vibrate">Bei Benachrichtigung</string>
-    <string name="pref_vibrate_summary">vibrieren</string>
-    <string name="pref_vibrate_summary_false">nicht vibrieren</string>
+    <string name="pref_notifications">Benachrichtigungen</string>
+    <string name="pref_vibrate">Vibrieren</string>
     <string name="cache_cleared">Cache geleert</string>
     <string name="advanced">Fortgeschritten</string>
     <string name="old_data_message">Dieser alte Stand der Daten ist von: </string>
@@ -57,20 +50,16 @@
     <string name="tickers_changed">Ticker geändert</string>
     <string name="pages_changed">Seiten geändert</string>
     <string name="data_changed">Geänderte Daten</string>
-    <string name="auto_synchronisation">Automatische Synchronisation</string>
-    <string name="synchronisation_title">Vertretungsplan</string>
-    <string name="synchronisation_summary">automatisch synchronisieren</string>
-    <string name="synchronisation_summary_false">nicht synchronisieren</string>
-    <string name="synchronisation_intervall">Synchronisationsintervall</string>
+    <string name="synchronisation_interval">Synchronisationsintervall</string>
 
-    <string-array name="synchronisation_intervall_entries">
+    <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>
         <item>10 Minuten</item>
         <item>30 Minuten</item>
         <item>1 Stunde</item>
         <item>2 Stunden</item>
     </string-array>
-    <string-array name="synchronisation_intervall_entryValues">
+    <string-array name="synchronisation_interval_entryValues">
         <item>5</item>
         <item>10</item>
         <item>30</item>

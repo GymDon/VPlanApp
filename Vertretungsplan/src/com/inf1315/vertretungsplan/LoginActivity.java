@@ -213,7 +213,7 @@ public class LoginActivity extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		if (itemId == R.id.action_settings) {
+		if (itemId == R.id.action_login_settings) {
 			Intent startSettings;
 			if (Build.VERSION.SDK_INT >= 11)
 				startSettings = new Intent(this, Settings30.class);

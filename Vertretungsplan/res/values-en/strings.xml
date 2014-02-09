@@ -24,20 +24,13 @@
     <string name="loading_plan">Loading plan…</string>
     <string name="loading_changelog">Loading changelog…</string>
     <string name="reload_plan">Reload plan</string>
-    <string name="pref_logout">On quit</string>
-    <string name="pref_logout_summary">Confirm logout</string>
-    <string name="pref_logout_summary_false">Don\'t confirm logout</string>
+    <string name="pref_logout">Confirm logout</string>
     <string name="pref_clear_cache">Clear cache</string>
     <string name="pref_clear_cache_summary">Force reloading plan</string>
     <string name="pref_creator">Creators</string>
     <string name="pref_version">Version</string>
-    <string name="pref_version_summary">0.2</string>
-    <string name="pref_notifications">On change</string>
-    <string name="pref_notifications_summary">show notification</string>
-    <string name="pref_notifications_summary_false">don\'t show notification</string>
-    <string name="pref_vibrate">On notification</string>
-    <string name="pref_vibrate_summary">vibrate</string>
-    <string name="pref_vibrate_summary_false">don\'t vibrate</string>
+    <string name="pref_notifications">Notifications</string>
+    <string name="pref_vibrate">Vibrate</string>
     <string name="cache_cleared">Cache cleared</string>
     <string name="advanced">Advanced</string>
     <string name="old_data_message">This old data is from: </string>
@@ -54,20 +47,16 @@
     <string name="tickers_changed">Tickers changed</string>
     <string name="pages_changed">Pages changed</string>
     <string name="data_changed">Changed data</string>
-    <string name="auto_synchronisation">Synchronisation</string>
-    <string name="synchronisation_title">Auto Sync</string>
-    <string name="synchronisation_summary">do Auto Sync</string>
-    <string name="synchronisation_summary_false">don\'t do Auto Sync</string>
-    <string name="synchronisation_intervall">Auto Sync interval</string>
+    <string name="synchronisation_interval">Auto Sync interval</string>
 
-    <string-array name="synchronisation_intervall_entries">
+    <string-array name="synchronisation_interval_entries">
         <item>5 Minutes</item>
         <item>10 Minutes</item>
         <item>30 Minutes</item>
         <item>1 Hour</item>
         <item>2 Hours</item>
     </string-array>
-    <string-array name="synchronisation_intervall_entryValues">
+    <string-array name="synchronisation_interval_entryValues">
         <item>5</item>
         <item>10</item>
         <item>30</item>

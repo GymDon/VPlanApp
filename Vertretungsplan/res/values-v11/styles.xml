@@ -21,13 +21,8 @@
     
     <!-- Dialogs not "fully" working - skyrising -->
     <style name="AlertDialogTheme" parent="@android:style/Theme.Holo.Dialog">
-        <item name="android:windowTitleStyle">@style/AlertDialogTitle</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowTitleBackgroundStyle">@style/AlertDialogTitleBackground</item><!-- No effect -->
-    </style>
-    
-    <style name="AlertDialogTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
-    	<!--<item name="android:textColor">@android:color/holo_blue_dark</item>-->
+        <item name="android:windowTitleBackgroundStyle">@style/AlertDialogTitleBackground</item>
     </style>
     <style name="AlertDialogTitleBackground">
     	<item name="android:background">@color/dark_blue</item>
