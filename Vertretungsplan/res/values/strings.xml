@@ -58,6 +58,7 @@
     <string name="not_yet_implemented">Diese Funktion wurde bis jetzt noch nicht implementiert</string>
     <string name="open_navigation_drawer">Öffne Navigation Drawer</string>
     <string name="close_navigation_drawer">Schließe Navigation Drawer</string>
+    <string translatable="false" name="icon">Icon</string>
     
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>
@@ -78,7 +79,6 @@
         <item>Vertretungsplan</item>
         <item>Mensa</item>
         <item>Termine</item>
-        <item>Neuerungen</item>
         <item>Einstellungen</item>
         <item>Logout</item>
     </string-array>

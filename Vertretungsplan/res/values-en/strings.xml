@@ -69,8 +69,7 @@
         <item>Home</item>
         <item>Replacement plan</item>
         <item>Mensa</item>
-        <item>Appointments</item>
-        <item>Changelog</item>
+        <item>Events</item>
         <item>Settings</item>
         <item>Logout</item>
     </string-array>
