@@ -127,7 +127,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			break;
 		case 3:
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.content_frame, new AppointmentFragment())
+					.replace(R.id.content_frame, new EventFragment())
 					.commit();
 			break;
 		case 4:
