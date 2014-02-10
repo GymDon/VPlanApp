@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string translatable="false" name="app_name">Gymnasium Donauwörth</string>
+    <string translatable="false" name="app_name">GymDon</string>
     <string name="action_settings">Einstellungen</string>
     <string name="welcome_message">Herzlich Willkommen bei der Vertretungsplan-App</string>
     <string name="username_message">Bitte Benutzername eingeben:</string>
