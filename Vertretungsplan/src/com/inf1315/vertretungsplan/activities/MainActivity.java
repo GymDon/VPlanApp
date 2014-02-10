@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -124,7 +125,17 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
+	
+	@Override
+	public void onResume() {
 
+		super.onResume();
+		if (API.reload) {
+			dataChanged();
+			loadData();
+		}
+	}
+	
 	private void selectItem(int position) {
 		drawerLayout.closeDrawer(drawerList);
 
@@ -163,6 +174,8 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			return;
 		}
 
+		if (position != 1 && fragmentPosition == 1)
+			getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		this.fragmentPosition = position;
 		supportInvalidateOptionsMenu();
 		drawerList.setItemChecked(position, true);

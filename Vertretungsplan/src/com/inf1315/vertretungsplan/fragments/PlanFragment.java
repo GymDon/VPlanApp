@@ -22,7 +22,6 @@ public class PlanFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		android.util.Log.i("inf", "onCreate PlanFragment" + getArguments().getBoolean("ARG_TODAY"));
 		super.onCreate(savedInstanceState);
 		argToday = getArguments().getBoolean(ARG_TODAY);
 		adapter = new VertretungsplanAdapter(getActivity(), argToday);
@@ -31,7 +30,6 @@ public class PlanFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		android.util.Log.i("inf", "onCreateView PlanFragment" + getArguments().getBoolean("ARG_TODAY"));
 		View rootView = inflater.inflate(R.layout.fragment_plan, container,
 				false);
 

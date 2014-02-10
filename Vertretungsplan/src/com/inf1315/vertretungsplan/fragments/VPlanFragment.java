@@ -65,16 +65,6 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 	}
 
 	@Override
-	public void onResume() {
-
-		super.onResume();
-		if (API.reload) {
-			planPagerAdapter.notifyDataSetChanged();
-			parentActivity.loadData();
-		}
-	}
-
-	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding
@@ -94,8 +84,8 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 	}
 
 	public static void showTicker(Context context) {
-		if (PreferenceManager.getDefaultSharedPreferences(context)
-				.getBoolean("pref_toast", true)) {
+		if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+				"pref_toast", true)) {
 			if (!API.DATA.tickers.isEmpty()) {
 				String ticker = "";
 				for (TickerObject to : API.DATA.tickers) {
@@ -104,8 +94,8 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 				ticker = ticker.substring(0, ticker.length() - 2);
 				Toast.makeText(context, ticker, Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(context, R.string.no_ticker,
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, R.string.no_ticker, Toast.LENGTH_SHORT)
+						.show();
 			}
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -144,7 +134,6 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 				reps++;
 			if (position < reps) {
 				boolean isTabToday = position == 0 && API.hasReplacements(true);
-				android.util.Log.i("inf", "getItem " + position);
 				Fragment fragment = new PlanFragment();
 				Bundle args = new Bundle();
 				args.putBoolean(PlanFragment.ARG_TODAY, isTabToday);

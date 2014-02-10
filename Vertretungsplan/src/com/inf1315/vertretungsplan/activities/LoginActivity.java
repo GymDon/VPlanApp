@@ -72,32 +72,31 @@ public class LoginActivity extends ActionBarActivity {
 			return;
 		}
 
-		long currentTimestamp = System.currentTimeMillis() / 1000L;
-		if (!"".equals(API.DATA.getToken())
-				&& API.DATA.timestamp + 86400L > currentTimestamp) {
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-		}		
-
 		String error = getIntent().getStringExtra("error");
-		if (error == null)
-			return;
+		if (error == null) {
+			long currentTimestamp = System.currentTimeMillis() / 1000L;
+			if (!"".equals(API.DATA.getToken())
+					&& API.DATA.timestamp + 86400L > currentTimestamp) {
+				Intent intent = new Intent(this, MainActivity.class);
+				startActivity(intent);
+			}
+		} else {
+			AlertDialog.Builder adb = new AlertDialog.Builder(this);
+			adb.setTitle(R.string.error);
+			adb.setPositiveButton(android.R.string.ok, null);
 
-		AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		adb.setTitle(R.string.error);
-		adb.setPositiveButton(android.R.string.ok, null);
+			if (error.equals("ServerRequestFailed"))
+				adb.setMessage(R.string.server_request_failed);
+			else if (error.equals("NoInternetConnection"))
+				adb.setMessage(R.string.no_internet_connection);
+			else
+				adb.setMessage(error);
+			String password = getIntent().getStringExtra("password");
+			if (password != null)
+				passwordEditText.setText(password);
 
-		if (error.equals("ServerRequestFailed"))
-			adb.setMessage(R.string.server_request_failed);
-		else if (error.equals("NoInternetConnection"))
-			adb.setMessage(R.string.no_internet_connection);
-		else
-			adb.setMessage(error);
-		String password = getIntent().getStringExtra("password");
-		if (password != null)
-			passwordEditText.setText(password);
-
-		adb.show();
+			adb.show();
+		}
 	}
 
 	@Override

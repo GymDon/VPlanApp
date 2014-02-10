@@ -33,7 +33,7 @@
             android:parentActivityName="com.inf1315.vertretungsplan.activities.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.inf1315.vertretungsplan.LoginActivity" />
+                android:value="com.inf1315.vertretungsplan.activities.LoginActivity" />
         </activity>
         <activity
             android:name="com.inf1315.vertretungsplan.activities.Settings7"
@@ -47,7 +47,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.inf1315.vertretungsplan.LoginActivity" />
+                android:value="com.inf1315.vertretungsplan.activities.LoginActivity" />
         </activity>
         <activity
             android:name="com.inf1315.vertretungsplan.activities.MainActivity"
@@ -55,7 +55,7 @@
             android:parentActivityName="com.inf1315.vertretungsplan.activities.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.inf1315.vertretungsplan.LoginActivity" />
+                android:value="com.inf1315.vertretungsplan.activities.LoginActivity" />
         </activity>
     </application>
 

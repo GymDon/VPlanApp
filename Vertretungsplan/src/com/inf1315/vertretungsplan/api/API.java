@@ -207,7 +207,7 @@ public class API {
 			url = new URL(url.toExternalForm() + "?" + get);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod(requestMethod);
-		conn.setReadTimeout(2000);
+		conn.setReadTimeout(5000);
 
 		conn.connect();
 		if (requestMethod.equals("POST"))
