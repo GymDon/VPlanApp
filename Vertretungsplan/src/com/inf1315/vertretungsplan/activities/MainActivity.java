@@ -116,10 +116,8 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 					.replace(R.id.content_frame, new HomeFragment()).commit();
 			break;
 		case 1:
-			if (fragmentPosition != 1)
-				getSupportFragmentManager().beginTransaction()
-						.replace(R.id.content_frame, new VPlanFragment())
-						.commit();
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.content_frame, new VPlanFragment()).commit();
 			break;
 		case 2:
 			getSupportFragmentManager().beginTransaction()
@@ -127,8 +125,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			break;
 		case 3:
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.content_frame, new EventFragment())
-					.commit();
+					.replace(R.id.content_frame, new EventFragment()).commit();
 			break;
 		case 4:
 			if (Build.VERSION.SDK_INT >= 11)
@@ -225,7 +222,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	}
 
 	private void dataChanged() {
-		// TODO implement dataChanged()
+		selectItem(fragmentPosition);
 	}
 
 	private void setupNavigationDrawer() {
@@ -256,13 +253,14 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 				R.drawable.ic_action_refresh, R.drawable.ic_action_refresh };
 
 		drawerList.setAdapter(getCustomSimpleAdapter(images, drawerTitles));
-		drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				selectItem(position);
-			}
-		});
+		drawerList
+				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						selectItem(position);
+					}
+				});
 
 		selectItem(0);
 	}

@@ -26,10 +26,14 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 		super.onCreate(savedInstanceState);
 
 		parentActivity = (MainActivity) getActivity();
-		// Set up the action bar.
-		final ActionBar actionBar = parentActivity.getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		showTicker(getActivity());
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		ActionBar actionBar = parentActivity.getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	}
 
 	@Override
@@ -37,12 +41,12 @@ public class VPlanFragment extends Fragment implements ActionBar.TabListener {
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.activity_plan, container, false);
 
-		planPagerAdapter = new PlanPagerAdapter(
-				parentActivity.getSupportFragmentManager());
+		planPagerAdapter = new PlanPagerAdapter(getChildFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		viewPager = (ViewPager) rootView.findViewById(R.id.plan_pager);
 		viewPager.setAdapter(planPagerAdapter);
+		viewPager.setOffscreenPageLimit(2);
 
 		viewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
