@@ -66,7 +66,6 @@
         <item>120</item>
     </string-array>
     <string-array name="navigation_list">
-        <item>user_name</item>
         <item>Home</item>
         <item>Replacement plan</item>
         <item>Mensa</item>

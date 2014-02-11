@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="transparent">#00000000</color>
-	<color name="action_bar">#FF002D4D</color>
-	<color name="tab_highlight">#FF003D5D</color>
+	<color name="dark_blue">#003D5D</color>
+	<color name="blue">#167BAA</color>
+	<color name="grey">#CCCCCC</color>
+	<color name="action_bar">#002D4D</color>
+	<color name="tab_highlight">@color/dark_blue</color>
 	<color name="tab_selected">@color/tab_highlight</color>
-	<color name="tab">#FF167BAA</color>
-	<color name="addition">#FFFF5555</color>
-	<color name="grey">#FFCCCCCC</color>
-	<color name="blue">#FF167BAA</color>
-	<color name="dark_blue">#FF003D5D</color>
+	<color name="tab">@color/blue</color>
+	<color name="addition">#FF5555</color>
+	<color name="drawer_bg">#111</color>
+	<color name="drawer_bg_light">#333</color>
 </resources>
