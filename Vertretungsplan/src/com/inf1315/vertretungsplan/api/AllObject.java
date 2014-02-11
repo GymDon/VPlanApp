@@ -24,6 +24,7 @@ public class AllObject extends ApiResult {
 	public List<TickerObject> tickers = new ArrayList<TickerObject>();
 	public List<ReplacementObject> todayReplacementsList = new ArrayList<ReplacementObject>();
 	public List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
+	public List<Event> events = new ArrayList<Event>();
 	public UserInfo userInfo;
 	public String hash = "";
 	public String timeString = "";
@@ -75,6 +76,10 @@ public class AllObject extends ApiResult {
 				tomorrowOthers.add(oo);
 		}
 
+		Event[] event = new ApiResultArray(json.getJSONArray("events"),
+				Event.class).getArray(new Event[0]);
+		events = Arrays.asList(event);
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		timeString = sdf.format(new Date());
 
@@ -93,9 +98,8 @@ public class AllObject extends ApiResult {
 		spe.putString("data", json);
 		spe.commit();
 	}
-	
-	public void deleteToken()
-	{
+
+	public void deleteToken() {
 		setToken("");
 	}
 }
