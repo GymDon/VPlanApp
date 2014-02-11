@@ -13,5 +13,15 @@
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/reload_plan"
         vplan:showAsAction="ifRoom"/>
+    
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout"
+        vplan:showAsAction="never"/>
+    
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        vplan:showAsAction="never"/>
 
 </menu>

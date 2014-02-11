@@ -32,12 +32,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
 	private int fragmentPosition;
+	private LinearLayout drawer;
 	private ListView drawerList;
 	private String[] drawerTitles;
 	private DrawerLayout drawerLayout;
@@ -45,6 +49,12 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	private String username;
 	private String password;
 	private Dialog loadingDialog;
+
+	public static final int ITEM_HOME = 0;
+	public static final int ITEM_PLAN = 1;
+	public static final int ITEM_MENSA = 2;
+	public static final int ITEM_EVENTS = 3;
+	public static final int ITEM_COUNT = 4;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +77,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		if (fragmentPosition != 1 || drawerLayout.isDrawerOpen(drawerList))
+		if (fragmentPosition != ITEM_PLAN || drawerLayout.isDrawerOpen(drawer))
 			menu.findItem(R.id.action_show_ticker).setVisible(false);
 		else
 			menu.findItem(R.id.action_show_ticker).setVisible(true);
@@ -85,7 +95,10 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		} else if (itemid == R.id.action_show_ticker) {
 			VPlanFragment.showTicker(this);
 			return true;
-		}
+		} else if(itemid == R.id.action_logout)
+			return logout(false);
+		else if(itemid == R.id.action_settings)
+			return showSettings();
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -108,37 +121,28 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	}
 
 	private void selectItem(int position) {
-		drawerLayout.closeDrawer(drawerList);
+		drawerLayout.closeDrawer(drawer);
 
 		switch (position) {
-		case 0:
+		case ITEM_HOME:
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, new HomeFragment()).commit();
 			break;
-		case 1:
+		case ITEM_PLAN:
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, new VPlanFragment()).commit();
 			break;
-		case 2:
+		case ITEM_MENSA:
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, new MensaFragment()).commit();
 			break;
-		case 3:
+		case ITEM_EVENTS:
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, new EventFragment()).commit();
 			break;
-		case 4:
-			if (Build.VERSION.SDK_INT >= 11)
-				startActivity(new Intent(this, Settings11.class));
-			else
-				startActivity(new Intent(this, Settings7.class));
-			return;
-		case 5:
-			logout();
-			return;
 		}
 
-		if (position != 1 && fragmentPosition == 1)
+		if (position != ITEM_PLAN && fragmentPosition == ITEM_PLAN)
 			getSupportActionBar().setNavigationMode(
 					ActionBar.NAVIGATION_MODE_STANDARD);
 		this.fragmentPosition = position;
@@ -146,10 +150,17 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		drawerList.setItemChecked(position, true);
 		getSupportActionBar().setSubtitle(drawerTitles[position]);
 	}
+	
+	private boolean showUserInfo()
+	{
+		//TODO: Maybe implement?
+		Toast.makeText(this, R.string.not_yet_implemented, Toast.LENGTH_SHORT).show();
+		return false;
+	}
 
-	private void logout() {
+	private boolean logout(boolean alwaysAsk) {
 		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-				"pref_logout", true)) {
+				"pref_logout", true) || alwaysAsk) {
 			AlertDialog.Builder adb = new AlertDialog.Builder(this);
 			adb.setTitle(R.string.logout);
 			adb.setMessage(R.string.really_logout);
@@ -166,6 +177,16 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			NavUtils.navigateUpFromSameTask(this);
 			API.DATA.deleteToken();
 		}
+		return true;
+	}
+	
+	private boolean showSettings()
+	{
+		if (Build.VERSION.SDK_INT >= 11)
+			startActivity(new Intent(this, Settings11.class));
+		else
+			startActivity(new Intent(this, Settings7.class));
+		return true;
 	}
 
 	public void loadData() {
@@ -223,11 +244,23 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
 	private void dataChanged() {
 		selectItem(fragmentPosition);
+		TextView usernameView = (TextView) findViewById(R.id.drawer_username);
+		usernameView.setText(API.DATA.userInfo.fullname);
 	}
 
 	private void setupNavigationDrawer() {
-		drawerList = (ListView) findViewById(R.id.left_drawer);
+		drawer = (LinearLayout) findViewById(R.id.left_drawer);
+		drawerList = (ListView) findViewById(R.id.drawer_list);
 		drawerTitles = getResources().getStringArray(R.array.navigation_list);
+		
+		TextView username_view = (TextView) findViewById(R.id.drawer_username);
+		username_view.setText(API.DATA.userInfo.fullname);
+		username_view.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showUserInfo();
+			}
+		});
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.ic_drawer, R.string.open_navigation_drawer,
@@ -248,9 +281,11 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		};
 		drawerLayout.setDrawerListener(drawerToggle);
 
-		int[] images = { R.drawable.ic_launcher, R.drawable.ic_launcher,
-				R.drawable.ic_launcher, R.drawable.ic_action_refresh,
-				R.drawable.ic_action_refresh, R.drawable.ic_action_refresh };
+		int[] images = new int[ITEM_COUNT];
+		images[ITEM_HOME] = R.drawable.ic_launcher;
+		images[ITEM_PLAN] = R.drawable.ic_action_view_as_list;
+		images[ITEM_MENSA] = R.drawable.ic_action_view_as_list;
+		images[ITEM_EVENTS] = R.drawable.ic_action_view_as_list;
 
 		drawerList.setAdapter(getCustomSimpleAdapter(images, drawerTitles));
 		drawerList
@@ -262,7 +297,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 					}
 				});
 
-		selectItem(0);
+		selectItem(ITEM_HOME);
 	}
 
 	private SimpleAdapter getCustomSimpleAdapter(int[] images, String[] texts) {
