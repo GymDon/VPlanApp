@@ -54,15 +54,17 @@
     <string translatable="false" name="auto_synchronisation">Synchronisation</string>
     <string translatable="false" name="synchronisation_title">Auto Sync</string>
     <string name="synchronisation_interval">Synchronisationsintervall</string>
-    <string name="home_welcome_message">"Herzlich Willkommen bei der Gym-Don-App.\n\n Mithilfe dieser App kannst du die neuesten Termine, Mensaspeisepläne und deinen persönlichen Vertretungsplan einsehen.\n\n\n\nDIES IST EINE BETA VERSION\n\nViel Spaß bei der Nutzung wünschen dir die Gym-Don APP Entwickler."</string>
+    <string name="home_welcome_message">"Herzlich Willkommen bei der GymDon App.\n\nMithilfe dieser App kannst du die neuesten Termine, Mensaspeisepläne und deinen persönlichen Vertretungsplan einsehen.\n\nViel Spaß!\n- Die GymDon App Entwickler."</string>
     <string name="not_yet_implemented">Diese Funktion wurde bis jetzt noch nicht implementiert</string>
     <string name="open_navigation_drawer">Öffne Navigation Drawer</string>
     <string name="close_navigation_drawer">Schließe Navigation Drawer</string>
     <string name="error_found_user">Bug gefunden?</string>
     <string name="error_found_user_summary">Klick hier und sende einen Bugreport!</string>
     <string translatable="false" name="icon">Icon</string>
-    <string name="menu1">Menü 1 : </string>
-    <string name="menu2">Menü 2 : </string>
+    <string name="menu1">Menü 1: </string>
+    <string name="menu2">Menü 2: </string>
+    <string name="main_group">Hauptgruppe: </string>
+    <string name="groups">Gruppen: </string>
     
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>

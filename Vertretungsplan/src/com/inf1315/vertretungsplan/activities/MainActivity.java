@@ -10,8 +10,10 @@ import com.inf1315.vertretungsplan.AllAsyncTask;
 import com.inf1315.vertretungsplan.FinishedLoading;
 import com.inf1315.vertretungsplan.R;
 import com.inf1315.vertretungsplan.api.API;
+import com.inf1315.vertretungsplan.api.UserInfo;
 import com.inf1315.vertretungsplan.fragments.*;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -28,15 +30,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
@@ -152,11 +155,37 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		getSupportActionBar().setSubtitle(drawerTitles[position]);
 	}
 
+	@SuppressLint("NewApi")
 	private boolean showUserInfo() {
-		// TODO: Maybe implement?
-		Toast.makeText(this, R.string.not_yet_implemented, Toast.LENGTH_SHORT)
-				.show();
-		return false;
+		drawerLayout.closeDrawer(drawer);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater inflater = LayoutInflater.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext() : this);
+		View view = inflater.inflate(R.layout.user_info_dialog, null);
+		UserInfo userInfo = API.DATA.userInfo;
+		
+		TextView fullname = (TextView)view.findViewById(R.id.user_info_fullname);
+		fullname.setText(userInfo.fullname);
+		
+		TextView username = (TextView)view.findViewById(R.id.user_info_username);
+		username.setText(userInfo.username);
+		
+		TextView mainGroup = (TextView)view.findViewById(R.id.user_info_main_group);
+		mainGroup.setText(getText(R.string.main_group) + userInfo.mainGroup);
+		
+		ListView groupList = (ListView)view.findViewById(R.id.user_info_group_list);
+		groupList.setAdapter(new ArrayAdapter<String>(groupList.getContext(), R.layout.user_info_group_list_text, userInfo.groups));
+		
+		builder.setView(view);
+		builder.setPositiveButton(R.string.ok, null);
+		builder.setNegativeButton(R.string.logout, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				logout(false);
+			}
+		});
+		builder.show();
+		return true;
 	}
 
 	private boolean logout(boolean alwaysAsk) {

@@ -46,14 +46,16 @@
     <string name="pages_changed">Pages changed</string>
     <string name="data_changed">Changed data</string>
     <string name="synchronisation_interval">Auto Sync interval</string>
-    <string name="home_welcome_message">"Welcome at the Gym-Don-App.\n\n With this App you can see the newest Appointments, Mensa eating plans and your personal replacement plan.\n\n\n\nTHIS IS A BETA VERSION\n\nHave Fun with this app wish you the Gym-Don APP Developer."</string>
+    <string name="home_welcome_message">"Welcome to the Gym-Don-App.\n\nWith this App you can see the newest Events, Mensa eating plans and your personal replacement plan.\n\n\n\nHave Fun!\n- The GymDon app developers."</string>
     <string name="not_yet_implemented">This function was not implemented yet</string>
     <string name="open_navigation_drawer">Open Navigation Drawer</string>
     <string name="close_navigation_drawer">Close Navigation Drawer</string>
     <string name="error_found_user">Found bug?</string>
     <string name="error_found_user_summary">Click here to send a bug report!</string>
-    <string name="menu1">menu 1 : </string>
-    <string name="menu2">menu 2 : </string>
+    <string name="menu1">Menu 1 : </string>
+    <string name="menu2">Menu 2 : </string>
+    <string name="main_group">Main group: </string>
+    <string name="groups">Groups: </string>
 
     <string-array name="synchronisation_interval_entries">
         <item>5 Minutes</item>
