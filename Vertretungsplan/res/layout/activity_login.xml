@@ -1,7 +1,8 @@
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,54 +13,57 @@
         android:id="@+id/welcome_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_activity_margin_top"
-        android:text="@string/welcome_message"
         android:gravity="center_horizontal"
+        android:text="@string/welcome_message"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/login_ImageView"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_launcherhd" />
 
     <TextView
         android:id="@+id/username_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_activity_margin_top"
-        android:layout_below="@id/welcome_TextView"
-        android:textSize="@dimen/login_activity_font_size"
-        android:text="@string/username_message" />
-    
+        android:layout_weight="0.1"
+        android:gravity="center_vertical"
+        android:text="@string/username_message"
+        android:textSize="@dimen/login_activity_font_size" />
+
     <EditText
         android:id="@+id/username_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/username_TextView"
         android:layout_marginTop="20dp"
         android:inputType="text" >
-		<requestFocus />
-	</EditText>
-	
+
+        <requestFocus />
+    </EditText>
+
     <TextView
         android:id="@+id/password_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_activity_margin_top"
-        android:layout_below="@id/username_EditText"
-        android:textSize="@dimen/login_activity_font_size"
-        android:text="@string/password_message" />
+        android:layout_weight="0.1"
+        android:gravity="center_vertical"
+        android:text="@string/password_message"
+        android:textSize="@dimen/login_activity_font_size" />
 
     <EditText
         android:id="@+id/password_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/password_TextView"
-        android:layout_marginTop="@dimen/login_activity_margin_top"
         android:inputType="textPassword" />
-    
+
     <Button
         android:id="@+id/login_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		android:layout_below="@id/password_EditText"
-		android:layout_marginTop="@dimen/login_activity_margin_top"
-        android:text="@string/login"
-        android:onClick="loginButtonOnClick" />
+        android:onClick="loginButtonOnClick"
+        android:text="@string/login" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="action_settings">Settings</string>
-    <string name="welcome_message">Welcome to the replacement plan app</string>
+    <string name="welcome_message">Welcome to the Gymnasium Donauwörth app</string>
     <string name="username_message">Please input username:</string>
     <string name="password_message">Please input password:</string>
     <string name="login">Login</string>
