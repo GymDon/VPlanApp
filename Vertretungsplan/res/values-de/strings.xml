@@ -52,6 +52,8 @@
     <string name="close_navigation_drawer">Schließe Navigation Drawer</string>
     <string name="error_found_user">Bug gefunden?</string>
     <string name="error_found_user_summary">Klick hier und sende einen Bugreport!</string>
+    <string name="menu1">Menü 1 : </string>
+    <string name="menu2">Menü 2 : </string>
 
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ public class AllObject extends ApiResult {
 	public List<ReplacementObject> todayReplacementsList = new ArrayList<ReplacementObject>();
 	public List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
 	public List<Event> events = new ArrayList<Event>();
+	public List<MensaClient> mensa = new ArrayList<MensaClient>();
 	public UserInfo userInfo;
 	public String hash = "";
 	public String timeString = "";
@@ -79,6 +82,20 @@ public class AllObject extends ApiResult {
 		Event[] event = new ApiResultArray(json.getJSONArray("events"),
 				Event.class).getArray(new Event[0]);
 		events = Arrays.asList(event);
+
+		MensaServer[] mensaArray = new ApiResultArray(
+				json.getJSONArray("mensa"), MensaServer.class)
+				.getArray(new MensaServer[0]);
+		Map<Long, MensaClient> map = new HashMap<Long, MensaClient>();
+		for (MensaServer o : mensaArray) {
+			if (!map.containsKey(o.timestamp))
+				map.put(o.timestamp, new MensaClient(o.timestamp));
+			if (o.type == 0)
+				map.get(o.timestamp).menu1 = o.value;
+			else if (o.type == 1)
+				map.get(o.timestamp).menu2 = o.value;
+		}
+		mensa = new ArrayList<MensaClient>(map.values());
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		timeString = sdf.format(new Date());
