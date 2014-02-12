@@ -1,9 +1,11 @@
 package com.inf1315.vertretungsplan.fragments;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -125,7 +127,14 @@ public class EventFragment extends Fragment implements ActionBar.TabListener {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			return "Test";
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.",
+					Locale.getDefault());
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(startsOfWeek.get(position) * 1000L);
+			String part1 = sdf.format(calendar.getTime());
+			calendar.setTimeInMillis((startsOfWeek.get(position) + 604700L) * 1000L);
+			String part2 = sdf.format(calendar.getTime());
+			return part1 + " - " + part2;
 		}
 	}
 

@@ -95,9 +95,9 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		} else if (itemid == R.id.action_show_ticker) {
 			VPlanFragment.showTicker(this);
 			return true;
-		} else if(itemid == R.id.action_logout)
+		} else if (itemid == R.id.action_logout)
 			return logout(false);
-		else if(itemid == R.id.action_settings)
+		else if (itemid == R.id.action_settings)
 			return showSettings();
 		return super.onOptionsItemSelected(item);
 	}
@@ -142,7 +142,8 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			break;
 		}
 
-		if (position != ITEM_PLAN && fragmentPosition == ITEM_PLAN)
+		if ((position != ITEM_PLAN && fragmentPosition == ITEM_PLAN)
+				|| (position != ITEM_EVENTS && fragmentPosition == ITEM_EVENTS))
 			getSupportActionBar().setNavigationMode(
 					ActionBar.NAVIGATION_MODE_STANDARD);
 		this.fragmentPosition = position;
@@ -150,17 +151,18 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		drawerList.setItemChecked(position, true);
 		getSupportActionBar().setSubtitle(drawerTitles[position]);
 	}
-	
-	private boolean showUserInfo()
-	{
-		//TODO: Maybe implement?
-		Toast.makeText(this, R.string.not_yet_implemented, Toast.LENGTH_SHORT).show();
+
+	private boolean showUserInfo() {
+		// TODO: Maybe implement?
+		Toast.makeText(this, R.string.not_yet_implemented, Toast.LENGTH_SHORT)
+				.show();
 		return false;
 	}
 
 	private boolean logout(boolean alwaysAsk) {
 		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-				"pref_logout", true) || alwaysAsk) {
+				"pref_logout", true)
+				|| alwaysAsk) {
 			AlertDialog.Builder adb = new AlertDialog.Builder(this);
 			adb.setTitle(R.string.logout);
 			adb.setMessage(R.string.really_logout);
@@ -179,9 +181,8 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		}
 		return true;
 	}
-	
-	private boolean showSettings()
-	{
+
+	private boolean showSettings() {
 		if (Build.VERSION.SDK_INT >= 11)
 			startActivity(new Intent(this, Settings11.class));
 		else
@@ -252,7 +253,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		drawer = (LinearLayout) findViewById(R.id.left_drawer);
 		drawerList = (ListView) findViewById(R.id.drawer_list);
 		drawerTitles = getResources().getStringArray(R.array.navigation_list);
-		
+
 		TextView username_view = (TextView) findViewById(R.id.drawer_username);
 		username_view.setText(API.DATA.userInfo.fullname);
 		username_view.setOnClickListener(new View.OnClickListener() {

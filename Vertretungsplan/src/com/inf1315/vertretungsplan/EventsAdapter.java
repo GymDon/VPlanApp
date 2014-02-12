@@ -35,6 +35,7 @@ public class EventsAdapter extends BaseExpandableListAdapter {
 		notifyDataSetChanged();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		return ((List<Event>) getGroup(groupPosition)).get(childPosition);
@@ -85,6 +86,7 @@ public class EventsAdapter extends BaseExpandableListAdapter {
 		return group;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		return ((List<Event>) getGroup(groupPosition)).size();
@@ -153,6 +155,7 @@ public class EventsAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void notifyDataSetChanged() {
 		super.notifyDataSetChanged();
