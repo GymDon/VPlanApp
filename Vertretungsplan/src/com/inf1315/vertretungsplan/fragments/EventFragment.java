@@ -93,19 +93,15 @@ public class EventFragment extends Fragment implements ActionBar.TabListener {
 
 	public class PlanPagerAdapter extends FragmentPagerAdapter {
 
-		private int count;
 		private List<Long> startsOfWeek;
 
 		public PlanPagerAdapter(FragmentManager fm) {
 			super(fm);
 			Collections.sort(API.DATA.events);
-			if (API.DATA.events.isEmpty())
-				count = 0;
 			startsOfWeek = new ArrayList<Long>();
 			long weekTimestamp = -604800L;
 			for (Event event : API.DATA.events) {
 				if (event.timestamp >= weekTimestamp + 604800L) {
-					count += 1;
 					weekTimestamp = getStartOfWeek(event.timestamp);
 					startsOfWeek.add(weekTimestamp);
 				}
@@ -124,7 +120,7 @@ public class EventFragment extends Fragment implements ActionBar.TabListener {
 
 		@Override
 		public int getCount() {
-			return count;
+			return startsOfWeek.size();
 		}
 
 		@Override

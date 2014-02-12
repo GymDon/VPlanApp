@@ -37,7 +37,7 @@ public class EventsAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return events[groupPosition].get(childPosition);
+		return ((List<Event>) getGroup(groupPosition)).get(childPosition);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class EventsAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return events[groupPosition].size();
+		return ((List<Event>) getGroup(groupPosition)).size();
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public class EventsAdapter extends BaseExpandableListAdapter {
 	@SuppressLint("NewApi")
 	public static String getDateString(long timestamp) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(timestamp*1000L);
+		calendar.setTimeInMillis(timestamp * 1000L);
 		Date date = calendar.getTime();
 		SimpleDateFormat sdf;
 		if (Build.VERSION.SDK_INT < 9)
