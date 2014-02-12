@@ -105,8 +105,8 @@ public class Settings7 extends PreferenceActivity implements
 		} else {
 			toastPref.setSummary(R.string.pref_toast_summary_false);
 		}
-		ListPreference intervalPref = (ListPreference) findPreference("pref_interval");
-		intervalPref.setSummary(intervalPref.getEntry());
+		/*ListPreference intervalPref = (ListPreference) findPreference("pref_interval");
+		intervalPref.setSummary(intervalPref.getEntry());*/
 		Preference clearCachePref = findPreference("pref_clear_cache");
 		clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		Preference version = findPreference("pref_version");
@@ -136,8 +136,8 @@ public class Settings7 extends PreferenceActivity implements
 			clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		}
 
-		ListPreference intervalPref = (ListPreference) findPreference("pref_interval");
-		intervalPref.setSummary(intervalPref.getEntry());
+		/*ListPreference intervalPref = (ListPreference) findPreference("pref_interval");
+		intervalPref.setSummary(intervalPref.getEntry());*/
 
 	}
 }

@@ -102,9 +102,9 @@ public class SettingsFragment extends PreferenceFragment implements
 			toastPref.setSummary(R.string.pref_toast_summary);
 		} else {
 			toastPref.setSummary(R.string.pref_toast_summary_false);
-		}
+		}/*
 		ListPreference intervalPref = (ListPreference) findPreference("pref_interval");
-		intervalPref.setSummary(intervalPref.getEntry());
+		intervalPref.setSummary(intervalPref.getEntry());*/
 		Preference clearCachePref = findPreference("pref_clear_cache");
 		clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		Preference version = findPreference("pref_version");
@@ -132,9 +132,9 @@ public class SettingsFragment extends PreferenceFragment implements
 			Preference clearCachePref = findPreference(key);
 			clearCachePref.setSummary(R.string.pref_clear_cache_summary);
 		}
-
+		/*
 		ListPreference intervalPref = (ListPreference) findPreference("pref_interval");
-		intervalPref.setSummary(intervalPref.getEntry());
+		intervalPref.setSummary(intervalPref.getEntry());*/
 
 	}
 }
