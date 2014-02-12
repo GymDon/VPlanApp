@@ -13,7 +13,7 @@
             android:key="pref_logout"
             android:title="@string/pref_logout" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/auto_synchronisation" >
+  <!--  <PreferenceCategory android:title="@string/auto_synchronisation" >
         <SwitchPreference
             android:defaultValue="on"
             android:key="pref_synchronisation"
@@ -38,7 +38,7 @@
             android:dependency="pref_notifications"
             android:key="pref_vibrate"
             android:title="@string/pref_vibrate" />
-    </PreferenceCategory>
+    </PreferenceCategory>    --> 
     <PreferenceCategory android:title="@string/advanced" >
         <Preference
             android:key="pref_clear_cache"
