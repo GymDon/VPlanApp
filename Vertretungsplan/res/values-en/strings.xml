@@ -50,6 +50,8 @@
     <string name="not_yet_implemented">This function was not implemented yet</string>
     <string name="open_navigation_drawer">Open Navigation Drawer</string>
     <string name="close_navigation_drawer">Close Navigation Drawer</string>
+    <string name="error_found_user">Found bug?</string>
+    <string name="error_found_user_summary">Click here to send a bug report!</string>
 
     <string-array name="synchronisation_interval_entries">
         <item>5 Minutes</item>

@@ -57,6 +57,19 @@ public class SettingsFragment extends PreferenceFragment implements
 						return true;
 					}
 				});
+		
+		findPreference("pref_bug").setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+					            "mailto","bugs@pvpctutorials.de", null));
+					emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Bug Report: Gym-Don App");
+					startActivity(Intent.createChooser(emailIntent, "E-Mail senden..."));
+						
+						return true;
+					}
+				});
 
 	}
 

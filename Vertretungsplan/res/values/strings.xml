@@ -58,6 +58,8 @@
     <string name="not_yet_implemented">Diese Funktion wurde bis jetzt noch nicht implementiert</string>
     <string name="open_navigation_drawer">Öffne Navigation Drawer</string>
     <string name="close_navigation_drawer">Schließe Navigation Drawer</string>
+    <string name="error_found_user">Bug gefunden?</string>
+    <string name="error_found_user_summary">Klick hier und sende einen Bugreport!</string>
     <string translatable="false" name="icon">Icon</string>
     
     <string-array name="synchronisation_interval_entries">

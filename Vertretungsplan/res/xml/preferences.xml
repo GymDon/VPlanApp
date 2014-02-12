@@ -59,6 +59,11 @@
         <Preference
             android:summary="@string/pref_creator_summary"
             android:title="@string/pref_creator" />
+        
+        <Preference 
+            android:key="pref_bug"
+            android:summary="@string/error_found_user_summary"
+            android:title="@string/error_found_user"/>
 
         <Preference
             android:key="pref_version"
