@@ -159,26 +159,32 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	private boolean showUserInfo() {
 		drawerLayout.closeDrawer(drawer);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		LayoutInflater inflater = LayoutInflater.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext() : this);
+		LayoutInflater inflater = LayoutInflater
+				.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext() : this);
 		View view = inflater.inflate(R.layout.user_info_dialog, null);
 		UserInfo userInfo = API.DATA.userInfo;
-		
-		TextView fullname = (TextView)view.findViewById(R.id.user_info_fullname);
+
+		TextView fullname = (TextView) view
+				.findViewById(R.id.user_info_fullname);
 		fullname.setText(userInfo.fullname);
-		
-		TextView username = (TextView)view.findViewById(R.id.user_info_username);
+
+		TextView username = (TextView) view
+				.findViewById(R.id.user_info_username);
 		username.setText(userInfo.username);
-		
-		TextView mainGroup = (TextView)view.findViewById(R.id.user_info_main_group);
+
+		TextView mainGroup = (TextView) view
+				.findViewById(R.id.user_info_main_group);
 		mainGroup.setText(getText(R.string.main_group) + userInfo.mainGroup);
-		
-		ListView groupList = (ListView)view.findViewById(R.id.user_info_group_list);
-		groupList.setAdapter(new ArrayAdapter<String>(groupList.getContext(), R.layout.user_info_group_list_text, userInfo.groups));
-		
+
+		ListView groupList = (ListView) view
+				.findViewById(R.id.user_info_group_list);
+		groupList.setAdapter(new ArrayAdapter<String>(groupList.getContext(),
+				R.layout.user_info_group_list_text, userInfo.groups));
+
 		builder.setView(view);
 		builder.setPositiveButton(R.string.ok, null);
 		builder.setNegativeButton(R.string.logout, new OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				logout(false);

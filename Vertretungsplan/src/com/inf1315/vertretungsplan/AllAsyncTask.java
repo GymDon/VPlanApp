@@ -45,10 +45,11 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 			}
 			if (!resp.getChanged()) {
 				API.DATA.timestamp = System.currentTimeMillis() / 1000L;
-				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						"dd.MM.yyyy HH:mm:ss");
 				API.DATA.timeString = sdf.format(new Date());
 				return API.DATA;
-			}	
+			}
 			AllObject ao = (AllObject) resp.getResult();
 			ao.hash = resp.getHash();
 			ao.setToken(resp.getToken());

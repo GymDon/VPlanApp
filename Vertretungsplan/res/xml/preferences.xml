@@ -2,39 +2,32 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/ticker" >
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_toast"
             android:title="@string/pref_toast" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/logout" >
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_logout"
             android:title="@string/pref_logout" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/auto_synchronisation" >
-
-       <SwitchPreference
+        <SwitchPreference
             android:defaultValue="on"
             android:key="pref_synchronisation"
             android:title="@string/synchronisation_title" />
 
         <ListPreference
             android:defaultValue="30"
+            android:dependency="pref_synchronisation"
             android:entries="@array/synchronisation_interval_entries"
             android:entryValues="@array/synchronisation_interval_entryValues"
             android:key="pref_interval"
-            android:dependency="pref_synchronisation"
             android:title="@string/synchronisation_interval" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/notifications" >
-
         <SwitchPreference
             android:defaultValue="true"
             android:key="pref_notifications"
@@ -42,33 +35,26 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="pref_vibrate"
             android:dependency="pref_notifications"
+            android:key="pref_vibrate"
             android:title="@string/pref_vibrate" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/advanced" >
-
         <Preference
             android:key="pref_clear_cache"
             android:title="@string/pref_clear_cache" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/info" >
-
         <Preference
             android:summary="@string/pref_creator_summary"
             android:title="@string/pref_creator" />
-        
-        <Preference 
+        <Preference
             android:key="pref_bug"
             android:summary="@string/error_found_user_summary"
-            android:title="@string/error_found_user"/>
-
+            android:title="@string/error_found_user" />
         <Preference
             android:key="pref_version"
             android:title="@string/pref_version" />
-
         <Preference
             android:key="pref_github"
             android:summary="@string/pref_github_summary"
