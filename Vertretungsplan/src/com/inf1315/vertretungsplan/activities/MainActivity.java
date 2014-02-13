@@ -289,9 +289,9 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		drawerList = (ListView) findViewById(R.id.drawer_list);
 		drawerTitles = getResources().getStringArray(R.array.navigation_list);
 
-		TextView username_view = (TextView) findViewById(R.id.drawer_username);
-		username_view.setText(API.DATA.userInfo.fullname);
-		username_view.setOnClickListener(new View.OnClickListener() {
+		TextView usernameView = (TextView) findViewById(R.id.drawer_username);
+		usernameView.setText(API.DATA.userInfo.fullname);
+		usernameView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showUserInfo();

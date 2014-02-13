@@ -17,7 +17,7 @@ public class UserInfo extends ApiResult {
 		gid = 0;
 		mainGroup = null;
 		groups = null;
-		fullname = null;
+		fullname = "";
 		isStudent = true;
 	}
 

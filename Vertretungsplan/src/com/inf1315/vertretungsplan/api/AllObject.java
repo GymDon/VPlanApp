@@ -35,6 +35,7 @@ public class AllObject extends ApiResult {
 	private String token = "";
 
 	public AllObject() {
+		userInfo = new UserInfo("");
 	}
 
 	@SuppressLint("SimpleDateFormat")
