@@ -146,6 +146,9 @@ public class API {
 				data = true;
 			else
 				data = false;
+			
+			if(!wifi && !data)
+				Log.w("API", "No network connection!");
 
 			JSONObject o = new JSONObject();
 			o.put("android_id", Settings.Secure.getString(
@@ -157,27 +160,32 @@ public class API {
 			params.put("hash", DATA.hash);
 			params.put("api", API_VERSION);
 			params.put("lang", Locale.getDefault().getLanguage());
-			obj = getJSONfromURL(url, "POST", params);
+			Log.d("API", "Request: " + action);
 			if (!actionToClassMap.containsKey(action))
 				throw new RuntimeException("invalid action \"" + action + "\"");
+			long time = System.currentTimeMillis();
+			obj = getJSONfromURL(url, "POST", params);
 			r = new ApiResponse(obj, actionToClassMap.get(action),
 					actionIsArrayMap.get(action));
+			Log.d("API", "Response: " + (System.currentTimeMillis()-time) + "ms");
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.i("API Params", params.toString());
+			Log.i("API", "Params: " + params.toString());
 			if (obj != null)
 				try {
-					Log.i("API Response", obj.toString(4));
+					Log.i("API", "Response: " + obj.toString(4));
 				} catch (JSONException e1) {
 				}
 			r = new ApiResponse(e);
 		}
 		if (r.getWarnings() == null || r.getWarnings().isEmpty())
-			Log.i("API-Warning", "No Warnings");
-		else
+			Log.i("API", "No Warnings");
+		else {
+			Log.w("API", r.getWarnings().size() + " Warnings:");
 			for (ApiWarning w : r.getWarnings()) {
-				Log.w("API-Warning", w.getWarning() + ": " + w.getDescription());
+				Log.w("API", w.getWarning() + ": " + w.getDescription());
 			}
+		}
 		return r;
 	}
 
