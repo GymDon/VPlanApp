@@ -1,6 +1,7 @@
 package com.inf1315.vertretungsplan.fragments;
 
 import com.inf1315.vertretungsplan.R;
+import com.inf1315.vertretungsplan.activities.ChangelogActivity;
 import com.inf1315.vertretungsplan.api.API;
 import com.inf1315.vertretungsplan.api.AllObject;
 import com.inf1315.vertretungsplan.api.UserInfo;
@@ -68,6 +69,19 @@ public class SettingsFragment extends PreferenceFragment implements
 								"Bug Report: Gym-Don App");
 						startActivity(Intent.createChooser(emailIntent,
 								"E-Mail senden..."));
+
+						return true;
+					}
+				});
+		
+		findPreference("pref_version").setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
+
+					@Override
+					public boolean onPreferenceClick(Preference arg0) {
+
+						Intent browserIntent = new Intent(getActivity(), ChangelogActivity.class);
+						startActivity(browserIntent);
 
 						return true;
 					}

@@ -57,6 +57,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.inf1315.vertretungsplan.activities.LoginActivity" />
         </activity>
+        <activity
+            android:name="com.inf1315.vertretungsplan.activities.ChangelogActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/whatsnew" >
+        </activity>
     </application>
 
 </manifest>
