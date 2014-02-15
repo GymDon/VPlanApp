@@ -1,11 +1,13 @@
 package com.inf1315.vertretungsplan.activities;
 
+import com.inf1315.vertretungsplan.BuildConfig;
 import com.inf1315.vertretungsplan.R;
 import com.inf1315.vertretungsplan.api.*;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,7 +22,19 @@ public class ChangelogActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_changelog);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		load((WebView) findViewById(R.id.changelog_webview), findViewById(R.id.changelog_loading), 0, 0);
+		int prevAppVersion = getIntent().getIntExtra("prevAppVersion", 0);
+		int appVersion = 0;
+		try {
+			appVersion = getIntent().getIntExtra(
+					"appVersion",
+					BuildConfig.DEBUG ? 0 : getPackageManager().getPackageInfo(
+							getPackageName(), 0).versionCode);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		load((WebView) findViewById(R.id.changelog_webview),
+				findViewById(R.id.changelog_loading), prevAppVersion,
+				appVersion);
 	}
 
 	public void load(final WebView webView, final View progress,
@@ -32,14 +46,18 @@ public class ChangelogActivity extends ActionBarActivity {
 				webView.setVisibility(View.GONE);
 				progress.setVisibility(View.VISIBLE);
 			}
-
+			// TODO eventually cache Changelog
 			@Override
 			protected Commit[] doInBackground(Object... params) {
 				try {
 					return ((ApiResultArray) API.STANDARD_API.request(
 							ApiAction.CHANGELOG,
-							"from=" + (from > 0 ? Commit.versionTags.get(from) : "start"),
-							"to=" + (to > 0 ? Commit.versionTags.get(to) : "end")).getResult())
+							"from="
+									+ (from > 0 ? Commit.versionTags.get(from)
+											: "start"),
+							"to="
+									+ (to > 0 ? Commit.versionTags.get(to)
+											: "end")).getResult())
 							.getArray(new Commit[0]);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +76,8 @@ public class ChangelogActivity extends ActionBarActivity {
 					if (commit.tag != null) {
 						message.append(hasUl ? "</ul>" : "")
 								.append("<h3>")
-								.append(ChangelogActivity.this.getText(R.string.pref_version))
+								.append(ChangelogActivity.this
+										.getText(R.string.pref_version))
 								.append(" ").append(commit.tag.name)
 								.append(":</h3><ul>");
 						hasUl = true;
@@ -70,8 +89,10 @@ public class ChangelogActivity extends ActionBarActivity {
 					message.append("<li>")
 							.append(commit.comment.replace("\n", "<br />"))
 							.append("</li>");
-					Log.d("Changelog", "Commit: " + (commit.tag != null ? "(Tag " + commit.tag.name + ")": "") + 
-							commit.hash + " " + commit.comment);
+					Log.d("Changelog", "Commit: "
+							+ (commit.tag != null ? "(Tag " + commit.tag.name
+									+ ")" : "") + commit.hash + " "
+							+ commit.comment);
 				}
 				message.append("</ul>");
 				webView.loadDataWithBaseURL(null, message.toString(),
@@ -81,7 +102,7 @@ public class ChangelogActivity extends ActionBarActivity {
 			}
 		}.execute();
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {

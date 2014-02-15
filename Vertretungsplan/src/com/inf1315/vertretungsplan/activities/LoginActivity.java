@@ -35,7 +35,11 @@ public class LoginActivity extends ActionBarActivity {
 		API.DATA = "".equals(json) ? new AllObject() : new Gson().fromJson(
 				json, AllObject.class);
 
+		int prevAppVersion = sharedPrefs.getInt("prevAppVersion", 0);
+		int appVersion = 0;
 		try {
+			appVersion = getPackageManager()
+					.getPackageInfo(getPackageName(), 0).versionCode;
 			API.CONTEXT = getApplicationContext();
 			API.APP_VERSION = getPackageName()
 					+ " "
@@ -43,6 +47,15 @@ public class LoginActivity extends ActionBarActivity {
 		} catch (NameNotFoundException e) {
 			Log.w("Startup", "Couldn't determine app version");
 			e.printStackTrace();
+		}
+
+		if (API.isNetworkAvailable() && appVersion > prevAppVersion) {
+			sharedPrefs.edit().putInt("prevAppVersion", appVersion).commit();
+			Intent intent = new Intent(this, ChangelogActivity.class);
+			intent.putExtra("prevAppVersion", prevAppVersion);
+			intent.putExtra("appVersion", appVersion);
+			startActivity(intent);
+			return true;
 		}
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -54,8 +67,9 @@ public class LoginActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		boolean appVersionChanged = false;
 		if (isFirstLaunch)
-			runOnFirstLaunch();
+			appVersionChanged = runOnFirstLaunch();
 
 		setContentView(R.layout.activity_login);
 
@@ -75,7 +89,7 @@ public class LoginActivity extends ActionBarActivity {
 		String error = getIntent().getStringExtra("error");
 		if (error == null) {
 			long currentTimestamp = System.currentTimeMillis() / 1000L;
-			if (!"".equals(API.DATA.getToken())
+			if (!appVersionChanged && !"".equals(API.DATA.getToken())
 					&& API.DATA.timestamp + 86400L > currentTimestamp) {
 				Intent intent = new Intent(this, MainActivity.class);
 				startActivity(intent);

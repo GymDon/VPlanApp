@@ -29,7 +29,6 @@ public class API {
 	public static final String STANDARD_URL = "https://pvpctutorials.de/VPlanApp/api/";
 
 	public static API STANDARD_API;
-	public static API LOCAL_DEBUG_API;
 	public static String APP_VERSION;
 	public static Context CONTEXT;
 	public static AllObject DATA;
@@ -324,7 +323,6 @@ public class API {
 	static {
 		try {
 			STANDARD_API = new API();
-			LOCAL_DEBUG_API = new API("http://192.168.0.36/VPlanApp/api.php");
 		} catch (MalformedURLException e) {
 		}
 

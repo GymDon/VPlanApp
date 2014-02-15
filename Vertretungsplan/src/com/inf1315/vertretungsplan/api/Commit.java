@@ -47,5 +47,6 @@ public class Commit extends ApiResult {
 		versionTags = new SparseArray<String>();
 		versionTags.put(1, "0.1");
 		versionTags.put(2, "0.2");
+		versionTags.put(3, "0.3");
 	}
 }

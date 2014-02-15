@@ -77,7 +77,12 @@ public class Settings7 extends PreferenceActivity implements
 
 					@Override
 					public boolean onPreferenceClick(Preference arg0) {
-
+						if (!API.isNetworkAvailable()) {
+							Toast.makeText(Settings7.this,
+									R.string.no_internet_connection,
+									Toast.LENGTH_SHORT).show();
+							return true;
+						}
 						Intent browserIntent = new Intent(Settings7.this,
 								ChangelogActivity.class);
 						startActivity(browserIntent);
