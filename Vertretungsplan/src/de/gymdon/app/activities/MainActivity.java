@@ -11,6 +11,7 @@ import de.gymdon.app.AllAsyncTask;
 import de.gymdon.app.FinishedLoading;
 import de.gymdon.app.R;
 import de.gymdon.app.api.API;
+import de.gymdon.app.api.AllObject;
 import de.gymdon.app.api.UserInfo;
 import de.gymdon.app.fragments.*;
 
@@ -22,25 +23,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
@@ -50,8 +55,6 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	private String[] drawerTitles;
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
-	private String username;
-	private String password;
 	private Dialog loadingDialog;
 
 	public static final int ITEM_HOME = 0;
@@ -59,18 +62,63 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	public static final int ITEM_MENSA = 2;
 	public static final int ITEM_EVENTS = 3;
 	public static final int ITEM_COUNT = 4;
+	
+	private static boolean isFirstLaunch = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (isFirstLaunch)
+			runOnFirstLaunch();
+		
 		setContentView(R.layout.activity_main);
 		setupNavigationDrawer();
-
+		/*
 		username = getIntent().getStringExtra("username");
 		password = getIntent().getStringExtra("password");
-		Log.i("PlanActivity", "User logged in: " + username);
+		Log.i("PlanActivity", "User logged in: " + username);*/
 		loadData();
 	}
+	
+	private boolean runOnFirstLaunch() {
+		MainActivity.isFirstLaunch = false;
+
+		SharedPreferences sharedPrefs = getSharedPreferences("data",
+				MODE_PRIVATE);
+
+		String json = sharedPrefs.getString("data", "");
+		API.DATA = "".equals(json) ? new AllObject() : new Gson().fromJson(
+				json, AllObject.class);
+
+		int prevAppVersion = sharedPrefs.getInt("prevAppVersion", 0);
+		int appVersion = 0;
+		try {
+			appVersion = getPackageManager()
+					.getPackageInfo(getPackageName(), 0).versionCode;
+			API.CONTEXT = getApplicationContext();
+			API.APP_VERSION = getPackageName()
+					+ " "
+					+ getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			Log.w("Startup", "Couldn't determine app version");
+			e.printStackTrace();
+		}
+
+		if (API.isNetworkAvailable() && appVersion > prevAppVersion) {
+			sharedPrefs.edit().putInt("prevAppVersion", appVersion).commit();
+			Intent intent = new Intent(this, ChangelogActivity.class);
+			intent.putExtra("prevAppVersion", prevAppVersion);
+			intent.putExtra("appVersion", appVersion);
+			startActivity(intent);
+			return true;
+		}
+
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+		return false;
+	}
+
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -85,6 +133,10 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			menu.findItem(R.id.action_show_ticker).setVisible(false);
 		else
 			menu.findItem(R.id.action_show_ticker).setVisible(true);
+		if (API.STANDARD_API.isLoggedIn())
+			menu.findItem(R.id.action_login).setTitle(R.string.logout);
+		else
+			menu.findItem(R.id.action_login).setTitle(R.string.login);
 		return true;
 	}
 
@@ -99,20 +151,20 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		} else if (itemid == R.id.action_show_ticker) {
 			VPlanFragment.showTicker(this);
 			return true;
-		} else if (itemid == R.id.action_logout)
-			return logout(false);
+		} else if (itemid == R.id.action_login)
+			return API.STANDARD_API.isLoggedIn() ? logout(false) : showUserInfoOrLogin(0);
 		else if (itemid == R.id.action_settings)
 			return showSettings();
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
+	/*@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		intent.putExtra("closeapp", true);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-	}
+	}*/
 
 	@Override
 	public void onResume() {
@@ -133,8 +185,11 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 					.replace(R.id.content_frame, new HomeFragment()).commit();
 			break;
 		case ITEM_PLAN:
-			getSupportFragmentManager().beginTransaction()
+			if(API.STANDARD_API.isLoggedIn())
+				getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, new VPlanFragment()).commit();
+			else
+				showUserInfoOrLogin(R.string.login_needed);
 			break;
 		case ITEM_MENSA:
 			getSupportFragmentManager().beginTransaction()
@@ -156,42 +211,83 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		getSupportActionBar().setSubtitle(drawerTitles[position]);
 	}
 
+	AlertDialog loginDialog;
 	@SuppressLint("NewApi")
-	private boolean showUserInfo() {
-		drawerLayout.closeDrawer(drawer);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		LayoutInflater inflater = LayoutInflater
-				.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext() : this);
-		View view = inflater.inflate(R.layout.user_info_dialog, null);
-		UserInfo userInfo = API.DATA.userInfo;
-
-		TextView fullname = (TextView) view
-				.findViewById(R.id.user_info_fullname);
-		fullname.setText(userInfo.fullname);
-
-		TextView username = (TextView) view
-				.findViewById(R.id.user_info_username);
-		username.setText(userInfo.username);
-
-		TextView mainGroup = (TextView) view
-				.findViewById(R.id.user_info_main_group);
-		mainGroup.setText(getText(R.string.main_group) + userInfo.mainGroup);
-
-		ListView groupList = (ListView) view
-				.findViewById(R.id.user_info_group_list);
-		groupList.setAdapter(new ArrayAdapter<String>(groupList.getContext(),
-				R.layout.user_info_group_list_text, userInfo.groups));
-
-		builder.setView(view);
-		builder.setPositiveButton(R.string.ok, null);
-		builder.setNegativeButton(R.string.logout, new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				logout(false);
+	private boolean showUserInfoOrLogin(int message) {
+		boolean showLogin = !API.STANDARD_API.isLoggedIn();
+		if(showLogin) {
+			drawerLayout.closeDrawer(drawer);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			LayoutInflater inflater = LayoutInflater
+					.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext() : this);
+			final View view = inflater.inflate(R.layout.dialog_login, null);
+			builder.setView(view);
+			builder.setPositiveButton(R.string.login, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					login(
+							((EditText)view.findViewById(R.id.login_username_field)).getText().toString(),
+							((EditText)view.findViewById(R.id.login_password_field)).getText().toString());
+				}
+			});
+			((EditText)view.findViewById(R.id.login_password_field)).setOnEditorActionListener(new OnEditorActionListener() {
+				
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent e) {
+					if(loginDialog != null && loginDialog.isShowing())
+						loginDialog.dismiss();
+					if(actionId == EditorInfo.IME_ACTION_DONE) {
+						login(
+								((EditText)view.findViewById(R.id.login_username_field)).getText().toString(),
+								((EditText)view.findViewById(R.id.login_password_field)).getText().toString());
+						return true;
+					}
+					return false;
+				}
+			});
+			if(message != 0) {
+				TextView mView = (TextView)view.findViewById(R.id.login_message);
+				mView.setText(message);
+				mView.setVisibility(View.VISIBLE);
 			}
-		});
-		builder.show();
+			builder.setNegativeButton(R.string.abort, null);
+			loginDialog = builder.show();
+		}else {
+			drawerLayout.closeDrawer(drawer);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			LayoutInflater inflater = LayoutInflater
+					.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext() : this);
+			View view = inflater.inflate(R.layout.user_info_dialog, null);
+			UserInfo userInfo = API.DATA.userInfo;
+	
+			TextView fullname = (TextView) view
+					.findViewById(R.id.user_info_fullname);
+			fullname.setText(userInfo.fullname);
+	
+			TextView username = (TextView) view
+					.findViewById(R.id.user_info_username);
+			username.setText(userInfo.username);
+	
+			TextView mainGroup = (TextView) view
+					.findViewById(R.id.user_info_main_group);
+			mainGroup.setText(getText(R.string.main_group) + userInfo.mainGroup);
+	
+			ListView groupList = (ListView) view
+					.findViewById(R.id.user_info_group_list);
+			groupList.setAdapter(new ArrayAdapter<String>(groupList.getContext(),
+					R.layout.user_info_group_list_text, userInfo.groups));
+	
+			builder.setView(view);
+			builder.setPositiveButton(R.string.ok, null);
+			builder.setNegativeButton(R.string.logout, new OnClickListener() {
+	
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					logout(false);
+				}
+			});
+			builder.show();
+		}
 		return true;
 	}
 
@@ -206,16 +302,26 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			adb.setPositiveButton(android.R.string.yes, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					NavUtils.navigateUpFromSameTask(MainActivity.this);
-					API.DATA.deleteToken();
+					logout();
 				}
 			});
 			adb.show();
 		} else {
-			NavUtils.navigateUpFromSameTask(this);
-			API.DATA.deleteToken();
+			logout();
 		}
 		return true;
+	}
+	
+	private void logout() {
+		API.DATA.deleteToken();
+		API.STANDARD_API.setUsername(null);
+		API.STANDARD_API.setPassword(null);
+	}
+	
+	private void login(String username, String password) {
+		API.STANDARD_API.setUsername(username);
+		API.STANDARD_API.setPassword(password);
+		loadData();
 	}
 
 	private boolean showSettings() {
@@ -253,23 +359,20 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		loadingDialog.show();
 		Log.i("LoadingData", "Loading new data from remote");
 
-		if (username == null || password == null)
-			new AllAsyncTask(this).execute();
-		else
-			new AllAsyncTask(this, username, password).execute();
+		new AllAsyncTask(this).execute();
 	}
 
 	public void finishedLoading(String error) {
 		if (loadingDialog != null)
 			loadingDialog.dismiss();
-		if (error != null) {
+		/*if (error != null) {
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("error", error);
 			intent.putExtra("password", password);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return;
-		}
+		}*/
 		dataChanged();
 
 		SharedPreferences.Editor spe = getSharedPreferences("data",
@@ -281,21 +384,31 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
 	private void dataChanged() {
 		selectItem(fragmentPosition);
+		configureUsernameView();
+	}
+	
+	private TextView configureUsernameView() {
 		TextView usernameView = (TextView) findViewById(R.id.drawer_username);
-		usernameView.setText(API.DATA.userInfo.fullname);
+		if(API.DATA != null && API.DATA.userInfo != null && API.DATA.userInfo.fullname != null && !"".equals(API.DATA.userInfo.fullname)) {
+			usernameView.setText(API.DATA.userInfo.fullname);
+			Log.d("MainActivity", "UsernameView: " + API.DATA.userInfo.fullname);
+		} else {
+			usernameView.setText(R.string.login);
+			Log.d("MainActivity", "UsernameView: " + getText(R.string.login).toString());
+		}
+		return usernameView;
 	}
 
 	private void setupNavigationDrawer() {
+		Log.d("MainActivity", "Setting up navigation drawer");
 		drawer = (LinearLayout) findViewById(R.id.left_drawer);
 		drawerList = (ListView) findViewById(R.id.drawer_list);
 		drawerTitles = getResources().getStringArray(R.array.navigation_list);
 
-		TextView usernameView = (TextView) findViewById(R.id.drawer_username);
-		usernameView.setText(API.DATA.userInfo.fullname);
-		usernameView.setOnClickListener(new View.OnClickListener() {
+		configureUsernameView().setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showUserInfo();
+				showUserInfoOrLogin(0);
 			}
 		});
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

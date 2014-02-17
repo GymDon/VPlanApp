@@ -29,7 +29,7 @@ public class ApiResponse {
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
 			boolean array) throws JSONException {
-		if(!obj.isNull("result"))
+		if(obj.has("result") && !obj.isNull("result"))
 		if (!array) {
 			try {
 					result = resultType.getConstructor(JSONObject.class)

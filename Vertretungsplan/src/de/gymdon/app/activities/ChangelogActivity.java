@@ -52,12 +52,8 @@ public class ChangelogActivity extends ActionBarActivity {
 				try {
 					return ((ApiResultArray) API.STANDARD_API.request(
 							ApiAction.CHANGELOG,
-							"from="
-									+ (from > 0 ? Commit.versionTags.get(from)
-											: "start"),
-							"to="
-									+ (to > 0 ? Commit.versionTags.get(to)
-											: "end")).getResult())
+							"from", (from > 0 ? Commit.versionTags.get(from) : "start"),
+							"to", (to > 0 ? Commit.versionTags.get(to): "end")).getResult())
 							.getArray(new Commit[0]);
 				} catch (Exception e) {
 					e.printStackTrace();

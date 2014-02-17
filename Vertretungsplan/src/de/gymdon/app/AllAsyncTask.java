@@ -12,19 +12,10 @@ import de.gymdon.app.api.*;
 public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 
 	private FinishedLoading plan;
-	private String username;
-	private String password;
 	private String token;
-
-	public AllAsyncTask(FinishedLoading plan, String username, String password) {
-		this.plan = plan;
-		this.username = username;
-		this.password = password;
-	}
 
 	public AllAsyncTask(FinishedLoading plan) {
 		this.plan = plan;
-		this.username = API.DATA.userInfo.username;
 		this.token = API.DATA.getToken();
 	}
 
@@ -33,12 +24,10 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 	protected AllObject doInBackground(Object... args) {
 		try {
 			ApiResponse resp;
-			if (token == null)
-				resp = API.STANDARD_API.request(ApiAction.ALL, "u=" + username,
-						"pass=" + password);
+			if (!"".equals(token))
+				resp = API.STANDARD_API.request(ApiAction.ALL, "sync", "true", "token", token);
 			else
-				resp = API.STANDARD_API.request(ApiAction.ALL, "u=" + username,
-						"sync=true", "token=" + token);
+				resp = API.STANDARD_API.request(ApiAction.ALL);
 			if (!resp.getSuccess()) {
 				Log.w("All Loader", "Loading unsuccesfull");
 				return null;
@@ -51,8 +40,10 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 				return API.DATA;
 			}
 			AllObject ao = (AllObject) resp.getResult();
-			ao.hash = resp.getHash();
-			ao.setToken(resp.getToken());
+			if (ao != null) {
+				ao.hash = resp.getHash();
+				ao.setToken(resp.getToken());
+			}
 			return ao;
 
 		} catch (Exception e) {

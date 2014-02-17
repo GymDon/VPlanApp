@@ -7,7 +7,8 @@ import java.util.*;
 import org.json.*;
 
 import de.gymdon.app.R;
-import de.gymdon.app.activities.LoginActivity;
+import de.gymdon.app.util.Base64;
+import de.gymdon.app.activities.MainActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -22,6 +23,7 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+@SuppressWarnings("unchecked")
 public class API {
 	/**
 	 * The standard url: {@value #STANDARD_URL}
@@ -33,9 +35,12 @@ public class API {
 	public static Context CONTEXT;
 	public static AllObject DATA;
 	public static boolean reload = false;
-	public final static String API_VERSION = "0.2";
+	public final static String API_VERSION = "0.3";
 
 	private URL url;
+	
+	private String username;
+	private String password;
 
 	/**
 	 * Creates a new API with the {@link #STANDARD_URL} ( {@value #STANDARD_URL}
@@ -81,8 +86,7 @@ public class API {
 	 * @param action
 	 *            The action to be performed
 	 * @param params
-	 *            The parameters to the action as strings with format
-	 *            <i>"key=value"</i>
+	 *            The parameters to the action as strings in pairs of key and value
 	 * @return The Response from the server
 	 * @throws IOException
 	 * @see {@link API#request(ApiAction, Map)}
@@ -90,12 +94,8 @@ public class API {
 	public ApiResponse request(ApiAction action, String... params)
 			throws IOException {
 		Map<String, String> paramsMap = new HashMap<String, String>();
-		for (String param : params) {
-			String[] sp = param.split("=");
-			if (sp.length != 2)
-				throw new IllegalArgumentException(
-						"Params need to be key=value");
-			paramsMap.put(sp[0], sp[1]);
+		for(int i = 0; i < params.length - 1; i+=2) {
+			paramsMap.put(params[i], params[i+1]);
 		}
 		return request(action, paramsMap);
 	}
@@ -160,12 +160,15 @@ public class API {
 			params.put("api", API_VERSION);
 			params.put("lang", Locale.getDefault().getLanguage());
 			Log.d("API", "Request: " + action);
-			if (!actionToClassMap.containsKey(action))
+			if (actionClass[action.ordinal()] == null)
 				throw new RuntimeException("invalid action \"" + action + "\"");
 			long time = System.currentTimeMillis();
-			obj = getJSONfromURL(url, "POST", params);
-			r = new ApiResponse(obj, actionToClassMap.get(action),
-					actionIsArrayMap.get(action));
+			if(actionNeedsLogin[action.ordinal()] && username != null && password != null)
+				obj = getJSONfromURL(url, "POST", params, username, password);
+			else
+				obj = getJSONfromURL(url, "POST", params, null, null);
+			r = new ApiResponse(obj, actionClass[action.ordinal()],
+					actionIsArray[action.ordinal()]);
 			Log.d("API", "Response: " + (System.currentTimeMillis()-time) + "ms");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -201,7 +204,7 @@ public class API {
 	 */
 	@SuppressLint("DefaultLocale")
 	public static JSONObject getJSONfromURL(URL url, String requestMethod,
-			Map<String, String> params) throws IOException, JSONException {
+			Map<String, String> params, String username, String password) throws IOException, JSONException {
 		requestMethod = requestMethod.toUpperCase();
 		StringBuilder get = new StringBuilder();
 		if (params != null) {
@@ -213,6 +216,8 @@ public class API {
 		if (requestMethod.equals("GET"))
 			url = new URL(url.toExternalForm() + "?" + get);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		if(username != null && password != null)
+			conn.setRequestProperty("Authorization", "Basic " + Base64.encodeToString((username + ":" + password).getBytes(), Base64.DEFAULT));
 		conn.setRequestMethod(requestMethod);
 		conn.setReadTimeout(5000);
 
@@ -233,6 +238,10 @@ public class API {
 			Log.i("Response", sb.toString());
 			throw e;
 		}
+	}
+	
+	public boolean isLoggedIn() {
+		return username != null && !"".equals(username) && password != null && !"".equals(password);
 	}
 
 	public static boolean isNetworkAvailable() {
@@ -293,7 +302,7 @@ public class API {
 
 		ncb.setContentTitle(CONTEXT.getText(R.string.app_name));
 
-		Intent intent = new Intent(API.CONTEXT, LoginActivity.class);
+		Intent intent = new Intent(API.CONTEXT, MainActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(API.CONTEXT, 0,
 				intent, 0);
 		ncb.setContentIntent(pendingIntent);
@@ -316,29 +325,46 @@ public class API {
 				: API.DATA.tomorrowReplacementsList).isEmpty() && (forToday ? API.DATA.todayOthers
 				: API.DATA.tomorrowOthers).isEmpty());
 	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
 
-	private static Map<ApiAction, Class<? extends ApiResult>> actionToClassMap;
-	private static Map<ApiAction, Boolean> actionIsArrayMap;
+	private static Class<? extends ApiResult>[] actionClass;
+	private static boolean[] actionIsArray;
+	private static boolean[] actionNeedsLogin;
 
 	static {
 		try {
 			STANDARD_API = new API();
 		} catch (MalformedURLException e) {
 		}
+		actionClass = new Class[ApiAction.values().length];
+		actionIsArray = new boolean[ApiAction.values().length];
+		actionNeedsLogin = new boolean[ApiAction.values().length];
 
-		actionToClassMap = new HashMap<ApiAction, Class<? extends ApiResult>>();
-		actionIsArrayMap = new HashMap<ApiAction, Boolean>();
+		actionClass[ApiAction.USER.ordinal()] = UserInfo.class;
+		actionIsArray[ApiAction.USER.ordinal()] = false;
+		actionIsArray[ApiAction.USER.ordinal()] = true;
 
-		actionToClassMap.put(ApiAction.USER, UserInfo.class);
-		actionIsArrayMap.put(ApiAction.USER, false);
+		actionClass[ApiAction.TICKER.ordinal()] = TickerObject.class;
+		actionIsArray[ApiAction.TICKER.ordinal()] = true;
+		actionIsArray[ApiAction.TICKER.ordinal()] = true;
 
-		actionToClassMap.put(ApiAction.TICKER, TickerObject.class);
-		actionIsArrayMap.put(ApiAction.TICKER, true);
+		actionClass[ApiAction.ALL.ordinal()] = AllObject.class;
+		actionIsArray[ApiAction.ALL.ordinal()] = false;
+		actionIsArray[ApiAction.ALL.ordinal()] = false;
 
-		actionToClassMap.put(ApiAction.ALL, AllObject.class);
-		actionIsArrayMap.put(ApiAction.ALL, false);
-
-		actionToClassMap.put(ApiAction.CHANGELOG, Commit.class);
-		actionIsArrayMap.put(ApiAction.CHANGELOG, true);
+		actionClass[ApiAction.CHANGELOG.ordinal()] = Commit.class;
+		actionIsArray[ApiAction.CHANGELOG.ordinal()] = true;
+		actionIsArray[ApiAction.CHANGELOG.ordinal()] = false;
 	}
 }
