@@ -15,8 +15,8 @@
         vplan:showAsAction="ifRoom"/>
     
     <item
-        android:id="@+id/action_logout"
-        android:title="@string/logout"
+        android:id="@+id/action_login"
+        android:title="@string/login"
         vplan:showAsAction="never"/>
     
     <item

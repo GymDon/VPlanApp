@@ -24,13 +24,13 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 	protected AllObject doInBackground(Object... args) {
 		try {
 			ApiResponse resp;
-			if (!"".equals(token))
+			if (!"".equals(token) && token != null)
 				resp = API.STANDARD_API.request(ApiAction.ALL, "sync", "true", "token", token);
 			else
 				resp = API.STANDARD_API.request(ApiAction.ALL);
 			if (!resp.getSuccess()) {
 				Log.w("All Loader", "Loading unsuccesfull");
-				return null;
+				return API.DATA;
 			}
 			if (!resp.getChanged()) {
 				API.DATA.timestamp = System.currentTimeMillis() / 1000L;
@@ -42,7 +42,9 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 			AllObject ao = (AllObject) resp.getResult();
 			if (ao != null) {
 				ao.hash = resp.getHash();
-				ao.setToken(resp.getToken());
+				String tok = resp.getToken();
+				if(tok != null && !tok.isEmpty())
+					ao.setToken(tok);
 			}
 			return ao;
 

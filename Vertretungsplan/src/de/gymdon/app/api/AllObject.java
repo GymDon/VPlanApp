@@ -45,7 +45,7 @@ public class AllObject extends ApiResult {
 	private static final int HAS_MENSA = 64;
 
 	public AllObject() {
-		userInfo = new UserInfo("");
+		userInfo = new UserInfo((String)null);
 	}
 
 	@SuppressLint("SimpleDateFormat")

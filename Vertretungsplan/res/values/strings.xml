@@ -65,6 +65,13 @@
     <string name="menu2">Menü 2: </string>
     <string name="main_group">Hauptgruppe: </string>
     <string name="groups">Gruppen: </string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="login_needed">Hierfür müssen sie eingeloggt sein</string>
+    <string name="no_data">Keine Daten verfügbar</string>
+    <string name="no_username">Kein Benutzername angegeben</string>
+    <string name="no_password">Kein Passwort angegeben</string>
     
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>

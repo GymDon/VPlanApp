@@ -46,6 +46,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
@@ -186,18 +187,33 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			break;
 		case ITEM_PLAN:
 			if(API.STANDARD_API.isLoggedIn())
+				if(API.DATA.hasReplacements() || API.DATA.hasOthers() || API.DATA.hasPages() || API.DATA.hasTicker())
 				getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, new VPlanFragment()).commit();
+				else {
+					Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT).show();
+					return;
+				}
 			else
 				showUserInfoOrLogin(R.string.login_needed);
 			break;
 		case ITEM_MENSA:
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.content_frame, new MensaFragment()).commit();
+			if (API.DATA.hasMensa())
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.content_frame, new MensaFragment()).commit();
+			else {
+				Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT).show();
+				return;
+			}
 			break;
 		case ITEM_EVENTS:
+			if (API.DATA.hasEvents())
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, new EventFragment()).commit();
+			else {
+				Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT).show();
+				return;
+			}
 			break;
 		}
 
@@ -250,7 +266,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 				mView.setText(message);
 				mView.setVisibility(View.VISIBLE);
 			}
-			builder.setNegativeButton(R.string.abort, null);
+			builder.setNegativeButton(R.string.cancel, null);
 			loginDialog = builder.show();
 		}else {
 			drawerLayout.closeDrawer(drawer);
@@ -316,12 +332,22 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		API.DATA.deleteToken();
 		API.STANDARD_API.setUsername(null);
 		API.STANDARD_API.setPassword(null);
+		configureUsernameView();
 	}
 	
 	private void login(String username, String password) {
+		if(username == null || username.length() == 0) {
+			showUserInfoOrLogin(R.string.no_username);
+			return;
+		}
+		if(password == null || password.length() == 0) {
+			showUserInfoOrLogin(R.string.no_password);
+			return;
+		}
 		API.STANDARD_API.setUsername(username);
 		API.STANDARD_API.setPassword(password);
 		loadData();
+		configureUsernameView();
 	}
 
 	private boolean showSettings() {
@@ -365,38 +391,46 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	public void finishedLoading(String error) {
 		if (loadingDialog != null)
 			loadingDialog.dismiss();
-		/*if (error != null) {
-			Intent intent = new Intent(this, LoginActivity.class);
-			intent.putExtra("error", error);
-			intent.putExtra("password", password);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+		
+		if(error != null) {
+			Toast.makeText(this, getText(R.string.error) + ": " + error, Toast.LENGTH_LONG).show();
 			return;
-		}*/
+		}
+		
 		dataChanged();
 
 		SharedPreferences.Editor spe = getSharedPreferences("data",
 				MODE_PRIVATE).edit();
 		String json = new Gson().toJson(API.DATA);
+		spe.putString("username", API.STANDARD_API.getUsername());
 		spe.putString("data", json);
 		spe.commit();
 	}
 
 	private void dataChanged() {
+		if(		fragmentPosition == ITEM_PLAN && 
+					!(API.DATA.hasReplacements() || API.DATA.hasOthers() || API.DATA.hasPages() || API.DATA.hasTicker())
+				|| fragmentPosition == ITEM_MENSA && !API.DATA.hasMensa()
+				|| fragmentPosition == ITEM_EVENTS && !API.DATA.hasEvents()) {
+			fragmentPosition = ITEM_HOME;
+			Toast.makeText(this, R.string.no_data, Toast.LENGTH_LONG).show();
+		}
 		selectItem(fragmentPosition);
 		configureUsernameView();
 	}
 	
-	private TextView configureUsernameView() {
+	private View configureUsernameView() {
 		TextView usernameView = (TextView) findViewById(R.id.drawer_username);
-		if(API.DATA != null && API.DATA.userInfo != null && API.DATA.userInfo.fullname != null && !"".equals(API.DATA.userInfo.fullname)) {
-			usernameView.setText(API.DATA.userInfo.fullname);
-			Log.d("MainActivity", "UsernameView: " + API.DATA.userInfo.fullname);
+		View usernameViewBg = (View) findViewById(R.id.drawer_username_bg);
+		AllObject data = API.DATA;
+		if(data != null && data.userInfo != null && data.userInfo.fullname != null && data.userInfo.fullname.length() > 0) {
+			usernameView.setText(data.userInfo.fullname);
+			Log.d("MainActivity", "UsernameView: " + data.userInfo.fullname);
 		} else {
 			usernameView.setText(R.string.login);
 			Log.d("MainActivity", "UsernameView: " + getText(R.string.login).toString());
 		}
-		return usernameView;
+		return usernameViewBg;
 	}
 
 	private void setupNavigationDrawer() {

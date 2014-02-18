@@ -19,7 +19,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/drawer_username_background" >
+            android:background="@drawable/drawable_username_bg" 
+            android:id="@+id/drawer_username_bg">
 
             <TextView
                 android:id="@+id/drawer_username"

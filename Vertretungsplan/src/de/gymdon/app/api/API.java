@@ -209,11 +209,12 @@ public class API {
 		StringBuilder get = new StringBuilder();
 		if (params != null) {
 			for (String key : params.keySet())
-				get.append(get.length() == 0 ? "" : "&")
+				if(params.get(key) != null)
+					get.append(get.length() == 0 ? "" : "&")
 						.append(URLEncoder.encode(key, "UTF-8")).append('=')
 						.append(URLEncoder.encode(params.get(key), "UTF-8"));
 		}
-		if (requestMethod.equals("GET"))
+		if ("GET".equals(requestMethod))
 			url = new URL(url.toExternalForm() + "?" + get);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		if(username != null && password != null)
@@ -222,7 +223,7 @@ public class API {
 		conn.setReadTimeout(5000);
 
 		conn.connect();
-		if (requestMethod.equals("POST"))
+		if ("POST".equals(requestMethod) || "PUT".equals(requestMethod))
 			conn.getOutputStream().write(get.toString().getBytes());
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				conn.getInputStream()));
