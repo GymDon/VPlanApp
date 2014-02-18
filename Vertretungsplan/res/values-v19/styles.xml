@@ -1,0 +1,36 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabView</item>
+        <item name="android:actionBarTabBarStyle">@style/ActionBarTabBar</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+    <!--    <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+     <item name="android:fitsSystemWindows">true</item>  -->
+
+    </style>
+
+    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/action_bar</item>
+                <item name="android:windowBackground">@color/action_bar</item>
+    </style>
+
+    <style name="ActionBarTabView" parent="@style/Widget.AppCompat.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_bar_background</item>
+    </style>
+    
+    <style name="ActionBarTabBar" parent="@style/Widget.AppCompat.ActionBar.TabBar">
+        <item name="android:background">@color/tab_highlight</item>
+    </style>
+    
+    <!-- Dialogs not "fully" working - skyrising -->
+    <style name="AlertDialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowTitleBackgroundStyle">@style/AlertDialogTitleBackground</item>
+    </style>
+    <style name="AlertDialogTitleBackground">
+    	<item name="android:background">@color/dark_blue</item>
+    </style>
+
+</resources>
