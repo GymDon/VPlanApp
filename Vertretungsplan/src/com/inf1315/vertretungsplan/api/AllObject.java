@@ -33,6 +33,8 @@ public class AllObject extends ApiResult {
 	public String timeString = "";
 	public long timestamp;
 	private String token = "";
+	public boolean isCurrentVersion = true;
+	public String apkDownloadUrl = "";
 
 	public AllObject() {
 		userInfo = new UserInfo("");
@@ -102,6 +104,19 @@ public class AllObject extends ApiResult {
 		timeString = sdf.format(new Date());
 
 		timestamp = System.currentTimeMillis() / 1000L;
+		
+		
+		if(json.has("is_current_version")) {
+			
+			isCurrentVersion = json.getBoolean("is_current_version");	
+			
+		}
+		
+		if(json.has("apk_download")) {
+			
+			apkDownloadUrl = json.getString("apk_download");
+			
+		}
 	}
 
 	public String getToken() {

@@ -65,6 +65,10 @@
     <string name="menu2">Menü 2: </string>
     <string name="main_group">Hauptgruppe: </string>
     <string name="groups">Gruppen: </string>
+    <string name="update_available_title">Update verfügbar</string>
+    <string name="update_available_text">Ein Update für diese App ist verfügbar!</string>
+    <string name="download">Download</string>
+    <string name="dismiss">Jetzt nicht</string>
     
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>

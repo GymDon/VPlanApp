@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -69,6 +70,33 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		password = getIntent().getStringExtra("password");
 		Log.i("PlanActivity", "User logged in: " + username);
 		loadData();
+
+		Log.e("LOL", String.valueOf(API.DATA.isCurrentVersion));
+		Log.e("LOL", API.DATA.apkDownloadUrl);
+		
+		if (!API.DATA.isCurrentVersion) {
+			
+			Log.e("LOL", "if workds");
+
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+			alertDialog.setTitle(R.string.update_available_title);
+			alertDialog.setPositiveButton(R.string.download,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+
+							Intent downloadIntent = new Intent(Intent.ACTION_VIEW,
+									Uri.parse(API.DATA.apkDownloadUrl));
+							startActivity(downloadIntent);
+							
+						}
+					});
+			alertDialog.setNegativeButton(R.string.dismiss, null);
+
+			alertDialog.setMessage(R.string.update_available_text);
+
+			alertDialog.show();
+
+		}
 	}
 
 	@Override
