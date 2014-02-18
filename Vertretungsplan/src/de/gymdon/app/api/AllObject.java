@@ -118,6 +118,7 @@ public class AllObject extends ApiResult {
 		}
 	}
 
+
 	public String getToken() {
 		return token;
 	}
