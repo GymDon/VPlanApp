@@ -4,10 +4,16 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import org.apache.http.*;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.*;
 
 import de.gymdon.app.R;
-import de.gymdon.app.util.Base64;
 import de.gymdon.app.activities.MainActivity;
 
 import android.annotation.SuppressLint;
@@ -19,7 +25,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -93,11 +98,11 @@ public class API {
 	 */
 	public ApiResponse request(ApiAction action, String... params)
 			throws IOException {
-		Map<String, String> paramsMap = new HashMap<String, String>();
+		List<NameValuePair> paramsList = new ArrayList<NameValuePair>();
 		for(int i = 0; i < params.length - 1; i+=2) {
-			paramsMap.put(params[i], params[i+1]);
+			paramsList.add(new BasicNameValuePair(params[i], params[i+1]));
 		}
-		return request(action, paramsMap);
+		return request(action, paramsList);
 	}
 
 	/**
@@ -111,62 +116,30 @@ public class API {
 	 * @throws IOException
 	 * @see {@link API#request(ApiAction, String...)}
 	 */
-	@SuppressLint({ "NewApi", "DefaultLocale" })
-	@SuppressWarnings("deprecation")
-	public ApiResponse request(ApiAction action, Map<String, String> params) {
+	@SuppressLint("DefaultLocale")
+	public ApiResponse request(ApiAction action, List<NameValuePair> params) {
 		ApiResponse r;
 		JSONObject obj = null;
+		String url = this.url + API_VERSION + '/' + action.toString().toLowerCase();
 		try {
-			params.put("a", action.toString().toLowerCase());
-			params.put("os", "Android " + Build.VERSION.RELEASE + " ("
-					+ Build.DISPLAY + ")");
-			params.put("app", APP_VERSION);
-			boolean wifi = false;
-			boolean adb = false;
-			boolean data;
-			if (CONTEXT != null)
-				if (Build.VERSION.SDK_INT < 17) {
-					wifi = Settings.Secure.getInt(CONTEXT.getContentResolver(),
-							Settings.Secure.WIFI_ON) != 0;
-					adb = Settings.Secure.getInt(CONTEXT.getContentResolver(),
-							Settings.Secure.ADB_ENABLED) != 0;
-				} else {
-					wifi = Settings.Global.getInt(CONTEXT.getContentResolver(),
-							Settings.Global.WIFI_ON) != 0;
-					adb = Settings.Global.getInt(CONTEXT.getContentResolver(),
-							Settings.Global.ADB_ENABLED) != 0;
-				}
-
-			ConnectivityManager cm = (ConnectivityManager) CONTEXT
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-			if (activeNetwork != null
-					&& activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
-				data = true;
+			if(isLoggedIn())
+				Log.i("API", getUsername() + " is logged in");
 			else
-				data = false;
-			
-			if(!wifi && !data)
-				Log.w("API", "No network connection!");
-
-			JSONObject o = new JSONObject();
-			o.put("android_id", Settings.Secure.getString(
-					CONTEXT.getContentResolver(), Settings.Secure.ANDROID_ID));
-			o.put("wifi", wifi);
-			o.put("adb", adb);
-			o.put("data", data);
-			params.put("stats", o.toString());
-			params.put("hash", DATA.hash);
-			params.put("api", API_VERSION);
-			params.put("lang", Locale.getDefault().getLanguage());
+				Log.w("API", "No user logged in!");
+			params.add(new BasicNameValuePair("os", "Android " + Build.VERSION.RELEASE + " ("
+					+ Build.DISPLAY + ")"));
+			params.add(new BasicNameValuePair("app", APP_VERSION));
+			params.add(new BasicNameValuePair("hash", DATA.hash));
+			params.add(new BasicNameValuePair("api", API_VERSION));
+			params.add(new BasicNameValuePair("lang", Locale.getDefault().getLanguage()));
 			Log.d("API", "Request: " + action);
 			if (actionClass[action.ordinal()] == null)
 				throw new RuntimeException("invalid action \"" + action + "\"");
 			long time = System.currentTimeMillis();
-			if(actionNeedsLogin[action.ordinal()] && username != null && password != null)
-				obj = getJSONfromURL(url, "POST", params, username, password);
+			if(actionNeedsLogin[action.ordinal()] || isLoggedIn())
+				obj = getJSONfromURL(url, params, getUsername(), password);
 			else
-				obj = getJSONfromURL(url, "POST", params, null, null);
+				obj = getJSONfromURL(url, params, null, null);
 			r = new ApiResponse(obj, actionClass[action.ordinal()],
 					actionIsArray[action.ordinal()]);
 			Log.d("API", "Response: " + (System.currentTimeMillis()-time) + "ms");
@@ -185,7 +158,7 @@ public class API {
 		else {
 			Log.w("API", r.getWarnings().size() + " Warnings:");
 			for (ApiWarning w : r.getWarnings()) {
-				Log.w("API", w.getWarning() + ": " + w.getDescription());
+				Log.w("API", w.getWarning() + ": " + w.getDescription() + (w.getExtra().size() > 0 ? "\nExtra: " + w.getExtra() : ""));
 			}
 		}
 		return r;
@@ -203,36 +176,24 @@ public class API {
 	 * @return A JSONObject parsed from the specified url
 	 */
 	@SuppressLint("DefaultLocale")
-	public static JSONObject getJSONfromURL(URL url, String requestMethod,
-			Map<String, String> params, String username, String password) throws IOException, JSONException {
-		requestMethod = requestMethod.toUpperCase();
-		StringBuilder get = new StringBuilder();
-		if (params != null) {
-			for (String key : params.keySet())
-				if(params.get(key) != null)
-					get.append(get.length() == 0 ? "" : "&")
-						.append(URLEncoder.encode(key, "UTF-8")).append('=')
-						.append(URLEncoder.encode(params.get(key), "UTF-8"));
+	public static JSONObject getJSONfromURL(String url,
+			List<NameValuePair> params, String username, String password) throws IOException, JSONException {
+		DefaultHttpClient client = new DefaultHttpClient();
+		if(username != null && password != null) {
+			params.add(new BasicNameValuePair("u", username));
+			params.add(new BasicNameValuePair("pass", password));
+			//client.getCredentialsProvider().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
 		}
-		if ("GET".equals(requestMethod))
-			url = new URL(url.toExternalForm() + "?" + get);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		if(username != null && password != null)
-			conn.setRequestProperty("Authorization", "Basic " + Base64.encodeToString((username + ":" + password).getBytes(), Base64.DEFAULT));
-		conn.setRequestMethod(requestMethod);
-		conn.setReadTimeout(5000);
-
-		conn.connect();
-		if ("POST".equals(requestMethod) || "PUT".equals(requestMethod))
-			conn.getOutputStream().write(get.toString().getBytes());
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new UrlEncodedFormEntity(params));
+		HttpResponse resp = client.execute(post);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				conn.getInputStream()));
+				resp.getEntity().getContent()));
 		StringBuilder sb = new StringBuilder();
 		String line;
 		while ((line = reader.readLine()) != null)
 			sb.append(line).append('\n');
 		reader.close();
-		conn.disconnect();
 		try {
 			return new JSONObject(sb.toString());
 		} catch (JSONException e) {
@@ -241,8 +202,28 @@ public class API {
 		}
 	}
 	
+	/*private static HttpRequestInterceptor getAuthInterceptor(String username, String password) {
+		return new HttpRequestInterceptor() {
+		    public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
+		        AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
+		        CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(
+		                ClientContext.CREDS_PROVIDER);
+		        HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+		        
+		        if (authState.getAuthScheme() == null) {
+		            AuthScope authScope = new AuthScope(targetHost.getHostName(), targetHost.getPort());
+		            Credentials creds = credsProvider.getCredentials(authScope);
+		            if (creds != null) {
+		                authState.setAuthScheme(new BasicScheme());
+		                authState.setCredentials(creds);
+		            }
+		        }
+		    }  
+		};
+	}*/
+	
 	public boolean isLoggedIn() {
-		return username != null && !"".equals(username) && password != null && !"".equals(password);
+		return username != null && password != null;
 	}
 
 	public static boolean isNetworkAvailable() {

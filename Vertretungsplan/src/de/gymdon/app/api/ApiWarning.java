@@ -9,6 +9,8 @@ public class ApiWarning {
 	private String warning;
 	private String description;
 	private Map<String, String> extra;
+	private Exception exception;
+	private boolean isException;
 
 	public ApiWarning(JSONObject o) {
 		extra = new HashMap<String, String>();
@@ -25,8 +27,14 @@ public class ApiWarning {
 					extra.put(key, o.getString(key));
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
+			this.exception = e;
+			isException = true;
 		}
+	}
+	
+	public ApiWarning(Exception e) {
+		this.exception = e;
+		isException = true;
 	}
 
 	public String getWarning() {
@@ -43,5 +51,13 @@ public class ApiWarning {
 
 	public String getExtra(String key) {
 		return extra.get(key);
+	}
+	
+	public boolean isException() {
+		return isException;
+	}
+	
+	public Exception getException() {
+		return exception;
 	}
 }

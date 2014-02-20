@@ -13,11 +13,11 @@ public class UserInfo extends ApiResult {
 
 	public UserInfo(String user) {
 		username = user;
-		uid = 0;
-		gid = 0;
+		uid = -1;
+		gid = -1;
 		mainGroup = null;
 		groups = null;
-		fullname = "";
+		fullname = null;
 		isStudent = true;
 	}
 

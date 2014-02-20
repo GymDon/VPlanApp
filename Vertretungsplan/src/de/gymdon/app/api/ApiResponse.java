@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
 import android.util.Log;
 
 public class ApiResponse {
@@ -26,29 +27,34 @@ public class ApiResponse {
 	private String language;
 	private List<ApiWarning> warnings;
 	private String token;
+	private String currentVersion;
+	private boolean isCurrentVersion;
+	private Uri apkDownloadUrl;
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
 			boolean array) throws JSONException {
-		if(obj.has("result") && !obj.isNull("result"))
-		if (!array) {
-			try {
+		if (obj.has("result") && !obj.isNull("result")) {
+			if (!array) {
+				try {
 					result = resultType.getConstructor(JSONObject.class)
 							.newInstance(obj.getJSONObject("result"));
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			}
-		} else {
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+			} else {
 				result = new ApiResultArray(obj.getJSONArray("result"),
 						resultType);
-		}
+			}
+		} else
+			Log.i("ApiResponse", "result == null");
 		success = obj.getBoolean("success");
 		action = obj.getString("action");
 		params = new HashMap<String, String>();
@@ -80,7 +86,17 @@ public class ApiResponse {
 			}
 		} catch (JSONException e) {
 			warnings = new ArrayList<ApiWarning>(0);
+			warnings.add(new ApiWarning(e));
 		}
+		if (obj.has("is_current_version"))
+			isCurrentVersion = obj.getBoolean("is_current_version");
+		else
+			isCurrentVersion = true;
+		currentVersion = obj.optString("curr_app_version");
+		if (obj.has("apk_download"))
+			apkDownloadUrl = Uri.parse(obj.getString("apk_download"));
+		if (result != null)
+			result.setParent(this);
 	}
 
 	public ApiResponse(Exception e) {
@@ -121,6 +137,18 @@ public class ApiResponse {
 
 	public boolean isDeveloper() {
 		return developer != null;
+	}
+	
+	public boolean isCurrentVersion() {
+		return isCurrentVersion;
+	}
+	
+	public String getCurrentVersion() {
+		return currentVersion;
+	}
+	
+	public Uri getApkDownloadUrl() {
+		return apkDownloadUrl;
 	}
 
 	public String getDeveloper() {

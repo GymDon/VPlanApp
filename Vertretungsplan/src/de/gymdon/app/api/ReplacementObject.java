@@ -21,7 +21,7 @@ public class ReplacementObject extends ApiResult implements
 	public final boolean teacherChange;
 
 	public ReplacementObject(JSONObject json) throws JSONException {
-		if (API.DATA.userInfo.isStudent) {
+		if (API.DATA.userInfo == null || API.DATA.userInfo.isStudent) {
 			id = json.getInt("id");
 			gradePre = json.getString("grade_pre");
 			grade = json.getString("grade");

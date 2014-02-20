@@ -12,6 +12,7 @@ import de.gymdon.app.FinishedLoading;
 import de.gymdon.app.R;
 import de.gymdon.app.api.API;
 import de.gymdon.app.api.AllObject;
+import de.gymdon.app.api.ApiResponse;
 import de.gymdon.app.api.UserInfo;
 import de.gymdon.app.fragments.*;
 
@@ -76,36 +77,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		
 		setContentView(R.layout.activity_main);
 		setupNavigationDrawer();
-		/*
-		username = getIntent().getStringExtra("username");
-		password = getIntent().getStringExtra("password");
-		Log.i("PlanActivity", "User logged in: " + username);*/
 		loadData();
-
-		if (!API.DATA.isCurrentVersion) {
-
-			Log.e("LOL", "if workds");
-
-			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-			alertDialog.setTitle(R.string.update_available_title);
-			alertDialog.setPositiveButton(R.string.download,
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-
-							Intent downloadIntent = new Intent(
-									Intent.ACTION_VIEW, Uri
-											.parse(API.DATA.apkDownloadUrl));
-							startActivity(downloadIntent);
-
-						}
-					});
-			alertDialog.setNegativeButton(R.string.dismiss, null);
-
-			alertDialog.setMessage(R.string.update_available_text);
-
-			alertDialog.show();
-
-		}
 	}
 	
 	private boolean runOnFirstLaunch() {
@@ -373,7 +345,6 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		API.STANDARD_API.setUsername(username);
 		API.STANDARD_API.setPassword(password);
 		loadData();
-		configureUsernameView();
 	}
 
 	private boolean showSettings() {
@@ -417,11 +388,13 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	public void finishedLoading(String error) {
 		if (loadingDialog != null)
 			loadingDialog.dismiss();
+
 		
 		if(error != null) {
 			Toast.makeText(this, getText(R.string.error) + ": " + error, Toast.LENGTH_LONG).show();
 			return;
 		}
+		
 		
 		dataChanged();
 
@@ -431,6 +404,32 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		spe.putString("username", API.STANDARD_API.getUsername());
 		spe.putString("data", json);
 		spe.commit();
+
+		AllObject data = API.DATA;
+		final ApiResponse response = data.getParent();
+		if(response == null) {
+			Log.w("MainActivity", "ApiResponse == null");
+			return;
+		}
+
+		if (!response.isCurrentVersion()) {
+			Log.i("MainActivity", "Update available! " + response.getCurrentVersion() + ", has: " + (API.APP_VERSION.split(" ")[1]));
+
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+			alertDialog.setTitle(R.string.update_available_title);
+			alertDialog.setPositiveButton(R.string.download,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							Intent downloadIntent = new Intent(
+									Intent.ACTION_VIEW, response.getApkDownloadUrl());
+							startActivity(downloadIntent);
+						}
+					});
+			alertDialog.setNegativeButton(R.string.dismiss, null);
+			alertDialog.setMessage(R.string.update_available_text);
+			alertDialog.show();
+		} else
+			Log.d("MainActivity", "App is current version: " + response.getCurrentVersion() + ", has: " + (API.APP_VERSION.split(" ")[1]));
 	}
 
 	private void dataChanged() {
@@ -490,6 +489,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
 		};
 		drawerLayout.setDrawerListener(drawerToggle);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		int[] images = new int[ITEM_COUNT];
 		images[ITEM_HOME] = R.drawable.ic_launcher;

@@ -33,8 +33,6 @@ public class AllObject extends ApiResult {
 	public String timeString = "";
 	public long timestamp;
 	private String token = "";
-	public boolean isCurrentVersion = true;
-	public String apkDownloadUrl = "";
 	private int has = HAS_NONE;
 	
 	private static final int HAS_NONE = 0;
@@ -47,14 +45,12 @@ public class AllObject extends ApiResult {
 	private static final int HAS_MENSA = 64;
 
 	public AllObject() {
-		userInfo = new UserInfo((String)null);
 	}
 
 	@SuppressLint("SimpleDateFormat")
 	public AllObject(JSONObject json) throws JSONException {
 		if (json.has("user") && !json.isNull("user")) {
 			userInfo = new UserInfo(json.getJSONObject("user"));
-			API.DATA.userInfo = userInfo;
 			has |= HAS_USER;
 		}
 
@@ -136,19 +132,6 @@ public class AllObject extends ApiResult {
 		timeString = sdf.format(new Date());
 
 		timestamp = System.currentTimeMillis() / 1000L;
-		
-		if (json.has("is_current_version")) {
-
-			isCurrentVersion = json.getBoolean("is_current_version");
-
-		}
-
-		if (json.has("apk_download")) {
-
-			apkDownloadUrl = json.getString("apk_download");
-
-		}
-		API.DATA = this;
 	}
 
 	public String getToken() {
@@ -157,6 +140,9 @@ public class AllObject extends ApiResult {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+	
+	public void saveData() {
 		SharedPreferences.Editor spe = API.CONTEXT.getSharedPreferences("data",
 				Context.MODE_PRIVATE).edit();
 		String json = (new Gson()).toJson(this);
