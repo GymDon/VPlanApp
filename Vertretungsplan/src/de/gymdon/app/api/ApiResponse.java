@@ -64,7 +64,8 @@ public class ApiResponse {
 		developer = obj.optString("developer");
 		if(obj.has("token")) {
 			token = obj.getString("token");
-			API.DATA.setToken(token);
+			if(result instanceof AllObject)
+				((AllObject)result).setToken(token);
 		}
 		if (developer != null)
 			Log.i("ApiResponse", "Developer: " + developer);
@@ -162,8 +163,12 @@ public class ApiResponse {
 	public Locale getLocaleForLanguage() {
 		return new Locale(language);
 	}
-
+	
 	public String getToken() {
 		return token;
+	}
+	
+	public boolean hasToken() {
+		return token != null && token.length() > 0;
 	}
 }

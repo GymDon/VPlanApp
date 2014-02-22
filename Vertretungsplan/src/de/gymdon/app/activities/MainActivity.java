@@ -177,6 +177,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	private void selectItem(int position) {
 		drawerLayout.closeDrawer(drawer);
 
+		boolean noSwitch = false;
 		switch (position) {
 		case ITEM_HOME:
 			getSupportFragmentManager().beginTransaction()
@@ -189,10 +190,12 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 					.replace(R.id.content_frame, new VPlanFragment()).commit();
 				else {
 					Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT).show();
-					return;
+					noSwitch = true;
 				}
-			else
+			else {
 				showUserInfoOrLogin(R.string.login_needed);
+				noSwitch = true;
+			}
 			break;
 		case ITEM_MENSA:
 			if (API.DATA.hasMensa())
@@ -200,7 +203,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 						.replace(R.id.content_frame, new MensaFragment()).commit();
 			else {
 				Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT).show();
-				return;
+				noSwitch = true;
 			}
 			break;
 		case ITEM_EVENTS:
@@ -209,11 +212,16 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 					.replace(R.id.content_frame, new EventFragment()).commit();
 			else {
 				Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT).show();
-				return;
+				noSwitch = true;
 			}
 			break;
 		}
 
+		if(noSwitch) {
+			position = ITEM_HOME;
+			getSupportFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, new HomeFragment()).commit();
+		}
 		if ((position != ITEM_PLAN && fragmentPosition == ITEM_PLAN)
 				|| (position != ITEM_EVENTS && fragmentPosition == ITEM_EVENTS))
 			getSupportActionBar().setNavigationMode(
@@ -369,7 +377,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 					+ API.DATA.timeString);
 			builder.setPositiveButton(R.string.ok, null);
 			builder.show();
-			Log.i("LoadingData", "No network: loading chache");
+			Log.i("LoadingData", "No network: loading cache");
 
 			dataChanged();
 
@@ -447,7 +455,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		TextView usernameView = (TextView) findViewById(R.id.drawer_username);
 		View usernameViewBg = (View) findViewById(R.id.drawer_username_bg);
 		AllObject data = API.DATA;
-		if(data != null && data.userInfo != null && data.userInfo.fullname != null && data.userInfo.fullname.length() > 0) {
+		if(API.STANDARD_API.isLoggedIn() && data != null && data.userInfo != null && data.userInfo.fullname != null && data.userInfo.fullname.length() > 0) {
 			usernameView.setText(data.userInfo.fullname);
 			Log.d("MainActivity", "UsernameView: " + data.userInfo.fullname);
 		} else {

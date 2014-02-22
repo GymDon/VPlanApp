@@ -24,7 +24,9 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 	protected AllObject doInBackground(Object... args) {
 		try {
 			ApiResponse resp;
-			if (!"".equals(token) && token != null)
+			if(API.DATA.hasUser())
+				API.STANDARD_API.setUsername(API.DATA.userInfo.username);
+			if (API.DATA.hasToken())
 				resp = API.STANDARD_API.request(ApiAction.ALL, "sync", "true", "token", token);
 			else
 				resp = API.STANDARD_API.request(ApiAction.ALL);
@@ -42,9 +44,6 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 			AllObject ao = (AllObject) resp.getResult();
 			if (ao != null) {
 				ao.hash = resp.getHash();
-				String tok = resp.getToken();
-				if(tok != null && !tok.isEmpty())
-					ao.setToken(tok);
 			}
 			return ao;
 

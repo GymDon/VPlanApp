@@ -134,10 +134,10 @@ public class API {
 			if (actionClass[action.ordinal()] == null)
 				throw new RuntimeException("invalid action \"" + action + "\"");
 			long time = System.currentTimeMillis();
-			if(actionNeedsLogin[action.ordinal()] || isLoggedIn())
+			if(actionNeedsLogin[action.ordinal()] || isLoggedIn() && !(action == ApiAction.ALL && DATA.hasToken()))
 				obj = getJSONfromURL(url, params, getUsername(), password);
 			else
-				obj = getJSONfromURL(url, params, null, null);
+				obj = getJSONfromURL(url, params, getUsername(), null);
 			r = new ApiResponse(obj, actionClass[action.ordinal()],
 					actionIsArray[action.ordinal()]);
 			Log.d("API", "Response: " + (System.currentTimeMillis()-time) + "ms");
@@ -177,10 +177,12 @@ public class API {
 	public static JSONObject getJSONfromURL(String url,
 			List<NameValuePair> params, String username, String password) throws IOException, JSONException {
 		DefaultHttpClient client = new DefaultHttpClient();
-		if(username != null && password != null) {
+		if(username != null) {
 			params.add(new BasicNameValuePair("u", username));
-			params.add(new BasicNameValuePair("pass", password));
-			//client.getCredentialsProvider().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+			if(password != null) {
+				params.add(new BasicNameValuePair("pass", password));
+				//client.getCredentialsProvider().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+			}
 		}
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(params));
@@ -221,7 +223,7 @@ public class API {
 	}*/
 	
 	public boolean isLoggedIn() {
-		return username != null && password != null;
+		return (username != null && password != null) || DATA.hasToken();
 	}
 
 	public static boolean isNetworkAvailable() {

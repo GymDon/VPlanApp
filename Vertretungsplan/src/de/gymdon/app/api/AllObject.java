@@ -52,6 +52,7 @@ public class AllObject extends ApiResult {
 		if (json.has("user") && !json.isNull("user")) {
 			userInfo = new UserInfo(json.getJSONObject("user"));
 			has |= HAS_USER;
+			API.STANDARD_API.setUsername(userInfo.username);
 		}
 
 		if (json.has("ticker") && !json.isNull("ticker")) {
@@ -140,6 +141,10 @@ public class AllObject extends ApiResult {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+	
+	public boolean hasToken() {
+		return token != null && token.length() > 0;
 	}
 	
 	public void saveData() {

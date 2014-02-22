@@ -30,8 +30,7 @@ public class PageFragment extends Fragment {
 
 		WebView web = (WebView) rootView.findViewById(R.id.page_WebView);
 		PageObject po = API.DATA.pages.get(siteNumber);
-		web.loadDataWithBaseURL(null, po.content, "text/html", "UTF-8", null);
-
+		web.loadDataWithBaseURL(API.STANDARD_URL, po.content, "text/html", "UTF-8", null);
 		return rootView;
 	}
 }
