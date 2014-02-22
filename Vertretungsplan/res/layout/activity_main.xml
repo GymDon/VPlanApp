@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:choiceMode="singleChoice"
             android:divider="@android:color/black"
-            android:dividerHeight="1dp" />
+            android:dividerHeight="1dp"/>
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

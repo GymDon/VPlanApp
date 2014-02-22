@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -492,7 +491,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		int[] images = new int[ITEM_COUNT];
-		images[ITEM_HOME] = R.drawable.ic_launcher;
+		images[ITEM_HOME] = R.drawable.ic_menu_home;
 		images[ITEM_PLAN] = R.drawable.ic_action_view_as_list;
 		images[ITEM_MENSA] = R.drawable.ic_action_view_as_list;
 		images[ITEM_EVENTS] = R.drawable.ic_action_view_as_list;
@@ -523,6 +522,6 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			map.put("text", texts[i]);
 			list.add(map);
 		}
-		return new SimpleAdapter(this, list, R.layout.drawer_layout, from, to);
+		return new SimpleAdapter(this, list, R.layout.drawer_item, from, to);
 	}
 }
