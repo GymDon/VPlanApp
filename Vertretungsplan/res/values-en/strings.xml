@@ -17,7 +17,7 @@
     <string name="ticker">Tickers</string>
     <string name="ticker_dialog_title">Tickers</string>
     <string name="error">Error</string>
-    <string name="server_request_failed">Requst failed: specify valid username and password</string>
+    <string name="server_request_failed">Request failed: specify valid username and password</string>
     <string name="really_logout">Do you want to log out</string>
     <string name="no_internet_connection">Please activate Wi-Fi or mobile data</string>
     <string name="loading_plan">Loading plan…</string>
@@ -80,6 +80,12 @@
         <item>Replacement plan</item>
         <item>Mensa</item>
         <item>Events</item>
+    </string-array>
+    <string-array name="mensa_types">
+        <item>Menu 1</item>
+        <item>Menu 2</item>
+        <item>Salad</item>
+        <item>Soup</item>
     </string-array>
 
 </resources>

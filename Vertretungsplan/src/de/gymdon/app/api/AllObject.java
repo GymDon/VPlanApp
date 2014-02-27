@@ -27,7 +27,7 @@ public class AllObject extends ApiResult {
 	public List<ReplacementObject> todayReplacementsList = new ArrayList<ReplacementObject>();
 	public List<ReplacementObject> tomorrowReplacementsList = new ArrayList<ReplacementObject>();
 	public List<Event> events = new ArrayList<Event>();
-	public List<MensaClient> mensa = new ArrayList<MensaClient>();
+	public List<MensaServer> mensa = new ArrayList<MensaServer>();
 	public UserInfo userInfo;
 	public String hash = "";
 	public String timeString = "";
@@ -113,19 +113,7 @@ public class AllObject extends ApiResult {
 		}
 		
 		if (json.has("mensa") && !json.isNull("mensa")) {
-			MensaServer[] mensaArray = new ApiResultArray(
-					json.getJSONArray("mensa"), MensaServer.class)
-					.getArray(new MensaServer[0]);
-			Map<Long, MensaClient> map = new HashMap<Long, MensaClient>();
-			for (MensaServer o : mensaArray) {
-				if (!map.containsKey(o.timestamp))
-					map.put(o.timestamp, new MensaClient(o.timestamp));
-				if (o.type == 0)
-					map.get(o.timestamp).menu1 = o.value;
-				else if (o.type == 1)
-					map.get(o.timestamp).menu2 = o.value;
-			}
-			mensa = new ArrayList<MensaClient>(map.values());
+			mensa = new ApiResultArray(json.getJSONArray("mensa"), MensaServer.class).getList(mensa);
 			has |= HAS_MENSA;
 		}
 		

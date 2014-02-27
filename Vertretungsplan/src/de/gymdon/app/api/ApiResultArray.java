@@ -2,6 +2,8 @@ package de.gymdon.app.api;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.*;
 
@@ -42,6 +44,14 @@ public class ApiResultArray extends ApiResult {
 		if (a.length > array.length)
 			a[array.length] = null;
 		return a;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getList(List<T> list) {
+		list.clear();
+		for (ApiResult r : array)
+			list.add((T) r);
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")

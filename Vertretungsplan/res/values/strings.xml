@@ -97,5 +97,11 @@
         <item>Mensa</item>
         <item>Termine</item>
     </string-array>
+    <string-array name="mensa_types">
+        <item>Menü 1</item>
+        <item>Menü 2</item>
+        <item>Salat</item>
+        <item>Suppe</item>
+    </string-array>
 
 </resources>

@@ -6,17 +6,16 @@ import java.util.Collections;
 import java.util.Locale;
 
 import de.gymdon.app.api.API;
-import de.gymdon.app.api.MensaClient;
+import de.gymdon.app.api.MensaServer;
 
 import android.content.Context;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MensaAdapter extends ArrayAdapter<MensaClient> {
+public class MensaAdapter extends ArrayAdapter<MensaServer> {
 
 	private Context context;
 
@@ -28,60 +27,25 @@ public class MensaAdapter extends ArrayAdapter<MensaClient> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		RelativeLayout group = new RelativeLayout(context);
-		group.setPadding(10, 4, 8, 4);
-
-		TextView date = new TextView(context);
-		TextView line1 = new TextView(context);
-		TextView line2 = new TextView(context);
-		MensaClient o = API.DATA.mensa.get(position);
-
-		date.setId(4944949);
-		line1.setId(4944950);
-		line2.setId(4944951);
-
+		MensaServer o = API.DATA.mensa.get(position);
+		LayoutInflater inflater = LayoutInflater.from(context);
+		
+		View mensaItem = inflater.inflate(R.layout.mensa_item, null);
+		
+		TextView date = (TextView) mensaItem.findViewById(R.id.mensa_date);
 		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM",
-				Locale.getDefault());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM", Locale.getDefault());
 		calendar.setTimeInMillis(o.timestamp * 1000L);
 		String day = sdf.format(calendar.getTime());
 		date.setText(day);
 
-		line1.setText(context.getText(R.string.menu1) + o.menu1);
-		line2.setText(context.getText(R.string.menu2) + o.menu2);
-
-		date.setTextSize(30);
-		date.setEms(3);
-
-		line1.setGravity(Gravity.LEFT | Gravity.TOP);
-		line2.setGravity(Gravity.LEFT | Gravity.BOTTOM);
-
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-		params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-		params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-
-		params1.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-		params1.addRule(RelativeLayout.RIGHT_OF, date.getId());
-
-		params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-		params2.addRule(RelativeLayout.ALIGN_LEFT, line1.getId());
-		params2.addRule(RelativeLayout.BELOW, line1.getId());
-
-		group.addView(date, params);
-		group.addView(line1, params1);
-		group.addView(line2, params2);
-
-		return group;
+		TextView type = (TextView) mensaItem.findViewById(R.id.mensa_type);
+		type.setText(context.getResources().getStringArray(R.array.mensa_types)[o.type]);
+		
+		TextView value = (TextView) mensaItem.findViewById(R.id.mensa_value);
+		value.setText(o.value);
+		
+		return mensaItem;
 	}
 
 }
