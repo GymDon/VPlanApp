@@ -438,8 +438,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		} else
 			Log.d("MainActivity", "App is current version: " + response.getCurrentVersion() + ", has: " + (API.APP_VERSION.split(" ")[1]));
 		
-		if(!(response.getAdditionalMessage() == "")) {
-			
+		if(response.hasAdditionalMessage()) {
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 			alertDialog.setTitle(R.string.additional_notes);
 			alertDialog.setPositiveButton(R.string.ok, null);

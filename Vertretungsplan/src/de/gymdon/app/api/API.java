@@ -133,8 +133,11 @@ public class API {
 			Log.d("API", "Request: " + action);
 			if (actionClass[action.ordinal()] == null)
 				throw new RuntimeException("invalid action \"" + action + "\"");
+			if (!isNetworkAvailable())
+				return new ApiResponse(new IOException("No network"));
 			long time = System.currentTimeMillis();
-			if(actionNeedsLogin[action.ordinal()] || isLoggedIn() && !(action == ApiAction.ALL && DATA.hasToken()))
+			if (actionNeedsLogin[action.ordinal()] || isLoggedIn()
+					&& !(action == ApiAction.ALL && DATA.hasToken()))
 				obj = getJSONfromURL(url, params, getUsername(), password);
 			else
 				obj = getJSONfromURL(url, params, getUsername(), null);

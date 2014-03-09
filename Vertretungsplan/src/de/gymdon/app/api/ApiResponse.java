@@ -178,4 +178,8 @@ public class ApiResponse {
 	public String getAdditionalMessage() {
 		return additionalMessage;
 	}
+	
+	public boolean hasAdditionalMessage() {
+		return additionalMessage != null && additionalMessage.length() > 0;
+	}
 }
