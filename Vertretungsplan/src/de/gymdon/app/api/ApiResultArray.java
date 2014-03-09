@@ -2,7 +2,6 @@ package de.gymdon.app.api;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.*;
