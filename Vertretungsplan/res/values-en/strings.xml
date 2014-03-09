@@ -60,6 +60,7 @@
     <string name="update_available_text">An update for this app is available!</string>
     <string name="download">Download</string>
     <string name="dismiss">Not now</string>
+    <string name="additional_notes">Additional Notes</string>
 
     <string-array name="synchronisation_interval_entries">
         <item>5 Minutes</item>

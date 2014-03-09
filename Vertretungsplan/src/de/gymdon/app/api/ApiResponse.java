@@ -30,6 +30,7 @@ public class ApiResponse {
 	private String currentVersion;
 	private boolean isCurrentVersion;
 	private Uri apkDownloadUrl;
+	private String additionalMessage;
 
 	public ApiResponse(JSONObject obj, Class<? extends ApiResult> resultType,
 			boolean array) throws JSONException {
@@ -96,6 +97,8 @@ public class ApiResponse {
 		currentVersion = obj.optString("curr_app_version");
 		if (obj.has("apk_download"))
 			apkDownloadUrl = Uri.parse(obj.getString("apk_download"));
+		if (obj.has("additional_message"))
+			additionalMessage = obj.getString("additional_message");
 		if (result != null)
 			result.setParent(this);
 	}
@@ -170,5 +173,9 @@ public class ApiResponse {
 	
 	public boolean hasToken() {
 		return token != null && token.length() > 0;
+	}
+	
+	public String getAdditionalMessage() {
+		return additionalMessage;
 	}
 }

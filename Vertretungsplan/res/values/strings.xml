@@ -76,6 +76,7 @@
     <string name="no_data">Keine Daten verfügbar</string>
     <string name="no_username">Kein Benutzername angegeben</string>
     <string name="no_password">Kein Passwort angegeben</string>
+    <string name="additional_notes">Zusätzliche Infos</string>
     
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>
