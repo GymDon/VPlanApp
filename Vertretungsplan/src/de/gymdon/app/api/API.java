@@ -41,7 +41,7 @@ public class API {
 	public final static String API_VERSION = "0.3";
 
 	private URL url;
-	
+
 	private String username;
 	private String password;
 
@@ -89,7 +89,8 @@ public class API {
 	 * @param action
 	 *            The action to be performed
 	 * @param params
-	 *            The parameters to the action as strings in pairs of key and value
+	 *            The parameters to the action as strings in pairs of key and
+	 *            value
 	 * @return The Response from the server
 	 * @throws IOException
 	 * @see {@link API#request(ApiAction, Map)}
@@ -97,8 +98,8 @@ public class API {
 	public ApiResponse request(ApiAction action, String... params)
 			throws IOException {
 		List<NameValuePair> paramsList = new ArrayList<NameValuePair>();
-		for(int i = 0; i < params.length - 1; i+=2) {
-			paramsList.add(new BasicNameValuePair(params[i], params[i+1]));
+		for (int i = 0; i < params.length - 1; i += 2) {
+			paramsList.add(new BasicNameValuePair(params[i], params[i + 1]));
 		}
 		return request(action, paramsList);
 	}
@@ -118,18 +119,20 @@ public class API {
 	public ApiResponse request(ApiAction action, List<NameValuePair> params) {
 		ApiResponse r;
 		JSONObject obj = null;
-		String url = this.url + API_VERSION + '/' + action.toString().toLowerCase();
+		String url = this.url + API_VERSION + '/'
+				+ action.toString().toLowerCase();
 		try {
-			if(isLoggedIn())
+			if (isLoggedIn())
 				Log.i("API", getUsername() + " is logged in");
 			else
 				Log.w("API", "No user logged in!");
-			params.add(new BasicNameValuePair("os", "Android " + Build.VERSION.RELEASE + " ("
-					+ Build.DISPLAY + ")"));
+			params.add(new BasicNameValuePair("os", "Android "
+					+ Build.VERSION.RELEASE + " (" + Build.DISPLAY + ")"));
 			params.add(new BasicNameValuePair("app", APP_VERSION));
 			params.add(new BasicNameValuePair("hash", DATA.hash));
 			params.add(new BasicNameValuePair("api", API_VERSION));
-			params.add(new BasicNameValuePair("lang", Locale.getDefault().getLanguage()));
+			params.add(new BasicNameValuePair("lang", Locale.getDefault()
+					.getLanguage()));
 			Log.d("API", "Request: " + action);
 			if (actionClass[action.ordinal()] == null)
 				throw new RuntimeException("invalid action \"" + action + "\"");
@@ -143,7 +146,8 @@ public class API {
 				obj = getJSONfromURL(url, params, getUsername(), null);
 			r = new ApiResponse(obj, actionClass[action.ordinal()],
 					actionIsArray[action.ordinal()]);
-			Log.d("API", "Response: " + (System.currentTimeMillis()-time) + "ms");
+			Log.d("API", "Response: " + (System.currentTimeMillis() - time)
+					+ "ms");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.i("API", "Params: " + params.toString());
@@ -159,7 +163,11 @@ public class API {
 		else {
 			Log.w("API", r.getWarnings().size() + " Warnings:");
 			for (ApiWarning w : r.getWarnings()) {
-				Log.w("API", w.getWarning() + ": " + w.getDescription() + (w.getExtra().size() > 0 ? "\nExtra: " + w.getExtra() : ""));
+				Log.w("API", w.getWarning()
+						+ ": "
+						+ w.getDescription()
+						+ (w.getExtra().size() > 0 ? "\nExtra: " + w.getExtra()
+								: ""));
 			}
 		}
 		return r;
@@ -178,20 +186,22 @@ public class API {
 	 */
 	@SuppressLint("DefaultLocale")
 	public static JSONObject getJSONfromURL(String url,
-			List<NameValuePair> params, String username, String password) throws IOException, JSONException {
+			List<NameValuePair> params, String username, String password)
+			throws IOException, JSONException {
 		DefaultHttpClient client = new DefaultHttpClient();
-		if(username != null) {
+		if (username != null) {
 			params.add(new BasicNameValuePair("u", username));
-			if(password != null) {
+			if (password != null) {
 				params.add(new BasicNameValuePair("pass", password));
-				//client.getCredentialsProvider().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+				// client.getCredentialsProvider().setCredentials(AuthScope.ANY,
+				// new UsernamePasswordCredentials(username, password));
 			}
 		}
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(params));
 		HttpResponse resp = client.execute(post);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				resp.getEntity().getContent()));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(resp
+				.getEntity().getContent()));
 		StringBuilder sb = new StringBuilder();
 		String line;
 		while ((line = reader.readLine()) != null)
@@ -310,15 +320,15 @@ public class API {
 				: API.DATA.tomorrowReplacementsList).isEmpty() && (forToday ? API.DATA.todayOthers
 				: API.DATA.tomorrowOthers).isEmpty());
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -338,18 +348,18 @@ public class API {
 
 		actionClass[ApiAction.USER.ordinal()] = UserInfo.class;
 		actionIsArray[ApiAction.USER.ordinal()] = false;
-		actionIsArray[ApiAction.USER.ordinal()] = true;
+		actionNeedsLogin[ApiAction.USER.ordinal()] = true;
 
 		actionClass[ApiAction.TICKER.ordinal()] = TickerObject.class;
 		actionIsArray[ApiAction.TICKER.ordinal()] = true;
-		actionIsArray[ApiAction.TICKER.ordinal()] = true;
+		actionNeedsLogin[ApiAction.TICKER.ordinal()] = true;
 
 		actionClass[ApiAction.ALL.ordinal()] = AllObject.class;
 		actionIsArray[ApiAction.ALL.ordinal()] = false;
-		actionIsArray[ApiAction.ALL.ordinal()] = false;
+		actionNeedsLogin[ApiAction.ALL.ordinal()] = false;
 
 		actionClass[ApiAction.CHANGELOG.ordinal()] = Commit.class;
 		actionIsArray[ApiAction.CHANGELOG.ordinal()] = true;
-		actionIsArray[ApiAction.CHANGELOG.ordinal()] = false;
+		actionNeedsLogin[ApiAction.CHANGELOG.ordinal()] = false;
 	}
 }
