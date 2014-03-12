@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -305,10 +306,9 @@ public class API {
 		NotificationManager nm = (NotificationManager) CONTEXT
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification n = ncb.build();
-		boolean vibrate = CONTEXT
-				.getSharedPreferences(
-						"com.inf1315.vertretungsplan_preferences",
-						Context.MODE_PRIVATE).getBoolean("pref_vibrate", true);
+		boolean vibrate = PreferenceManager
+				.getDefaultSharedPreferences(CONTEXT).getBoolean(
+						"pref_vibrate", true);
 
 		if (vibrate)
 			n.defaults |= Notification.DEFAULT_VIBRATE;

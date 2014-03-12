@@ -242,17 +242,29 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	@SuppressLint("NewApi")
 	private boolean showUserInfoOrLogin(int message) {
 		boolean showLogin = !API.STANDARD_API.isLoggedIn();
+		drawerLayout.closeDrawer(drawer);
 		if (showLogin) {
-			drawerLayout.closeDrawer(drawer);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			LayoutInflater inflater = LayoutInflater
 					.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext()
 							: this);
 			final View view = inflater.inflate(R.layout.dialog_login, null);
+			EditText et = (EditText) view
+					.findViewById(R.id.login_username_field);
+			String username = getSharedPreferences("data", MODE_PRIVATE)
+					.getString("username", "");
+			et.setText(username);
 			builder.setView(view);
 			builder.setPositiveButton(R.string.login, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					getSharedPreferences("data", MODE_PRIVATE)
+							.edit()
+							.putString(
+									"username",
+									((EditText) view
+											.findViewById(R.id.login_username_field))
+											.getText().toString()).commit();
 					login(((EditText) view
 							.findViewById(R.id.login_username_field)).getText()
 							.toString(), ((EditText) view
@@ -269,6 +281,14 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 							if (loginDialog != null && loginDialog.isShowing())
 								loginDialog.dismiss();
 							if (actionId == EditorInfo.IME_ACTION_DONE) {
+								getSharedPreferences("data", MODE_PRIVATE)
+										.edit()
+										.putString(
+												"username",
+												((EditText) view
+														.findViewById(R.id.login_username_field))
+														.getText().toString())
+										.commit();
 								login(((EditText) view
 										.findViewById(R.id.login_username_field))
 										.getText().toString(),
@@ -289,13 +309,14 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			builder.setNegativeButton(R.string.cancel, null);
 			loginDialog = builder.show();
 		} else {
-			drawerLayout.closeDrawer(drawer);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			LayoutInflater inflater = LayoutInflater
 					.from(Build.VERSION.SDK_INT >= 11 ? builder.getContext()
 							: this);
 			View view = inflater.inflate(R.layout.user_info_dialog, null);
 			UserInfo userInfo = API.DATA.userInfo;
+			if (userInfo == null)
+				return false;
 
 			TextView fullname = (TextView) view
 					.findViewById(R.id.user_info_fullname);
@@ -356,6 +377,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		API.STANDARD_API.setUsername(null);
 		API.STANDARD_API.setPassword(null);
 		configureUsernameView();
+		supportInvalidateOptionsMenu();
 	}
 
 	private void login(String username, String password) {
@@ -389,9 +411,12 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		} else if (!API.isNetworkAvailable()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.no_internet_connection_title);
+			String fullname = API.DATA != null && API.DATA.userInfo != null
+					&& API.DATA.userInfo.fullname != null ? API.DATA.userInfo.fullname
+					: "";
 			builder.setMessage(getText(R.string.no_internet_connection) + "\n"
-					+ getText(R.string.usernanme) + API.DATA.userInfo.fullname
-					+ "\n" + getText(R.string.old_data_message) + "\n"
+					+ getText(R.string.usernanme) + fullname + "\n"
+					+ getText(R.string.old_data_message) + "\n"
 					+ API.DATA.timeString);
 			builder.setPositiveButton(R.string.ok, null);
 			builder.show();
@@ -425,7 +450,6 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		SharedPreferences.Editor spe = getSharedPreferences("data",
 				MODE_PRIVATE).edit();
 		String json = new Gson().toJson(API.DATA);
-		spe.putString("username", API.STANDARD_API.getUsername());
 		spe.putString("data", json);
 		spe.commit();
 
