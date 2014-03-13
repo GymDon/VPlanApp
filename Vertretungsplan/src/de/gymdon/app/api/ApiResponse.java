@@ -65,8 +65,7 @@ public class ApiResponse {
 		developer = obj.optString("developer");
 		if(obj.has("token")) {
 			token = obj.getString("token");
-			if(result instanceof AllObject)
-				((AllObject)result).setToken(token);
+			API.STANDARD_API.setToken(token);
 		}
 		if (developer != null)
 			Log.i("ApiResponse", "Developer: " + developer);

@@ -92,9 +92,9 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		int prevAppVersion = sharedPrefs.getInt("prevAppVersion", 0);
 		int appVersion = 0;
 		try {
+			API.CONTEXT = getApplicationContext();
 			appVersion = getPackageManager()
 					.getPackageInfo(getPackageName(), 0).versionCode;
-			API.CONTEXT = getApplicationContext();
 			API.APP_VERSION = getPackageName()
 					+ " "
 					+ getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -102,6 +102,11 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			Log.w("Startup", "Couldn't determine app version");
 			e.printStackTrace();
 		}
+
+		String username = sharedPrefs.getString("username", null);
+		String token = sharedPrefs.getString("token", null);
+		API.STANDARD_API.setUsername(username);
+		API.STANDARD_API.setToken(token);
 
 		if (API.isNetworkAvailable() && appVersion > prevAppVersion) {
 			sharedPrefs.edit().putInt("prevAppVersion", appVersion).commit();
@@ -373,7 +378,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	}
 
 	private void logout() {
-		API.DATA.deleteToken();
+		API.STANDARD_API.setToken(null);
 		API.STANDARD_API.setUsername(null);
 		API.STANDARD_API.setPassword(null);
 		configureUsernameView();

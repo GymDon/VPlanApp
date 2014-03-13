@@ -3,7 +3,6 @@ package de.gymdon.app.activities;
 import de.gymdon.app.R;
 import de.gymdon.app.api.API;
 import de.gymdon.app.api.AllObject;
-import de.gymdon.app.api.UserInfo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,11 +42,7 @@ public class Settings7 extends PreferenceActivity implements
 				new OnPreferenceClickListener() {
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						String token = API.DATA.getToken();
-						String user = API.DATA.userInfo.username;
 						API.DATA = new AllObject();
-						API.DATA.setToken(token);
-						API.DATA.userInfo = new UserInfo(user);
 						API.reload = true;
 						Toast.makeText(Settings7.this,
 								getText(R.string.cache_cleared),

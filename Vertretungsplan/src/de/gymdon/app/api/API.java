@@ -45,6 +45,7 @@ public class API {
 
 	private String username;
 	private String password;
+	private String token;
 
 	/**
 	 * Creates a new API with the {@link #STANDARD_URL} ( {@value #STANDARD_URL}
@@ -140,11 +141,14 @@ public class API {
 			if (!isNetworkAvailable())
 				return new ApiResponse(new IOException("No network"));
 			long time = System.currentTimeMillis();
-			if (actionNeedsLogin[action.ordinal()] || isLoggedIn()
-					&& !(action == ApiAction.ALL && DATA.hasToken()))
-				obj = getJSONfromURL(url, params, getUsername(), password);
+			if (actionNeedsLogin[action.ordinal()] && !isLoggedIn())
+				return new ApiResponse(new UnsupportedOperationException(
+						"You must be logged in"));
+			if (actionNeedsLogin[action.ordinal()] || action == ApiAction.ALL)
+				obj = getJSONfromURL(url, params, getUsername(), password,
+						token);
 			else
-				obj = getJSONfromURL(url, params, getUsername(), null);
+				obj = getJSONfromURL(url, params, getUsername(), null, null);
 			r = new ApiResponse(obj, actionClass[action.ordinal()],
 					actionIsArray[action.ordinal()]);
 			Log.d("API", "Response: " + (System.currentTimeMillis() - time)
@@ -187,16 +191,18 @@ public class API {
 	 */
 	@SuppressLint("DefaultLocale")
 	public static JSONObject getJSONfromURL(String url,
-			List<NameValuePair> params, String username, String password)
-			throws IOException, JSONException {
+			List<NameValuePair> params, String username, String password,
+			String token) throws IOException, JSONException {
 		DefaultHttpClient client = new DefaultHttpClient();
 		if (username != null) {
 			params.add(new BasicNameValuePair("u", username));
-			if (password != null) {
-				params.add(new BasicNameValuePair("pass", password));
+			if (token != null) {
+				params.add(new BasicNameValuePair("token", token));
+				params.add(new BasicNameValuePair("sync", "true"));
 				// client.getCredentialsProvider().setCredentials(AuthScope.ANY,
 				// new UsernamePasswordCredentials(username, password));
-			}
+			} else if (password != null)
+				params.add(new BasicNameValuePair("pass", password));
 		}
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(params));
@@ -237,7 +243,8 @@ public class API {
 	}*/
 	
 	public boolean isLoggedIn() {
-		return (username != null && password != null) || DATA.hasToken();
+		return (username != null && password != null)
+				|| (username != null && hasToken());
 	}
 
 	public static boolean isNetworkAvailable() {
@@ -331,6 +338,23 @@ public class API {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+		if (CONTEXT != null)
+			CONTEXT.getSharedPreferences("data", Context.MODE_PRIVATE).edit()
+					.putString("token", token).commit();
+		else
+			Log.w("API", "API.CONTEXT == null");
+	}
+
+	public boolean hasToken() {
+		return token != null && token.length() > 0;
+	}
+
+	public void deleteToken() {
+		setToken(null);
 	}
 
 	private static Class<? extends ApiResult>[] actionClass;

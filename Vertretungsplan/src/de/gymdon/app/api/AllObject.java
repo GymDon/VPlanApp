@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class AllObject extends ApiResult {
 
@@ -30,9 +31,8 @@ public class AllObject extends ApiResult {
 	public String hash = "";
 	public String timeString = "";
 	public long timestamp;
-	private String token = "";
 	private int has = HAS_NONE;
-	
+
 	private static final int HAS_NONE = 0;
 	private static final int HAS_USER = 1;
 	private static final int HAS_TICKER = 2;
@@ -54,8 +54,9 @@ public class AllObject extends ApiResult {
 		}
 
 		if (json.has("ticker") && !json.isNull("ticker")) {
-			TickerObject[] ticker = new ApiResultArray(json.getJSONArray("ticker"), 
-					TickerObject.class).getArray(new TickerObject[0]);
+			TickerObject[] ticker = new ApiResultArray(
+					json.getJSONArray("ticker"), TickerObject.class)
+					.getArray(new TickerObject[0]);
 			tickers = Arrays.asList(ticker);
 			has |= HAS_TICKER;
 		}
@@ -121,19 +122,11 @@ public class AllObject extends ApiResult {
 		timestamp = System.currentTimeMillis() / 1000L;
 	}
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
-	public boolean hasToken() {
-		return token != null && token.length() > 0;
-	}
-	
 	public void saveData() {
+		if (API.CONTEXT == null) {
+			Log.i("AllObject", "API.CONTEXT == null");
+			return;
+		}
 		SharedPreferences.Editor spe = API.CONTEXT.getSharedPreferences("data",
 				Context.MODE_PRIVATE).edit();
 		String json = (new Gson()).toJson(this);
@@ -141,10 +134,6 @@ public class AllObject extends ApiResult {
 		spe.commit();
 	}
 
-	public void deleteToken() {
-		setToken("");
-	}
-	
 	public boolean hasUser() {
 		return (has & HAS_USER) > 0 && userInfo != null;
 	}

@@ -4,7 +4,6 @@ import de.gymdon.app.R;
 import de.gymdon.app.activities.ChangelogActivity;
 import de.gymdon.app.api.API;
 import de.gymdon.app.api.AllObject;
-import de.gymdon.app.api.UserInfo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -45,11 +44,7 @@ public class SettingsFragment extends PreferenceFragment implements
 				new OnPreferenceClickListener() {
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						String token = API.DATA.getToken();
-						String user = API.DATA.userInfo.username;
 						API.DATA = new AllObject();
-						API.DATA.setToken(token);
-						API.DATA.userInfo = new UserInfo(user);
 						API.reload = true;
 						Toast.makeText(getActivity(),
 								getText(R.string.cache_cleared),

@@ -12,11 +12,9 @@ import de.gymdon.app.api.*;
 public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 
 	private FinishedLoading plan;
-	private String token;
 
 	public AllAsyncTask(FinishedLoading plan) {
 		this.plan = plan;
-		this.token = API.DATA.getToken();
 	}
 
 	@SuppressLint("SimpleDateFormat")
@@ -26,10 +24,7 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 			ApiResponse resp;
 			if(API.DATA.hasUser())
 				API.STANDARD_API.setUsername(API.DATA.userInfo.username);
-			if (API.DATA.hasToken())
-				resp = API.STANDARD_API.request(ApiAction.ALL, "sync", "true", "token", token);
-			else
-				resp = API.STANDARD_API.request(ApiAction.ALL);
+			resp = API.STANDARD_API.request(ApiAction.ALL);
 			if (!resp.getSuccess()) {
 				Log.w("All Loader", "Loading unsuccesfull");
 				return API.DATA;
