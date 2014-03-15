@@ -142,8 +142,7 @@ public class API {
 				return new ApiResponse(new IOException("No network"));
 			long time = System.currentTimeMillis();
 			if (actionNeedsLogin[action.ordinal()] && !isLoggedIn())
-				return new ApiResponse(new UnsupportedOperationException(
-						"You must be logged in"));
+				return new ApiResponse(new IOException("You must be logged in"));
 			if (actionNeedsLogin[action.ordinal()] || action == ApiAction.ALL)
 				obj = getJSONfromURL(url, params, getUsername(), password,
 						token);

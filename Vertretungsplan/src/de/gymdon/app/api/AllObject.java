@@ -54,11 +54,10 @@ public class AllObject extends ApiResult {
 		}
 
 		if (json.has("ticker") && !json.isNull("ticker")) {
-			TickerObject[] ticker = new ApiResultArray(
-					json.getJSONArray("ticker"), TickerObject.class)
-					.getArray(new TickerObject[0]);
-			tickers = Arrays.asList(ticker);
-			has |= HAS_TICKER;
+			tickers = new ApiResultArray(json.getJSONArray("ticker"),
+					TickerObject.class).getList(tickers);
+			if (!tickers.isEmpty())
+				has |= HAS_TICKER;
 		}
 
 		if (json.has("replacements") && !json.isNull("replacements")) {
@@ -77,17 +76,17 @@ public class AllObject extends ApiResult {
 			}
 			Collections.sort(todayReplacementsList);
 			Collections.sort(tomorrowReplacementsList);
-			has |= HAS_REPLACEMENTS;
+			if (!replacements.isEmpty())
+				has |= HAS_REPLACEMENTS;
 		}
 
 		if (json.has("pages") && !json.isNull("pages")) {
-			PageObject[] pagesArray = new ApiResultArray(
-					json.getJSONArray("pages"), PageObject.class)
-					.getArray(new PageObject[0]);
-			pages = Arrays.asList(pagesArray);
-			has |= HAS_PAGES;
+			pages = new ApiResultArray(json.getJSONArray("pages"),
+					PageObject.class).getList(pages);
+			if (!pages.isEmpty())
+				has |= HAS_PAGES;
 		}
-		
+
 		if (json.has("others") && !json.isNull("others")) {
 			OtherObject[] othersArray = new ApiResultArray(
 					json.getJSONArray("others"), OtherObject.class)
@@ -101,21 +100,24 @@ public class AllObject extends ApiResult {
 				else
 					tomorrowOthers.add(oo);
 			}
-			has |= HAS_OTHERS;
+			if (!others.isEmpty())
+				has |= HAS_OTHERS;
 		}
 
 		if (json.has("events") && !json.isNull("events")) {
-			Event[] event = new ApiResultArray(json.getJSONArray("events"),
-					Event.class).getArray(new Event[0]);
-			events = Arrays.asList(event);
-			has |= HAS_EVENTS;
+			events = new ApiResultArray(json.getJSONArray("events"),
+					Event.class).getList(events);
+			if (!events.isEmpty())
+				has |= HAS_EVENTS;
 		}
-		
+
 		if (json.has("mensa") && !json.isNull("mensa")) {
-			mensa = new ApiResultArray(json.getJSONArray("mensa"), MensaServer.class).getList(mensa);
-			has |= HAS_MENSA;
+			mensa = new ApiResultArray(json.getJSONArray("mensa"),
+					MensaServer.class).getList(mensa);
+			if (!mensa.isEmpty())
+				has |= HAS_MENSA;
 		}
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		timeString = sdf.format(new Date());
 
@@ -161,4 +163,12 @@ public class AllObject extends ApiResult {
 	public boolean hasMensa() {
 		return (has & HAS_MENSA) > 0 && mensa != null;
 	}
+
+	@Override
+	public void setParent(ApiResponse parent) {
+		super.setParent(parent);
+		if (parent != null && parent.getHash() != null)
+			this.hash = parent.getHash();
+	}
+
 }

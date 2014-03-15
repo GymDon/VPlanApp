@@ -58,6 +58,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
 	private Dialog loadingDialog;
+	private boolean isActivityStarted = true;
 
 	public static final int ITEM_HOME = 0;
 	public static final int ITEM_PLAN = 1;
@@ -123,6 +124,18 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	}
 
 	@Override
+	protected void onStart() {
+		isActivityStarted = true;
+		super.onStart();
+	}
+
+	@Override
+	protected void onStop() {
+		isActivityStarted = false;
+		super.onStop();
+	}
+
+	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		drawerToggle.syncState();
@@ -169,7 +182,6 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
 		if (API.reload) {
 			dataChanged();
@@ -178,6 +190,9 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 	}
 
 	private void selectItem(int position) {
+		drawerList.setItemChecked(fragmentPosition, true);
+		if (!isActivityStarted)
+			return;
 		drawerLayout.closeDrawer(drawer);
 
 		boolean noSwitch = false;
@@ -197,10 +212,14 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 					Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT)
 							.show();
 					noSwitch = true;
+					if (fragmentPosition != ITEM_PLAN)
+						return;
 				}
 			else {
 				showUserInfoOrLogin(R.string.login_needed);
 				noSwitch = true;
+				if (fragmentPosition != ITEM_PLAN)
+					return;
 			}
 			break;
 		case ITEM_MENSA:
@@ -212,6 +231,8 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 				Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT)
 						.show();
 				noSwitch = true;
+				if (fragmentPosition != ITEM_MENSA)
+					return;
 			}
 			break;
 		case ITEM_EVENTS:
@@ -223,6 +244,8 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 				Toast.makeText(this, R.string.no_data, Toast.LENGTH_SHORT)
 						.show();
 				noSwitch = true;
+				if (fragmentPosition != ITEM_EVENTS)
+					return;
 			}
 			break;
 		}
@@ -452,11 +475,7 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 
 		dataChanged();
 
-		SharedPreferences.Editor spe = getSharedPreferences("data",
-				MODE_PRIVATE).edit();
-		String json = new Gson().toJson(API.DATA);
-		spe.putString("data", json);
-		spe.commit();
+		API.DATA.saveData();
 
 		AllObject data = API.DATA;
 		final ApiResponse response = data.getParent();
@@ -495,7 +514,6 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 			alertDialog.setPositiveButton(R.string.ok, null);
 			alertDialog.setMessage(response.getAdditionalMessage());
 			alertDialog.show();
-
 		}
 	}
 
@@ -588,4 +606,5 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		}
 		return new SimpleAdapter(this, list, R.layout.drawer_item, from, to);
 	}
+
 }

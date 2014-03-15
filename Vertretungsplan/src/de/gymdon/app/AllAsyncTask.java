@@ -37,9 +37,6 @@ public class AllAsyncTask extends AsyncTask<Object, Object, AllObject> {
 				return API.DATA;
 			}
 			AllObject ao = (AllObject) resp.getResult();
-			if (ao != null) {
-				ao.hash = resp.getHash();
-			}
 			return ao;
 
 		} catch (Exception e) {
