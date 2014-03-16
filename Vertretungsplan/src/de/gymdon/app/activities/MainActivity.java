@@ -406,6 +406,8 @@ public class MainActivity extends ActionBarActivity implements FinishedLoading {
 		API.STANDARD_API.setPassword(null);
 		configureUsernameView();
 		supportInvalidateOptionsMenu();
+		Toast.makeText(this, getText(R.string.logged_out),
+				Toast.LENGTH_SHORT).show();
 	}
 
 	private void login(String username, String password) {

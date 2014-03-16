@@ -61,6 +61,7 @@
     <string name="download">Download</string>
     <string name="dismiss">Jetzt nicht</string>
     <string name="additional_notes">Zusätzliche Infos</string>
+    <string name="logged_out">Ausgeloggt!</string>
 
     <string-array name="synchronisation_interval_entries">
         <item>5 Minuten</item>
