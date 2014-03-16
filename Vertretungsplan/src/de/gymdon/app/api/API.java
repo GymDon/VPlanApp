@@ -154,7 +154,9 @@ public class API {
 					+ "ms");
 		} catch (Exception e) {
 			e.printStackTrace();
-			if(params.get(params.size()-1).getName().equals("pass")) params.remove(params.size()-1);
+			for(Iterator<NameValuePair> it = params.iterator(); it.hasNext();)
+				if(it.next().getName().equals("pass"))
+					it.remove();
 			Log.i("API", "Params: " + params.toString());
 			if (obj != null)
 				try {
