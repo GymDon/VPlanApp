@@ -154,6 +154,7 @@ public class API {
 					+ "ms");
 		} catch (Exception e) {
 			e.printStackTrace();
+			if(params.get(params.size()-1).getName().equals("pass")) params.remove(params.size()-1);
 			Log.i("API", "Params: " + params.toString());
 			if (obj != null)
 				try {
