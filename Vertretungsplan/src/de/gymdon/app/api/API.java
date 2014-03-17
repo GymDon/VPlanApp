@@ -160,6 +160,8 @@ public class API {
 			Log.i("API", "Params: " + params.toString());
 			if (obj != null)
 				try {
+					if (obj.has("token"))
+						obj.remove("token");
 					Log.i("API", "Response: " + obj.toString(4));
 				} catch (JSONException e1) {
 				}
@@ -344,6 +346,8 @@ public class API {
 
 	public void setToken(String token) {
 		this.token = token;
+		if (token != null)
+			setPassword(null);
 		if (CONTEXT != null)
 			CONTEXT.getSharedPreferences("data", Context.MODE_PRIVATE).edit()
 					.putString("token", token).commit();
